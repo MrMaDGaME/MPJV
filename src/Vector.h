@@ -38,7 +38,6 @@ public:
 	Vector reflect(Vector v);
 	Vector refract(Vector v, float eta);
 	Vector operator-();
-	Vector operator-() const;
 	bool operator==(Vector v);
 	bool operator!=(Vector v);
 	bool operator<(Vector v);

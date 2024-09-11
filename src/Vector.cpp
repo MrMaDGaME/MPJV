@@ -70,10 +70,6 @@ Vector Vector::operator-() {
 	return Vector(-x, -y, -z);
 }
 
-Vector Vector::operator-() const {
-	return Vector(-x, -y, -z);
-}
-
 bool Vector::operator==(Vector v) {
 	return x == v.x && y == v.y && z == v.z;
 }
