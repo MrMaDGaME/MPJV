@@ -12,15 +12,15 @@ public:
 
     Vector position;
     Vector velocity;
-    Vector acceleration;
+    std::vector<std::pair<Vector, float>> accelerations;
 
     float mass;
     float radius;
 
     void update();
     void draw();
-    void applyForce(float fx, float fy, float fz);
-    void applyForce(float fx, float fy);
-    void applyForce(float fx);
-    void applyForce(Vector force);
+    void applyForce(float fx, float fy, float fz, float duration);
+    void applyForce(float fx, float fy, float duration);
+    void applyForce(float fx, float duration);
+    void applyForce(Vector force, float duration);
 };

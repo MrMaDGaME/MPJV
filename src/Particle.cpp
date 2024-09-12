@@ -4,7 +4,6 @@
 Particle::Particle() {
     position = Vector(0, 0, 0);
     velocity = Vector(0, 0, 0);
-    acceleration = Vector(0, 0, 0);
     mass = 1;
     radius = 10;
 }
@@ -12,7 +11,6 @@ Particle::Particle() {
 Particle::Particle(const float x, const float y, const float z) {
     position = Vector(x, y, z);
     velocity = Vector(0, 0, 0);
-    acceleration = Vector(0, 0, 0);
     mass = 1;
     radius = 10;
 }
@@ -20,7 +18,6 @@ Particle::Particle(const float x, const float y, const float z) {
 Particle::Particle(const float x, const float y, const float z, const float radius, const float mass) {
     position = Vector(x, y, z);
     velocity = Vector(0, 0, 0);
-    acceleration = Vector(0, 0, 0);
     this->mass = mass;
     this->radius = radius;
 }
@@ -29,31 +26,34 @@ Particle::~Particle() {
 }
 
 void Particle::update() {
-    // std::cout << "acceleration: " << acceleration.x << ", " << acceleration.y << ", " << acceleration.z << std::endl;
-    velocity += acceleration;
-    position += velocity;
-    acceleration *= 0;
+    std::cout << accelerations.size() << std::endl;
+    Vector total_acceleration(0, 0, 0);
+    for (auto& a : accelerations) {
+        total_acceleration += a.first;
+        a.second -= ofGetLastFrameTime();
+    }
+    ofRemove(accelerations, [](std::pair<Vector, float>& a) { return a.second < 0; });
+    velocity += total_acceleration * static_cast<float>(ofGetLastFrameTime());
+    position += velocity * static_cast<float>(ofGetLastFrameTime()) * 100; // Passage en cm
 }
 
 void Particle::draw() {
     ofDrawSphere(position.x, position.y, position.z, radius);
 }
 
-void Particle::applyForce(float fx, float fy, float fz) {
+void Particle::applyForce(float fx, float fy, float fz, float duration) {
     Vector force = Vector(fx, fy, fz);
-    applyForce(force);
+    applyForce(force, duration);
 }
 
-void Particle::applyForce(float fx, float fy) {
-    applyForce(fx, fy, 0);
+void Particle::applyForce(float fx, float fy, float duration) {
+    applyForce(fx, fy, 0, duration);
 }
 
-void Particle::applyForce(float fx) {
-    applyForce(fx, 0, 0);
+void Particle::applyForce(float fx, float duration) {
+    applyForce(fx, 0, 0, duration);
 }
 
-void Particle::applyForce(Vector force) {
-    Vector f = force / mass;
-    acceleration += f;
-    std::cout << "acceleration: " << acceleration.x << ", " << acceleration.y << ", " << acceleration.z << std::endl;
+void Particle::applyForce(Vector force, float duration) {
+    accelerations.emplace_back(force / mass, duration);
 }

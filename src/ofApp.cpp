@@ -5,17 +5,15 @@ std::vector<Particle> particles;
 
 //--------------------------------------------------------------
 void ofApp::setup() {
-    Particle p(0.f, 700.f, -100.f, 50.f, 1.f);
-    particles.push_back(p);
-    p.applyForce(0.f, -1000.f, 0.f);
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
     for (auto& p : particles) {
+        p.applyForce(0.f, 10.f * p.mass, 0.f, 0.f);
         p.update();
-        // p.position += Vector(1.f, -1.f, 0.f);
     }
+    ofRemove(particles, [](Particle& p) { return p.position.y > ofGetHeight() || p.position.x > ofGetWidth() || p.position.z > 0; });
 }
 
 //--------------------------------------------------------------
@@ -27,6 +25,11 @@ void ofApp::draw() {
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
+    if (key == ' ') {
+        Particle p(100.f, 700.f, -10.f, 30.f, 10.f);
+        p.applyForce(1000.f, -1000.f, 0.f, 0.1f);
+        particles.push_back(p);
+    }
 }
 
 //--------------------------------------------------------------

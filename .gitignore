@@ -11,3 +11,4 @@ obj/
 *.xcodeproj
 *.qb
 Makefile
+.idea/
