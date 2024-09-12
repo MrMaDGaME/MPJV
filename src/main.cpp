@@ -1,8 +1,11 @@
 #include "ofMain.h"
 #include "ofApp.h"
+#include "VectorTests.h"
 
 //========================================================================
 int main() {
+    VectorTest::runAllTests();
+
     //Use ofGLFWWindowSettings for more options like multi-monitor fullscreen
     ofGLWindowSettings settings;
     settings.setSize(1800, 1000);
