@@ -1,10 +1,13 @@
 .vs/
-MPJV_Proj.sln
-MPJV_Proj.vcxproj
-MPJV_Proj.vcxproj.filters
-MPJV_Proj.vcxproj.user
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
 addons.make
 bin/
 config.make
 icon.rc
 obj/
+*.xcodeproj
+*.qb
+Makefile
