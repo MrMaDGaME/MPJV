@@ -5,6 +5,10 @@ std::vector<Particle> particles;
 
 //--------------------------------------------------------------
 void ofApp::setup() {
+    gui.setup();
+    gui.add(laserbutton.setup("laser"));
+    gui.add(bulletbutton.setup("bullet"));
+    gui.add(canonballbutton.setup("canonball"));
 }
 
 //--------------------------------------------------------------
@@ -18,10 +22,14 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
+    gui.draw();
     for (auto& p : particles) {
         p.draw();
     }
-}
+
+    ofSetColor(ofColor::black);
+    std::cout << "hey";
+    ofDrawBitmapString("rafraîchissement : "+ ofToString(ofGetFrameRate()) + " fps" , 10, 10);}
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
