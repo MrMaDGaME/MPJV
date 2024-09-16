@@ -17,6 +17,7 @@ public:
 
     float mass;
     float radius;
+    ofColor color;
 
     void update();
     void draw();

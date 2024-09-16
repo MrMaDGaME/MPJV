@@ -1,5 +1,6 @@
 #include "ofApp.h"
 #include "Particle.h"
+#include <typeinfo>
 
 std::vector<Particle> particles;
 
@@ -28,7 +29,6 @@ void ofApp::draw() {
     }
 
     ofSetColor(ofColor::black);
-    std::cout << "hey";
     ofDrawBitmapString("rafraîchissement : "+ ofToString(ofGetFrameRate()) + " fps" , 10, 10);}
 
 //--------------------------------------------------------------

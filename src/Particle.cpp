@@ -37,6 +37,8 @@ void Particle::update() {
 }
 
 void Particle::draw() {
+    ofSetColor(color);
+
     ofDrawSphere(position.x, position.y, position.z, radius);
 }
 
