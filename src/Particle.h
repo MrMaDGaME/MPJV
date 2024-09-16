@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Vector.h"
-#include "ofApp.h"
+#include <vector>
+#include "ofMain.h"
 
 class Particle {
 public:
@@ -16,6 +17,7 @@ public:
 
     float mass;
     float radius;
+    ofColor color;
 
     void update();
     void draw();

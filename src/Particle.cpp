@@ -26,7 +26,6 @@ Particle::~Particle() {
 }
 
 void Particle::update() {
-    std::cout << accelerations.size() << std::endl;
     Vector total_acceleration(0, 0, 0);
     for (auto& a : accelerations) {
         total_acceleration += a.first;
@@ -38,6 +37,8 @@ void Particle::update() {
 }
 
 void Particle::draw() {
+    ofSetColor(color);
+
     ofDrawSphere(position.x, position.y, position.z, radius);
 }
 

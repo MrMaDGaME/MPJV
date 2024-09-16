@@ -5,6 +5,16 @@ std::vector<Particle> particles;
 
 //--------------------------------------------------------------
 void ofApp::setup() {
+
+    laserbutton.addListener(this, &ofApp::spawnLaser);
+
+    bulletbutton.addListener(this, &ofApp::spawnBullet);
+
+    canonballbutton.addListener(this, &ofApp::spawnCanonBall);
+    gui.setup();
+    gui.add(laserbutton.setup("laser"));
+    gui.add(bulletbutton.setup("bullet"));
+    gui.add(canonballbutton.setup("canonball"));
 }
 
 //--------------------------------------------------------------
@@ -18,17 +28,18 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
+    gui.draw();
     for (auto& p : particles) {
         p.draw();
     }
-}
+
+    ofSetColor(ofColor::black);
+    ofDrawBitmapString("rafraîchissement : "+ ofToString(ofGetFrameRate()) + " fps" , 10, 10);}
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
     if (key == ' ') {
-        Particle p(100.f, 700.f, -10.f, 30.f, 10.f);
-        p.applyForce(1000.f, -1000.f, 0.f, 0.1f);
-        particles.push_back(p);
+        
     }
 }
 
@@ -70,4 +81,20 @@ void ofApp::gotMessage(ofMessage msg) {
 
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo) {
+}
+
+void ofApp::spawnBullet(){
+        Bullet p(100.f, 700.f, -10.f);
+        p.applyForce(1000.f, -1000.f, 0.f, 0.1f);
+        particles.push_back(p);
+}
+void ofApp::spawnLaser(){
+        Laser p(100.f, 700.f, -10.f);
+        p.applyForce(1000.f, -1000.f, 0.f, 0.1f);
+        particles.push_back(p);
+}
+void ofApp::spawnCanonBall(){
+        CanonBall p(100.f, 700.f, -10.f);
+        p.applyForce(1000.f, -1000.f, 0.f, 0.1f);
+        particles.push_back(p);
 }
