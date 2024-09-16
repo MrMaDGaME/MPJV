@@ -26,7 +26,6 @@ Particle::~Particle() {
 }
 
 void Particle::update() {
-    std::cout << accelerations.size() << std::endl;
     Vector total_acceleration(0, 0, 0);
     for (auto& a : accelerations) {
         total_acceleration += a.first;

@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Vector.h"
-#include "ofApp.h"
+#include <vector>
+#include "ofMain.h"
 
 class Particle {
 public:

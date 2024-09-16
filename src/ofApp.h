@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "Projectiles/Bullet.h"
 
 class ofApp : public ofBaseApp {
 public:

@@ -34,7 +34,7 @@ void ofApp::draw() {
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
     if (key == ' ') {
-        Particle p(100.f, 700.f, -10.f, 30.f, 10.f);
+        Bullet p(100.f, 700.f, -10.f);
         p.applyForce(1000.f, -1000.f, 0.f, 0.1f);
         particles.push_back(p);
     }
