@@ -1,11 +1,16 @@
 #include "ofApp.h"
 #include "Particle.h"
-#include <typeinfo>
 
 std::vector<Particle> particles;
 
 //--------------------------------------------------------------
 void ofApp::setup() {
+
+    laserbutton.addListener(this, &ofApp::spawnLaser);
+
+    bulletbutton.addListener(this, &ofApp::spawnBullet);
+
+    canonballbutton.addListener(this, &ofApp::spawnCanonBall);
     gui.setup();
     gui.add(laserbutton.setup("laser"));
     gui.add(bulletbutton.setup("bullet"));
@@ -34,9 +39,7 @@ void ofApp::draw() {
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
     if (key == ' ') {
-        Bullet p(100.f, 700.f, -10.f);
-        p.applyForce(1000.f, -1000.f, 0.f, 0.1f);
-        particles.push_back(p);
+        
     }
 }
 
@@ -78,4 +81,20 @@ void ofApp::gotMessage(ofMessage msg) {
 
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo) {
+}
+
+void ofApp::spawnBullet(){
+        Bullet p(100.f, 700.f, -10.f);
+        p.applyForce(1000.f, -1000.f, 0.f, 0.1f);
+        particles.push_back(p);
+}
+void ofApp::spawnLaser(){
+        Laser p(100.f, 700.f, -10.f);
+        p.applyForce(1000.f, -1000.f, 0.f, 0.1f);
+        particles.push_back(p);
+}
+void ofApp::spawnCanonBall(){
+        CanonBall p(100.f, 700.f, -10.f);
+        p.applyForce(1000.f, -1000.f, 0.f, 0.1f);
+        particles.push_back(p);
 }

@@ -3,6 +3,9 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "Projectiles/Bullet.h"
+#include "Projectiles/Laser.h"
+#include "Projectiles/CanonBall.h"
+
 
 class ofApp : public ofBaseApp {
 public:
@@ -21,6 +24,10 @@ public:
     void windowResized(int w, int h);
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
+
+    void spawnBullet();
+    void spawnLaser();
+    void spawnCanonBall();
 
     ofxPanel gui;
     ofxButton laserbutton;
