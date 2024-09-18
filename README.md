@@ -1,8 +1,9 @@
-# Projet Mathématiques et Physique pour les jeux vidéo
+# Projet MathŽmatiques et Physique pour les jeux vidŽo
 
-## Instruction d'exécution
+## Instruction d'exŽcution
 
-* Télécharger OpenFrameworks sur le site officiel : https://openframeworks.cc/
-* Créer un nouveau projet avec le projetGenerator
+* TŽlŽcharger OpenFrameworks sur le site officiel : https://openframeworks.cc/
+* CrŽer un nouveau projet avec le projetGenerator
+    * Ajouter les addons `ofxXmlSettings` et `ofxGui`
 * Copier le contenu du dossier src dans le dossier src du projet
-* Compiler et exécuter le projet
+* Compiler et exŽcuter le projet
