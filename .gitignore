@@ -13,3 +13,7 @@ obj/
 Makefile
 .idea/
 *.qbs
+*.xcconfig
+*.entitlements
+*.make
+*.plist
