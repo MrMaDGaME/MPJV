@@ -15,8 +15,8 @@ void ofApp::setup() {
     gui.add(bulletbutton.setup("Bullet"));
     gui.add(canonballbutton.setup("CanonBall"));
 
-    gui.add(angleSlider.setup("Angle", 5,4.7,7.0)); // Angle en degrés, plage ajustée (0 à 90)
-    gui.add(speedSlider.setup("Speed", 10, 0, 50)); // Vitesse ajustée (plage de 10 à 300)
+    gui.add(angleSlider.setup("Angle", 5,4.7,7.0)); // Angle en degrés
+    gui.add(speedSlider.setup("Speed", 10, 0, 12)); // Vitesse ajustée
 }
 
 //--------------------------------------------------------------
@@ -35,7 +35,7 @@ void ofApp::draw() {
         p.draw();
     }
 
-    ofSetColor(ofColor::black);
+    ofSetColor(ofColor::white);
     ofDrawBitmapString("rafraîchissement : " + ofToString(ofGetFrameRate()) + " fps", 10, 10);
 }
 
