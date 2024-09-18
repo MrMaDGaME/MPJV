@@ -5,22 +5,24 @@ std::vector<Particle> particles;
 
 //--------------------------------------------------------------
 void ofApp::setup() {
+    // Initialisation des boutons
+    laserbutton.addListener(this, &ofApp::onLaserButtonPressed);
+    bulletbutton.addListener(this, &ofApp::onBulletButtonPressed);
+    canonballbutton.addListener(this, &ofApp::onCanonBallButtonPressed);
 
-    laserbutton.addListener(this, &ofApp::spawnLaser);
-
-    bulletbutton.addListener(this, &ofApp::spawnBullet);
-
-    canonballbutton.addListener(this, &ofApp::spawnCanonBall);
     gui.setup();
-    gui.add(laserbutton.setup("laser"));
-    gui.add(bulletbutton.setup("bullet"));
-    gui.add(canonballbutton.setup("canonball"));
+    gui.add(laserbutton.setup("Laser"));
+    gui.add(bulletbutton.setup("Bullet"));
+    gui.add(canonballbutton.setup("CanonBall"));
+
+    gui.add(angleSlider.setup("Angle", 5,4.7,7.0)); // Angle en degrés, plage ajustée (0 à 90)
+    gui.add(speedSlider.setup("Speed", 10, 0, 50)); // Vitesse ajustée (plage de 10 à 300)
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
     for (auto& p : particles) {
-        p.applyForce(0.f, 10.f * p.mass, 0.f, 0.f);
+        p.applyForce(0.f, 9.81f * p.mass, 0.f, 0.f); // Ajustez si nécessaire
         p.update();
     }
     ofRemove(particles, [](Particle& p) { return p.position.y > ofGetHeight() || p.position.x > ofGetWidth() || p.position.z > 0; });
@@ -34,7 +36,8 @@ void ofApp::draw() {
     }
 
     ofSetColor(ofColor::black);
-    ofDrawBitmapString("rafraîchissement : "+ ofToString(ofGetFrameRate()) + " fps" , 10, 10);}
+    ofDrawBitmapString("rafraîchissement : " + ofToString(ofGetFrameRate()) + " fps", 10, 10);
+}
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
@@ -83,18 +86,45 @@ void ofApp::gotMessage(ofMessage msg) {
 void ofApp::dragEvent(ofDragInfo dragInfo) {
 }
 
-void ofApp::spawnBullet(){
-        Bullet p(100.f, 700.f, -10.f);
-        p.applyForce(1000.f, -1000.f, 0.f, 0.1f);
-        particles.push_back(p);
+// Méthodes de rappel modifiées pour les boutons
+void ofApp::onBulletButtonPressed() {
+    float angle = angleSlider;
+    float speed = speedSlider; // Vitesse sans réduction
+    spawnBullet(angle, speed);
 }
-void ofApp::spawnLaser(){
-        Laser p(100.f, 700.f, -10.f);
-        p.applyForce(1000.f, -1000.f, 0.f, 0.1f);
-        particles.push_back(p);
+
+void ofApp::onLaserButtonPressed() {
+    float angle = angleSlider;
+    float speed = speedSlider; // Vitesse sans réduction
+    spawnLaser(angle, speed);
 }
-void ofApp::spawnCanonBall(){
-        CanonBall p(100.f, 700.f, -10.f);
-        p.applyForce(1000.f, -1000.f, 0.f, 0.1f);
-        particles.push_back(p);
+
+void ofApp::onCanonBallButtonPressed() {
+    float angle = angleSlider;
+    float speed = speedSlider; // Vitesse sans réduction
+    spawnCanonBall(angle, speed);
+}
+
+void ofApp::spawnBullet(float angle, float speed) {
+    Bullet p(100.f, 700.f, 0.f);
+    Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
+    p.velocity = initialVelocity;
+    p.applyForce(0.f, -9.81f * 0.1f, 0.f, 0.1f); // Ajustez la force appliquée pour simuler la résistance de l'air et la gravité
+    particles.push_back(p);
+}
+
+void ofApp::spawnLaser(float angle, float speed) {
+    Laser p(100.f, 700.f, 0.f);
+    Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
+    p.velocity = initialVelocity;
+    p.applyForce(0.f, -9.81f * 0.1f, 0.f, 0.1f); // Ajustez la force appliquée pour simuler la résistance de l'air et la gravité
+    particles.push_back(p);
+}
+
+void ofApp::spawnCanonBall(float angle, float speed) {
+    CanonBall p(100.f, 700.f, 0.f);
+    Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
+    p.velocity = initialVelocity;
+    p.applyForce(0.f, -9.81f * 0.1f, 0.f, 0.1f); // Ajustez la force appliquée pour simuler la résistance de l'air et la gravité
+    particles.push_back(p);
 }
