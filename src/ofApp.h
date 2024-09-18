@@ -6,7 +6,6 @@
 #include "Projectiles/Laser.h"
 #include "Projectiles/CanonBall.h"
 
-
 class ofApp : public ofBaseApp {
 public:
     void setup();
@@ -25,14 +24,20 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
 
-    void spawnBullet();
-    void spawnLaser();
-    void spawnCanonBall();
+    void spawnBullet(float angle, float speed);
+    void spawnLaser(float angle, float speed);
+    void spawnCanonBall(float angle, float speed);
+
+    // Méthodes de rappel pour les boutons
+    void onBulletButtonPressed();
+    void onLaserButtonPressed();
+    void onCanonBallButtonPressed();
 
     ofxPanel gui;
     ofxButton laserbutton;
     ofxButton bulletbutton;
     ofxButton canonballbutton;
-    
+    ofxFloatSlider angleSlider;
+    ofxFloatSlider speedSlider;
 
 };
