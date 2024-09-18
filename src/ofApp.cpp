@@ -22,7 +22,7 @@ void ofApp::setup() {
 //--------------------------------------------------------------
 void ofApp::update() {
     for (auto& p : particles) {
-        p.applyForce(0.f, 9.81f * p.mass, 0.f, 0.f); // Ajustez si nécessaire
+        p.applyForce(0.f, p.inv_mass != 0 ? 9.81f / p.inv_mass : 0, 0.f, 0.f); // Ajustez si nécessaire
         p.update();
     }
     ofRemove(particles, [](Particle& p) { return p.position.y > ofGetHeight() || p.position.x > ofGetWidth() || p.position.z > 0; });
@@ -109,7 +109,6 @@ void ofApp::spawnBullet(float angle, float speed) {
     Bullet p(100.f, 700.f, 0.f);
     Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
     p.velocity = initialVelocity;
-    p.applyForce(0.f, -9.81f * 0.1f, 0.f, 0.1f); // Ajustez la force appliquée pour simuler la résistance de l'air et la gravité
     particles.push_back(p);
 }
 
@@ -117,7 +116,6 @@ void ofApp::spawnLaser(float angle, float speed) {
     Laser p(100.f, 700.f, 0.f);
     Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
     p.velocity = initialVelocity;
-    p.applyForce(0.f, -9.81f * 0.1f, 0.f, 0.1f); // Ajustez la force appliquée pour simuler la résistance de l'air et la gravité
     particles.push_back(p);
 }
 
@@ -125,6 +123,5 @@ void ofApp::spawnCanonBall(float angle, float speed) {
     CanonBall p(100.f, 700.f, 0.f);
     Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
     p.velocity = initialVelocity;
-    p.applyForce(0.f, -9.81f * 0.1f, 0.f, 0.1f); // Ajustez la force appliquée pour simuler la résistance de l'air et la gravité
     particles.push_back(p);
 }

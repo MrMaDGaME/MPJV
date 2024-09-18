@@ -15,7 +15,7 @@ public:
     Vector velocity;
     std::vector<std::pair<Vector, float>> accelerations;
 
-    float mass;
+    float inv_mass;
     float radius;
     ofColor color;
 
