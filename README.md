@@ -9,3 +9,10 @@
 * Sous Windows/Mac:
    * Dans Visual Studio/XCode, ajouter le contenu du fichier src à la solution/projet
 * Compiler et exécuter le projet
+
+## Auteurs
+
+* Mathéo DUCROT **DUCM25120100**
+* Tarek BOUCHEMA **BOUT06050300**
+* Lucas ZORMAN **ZORL11060300**
+* Ilyes NAJJARI **NAJI15110100**

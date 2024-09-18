@@ -12,5 +12,4 @@ obj/
 *.qb
 Makefile
 .idea/
-.gitignore
 *.qbs
