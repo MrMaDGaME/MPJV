@@ -38,10 +38,10 @@ void Particle::draw() {
     ofDrawSphere(position.x, position.y, position.z, radius);
 }
 
-void addForce(const Vector& Force){
+void Particle::addForce(const Vector& Force){
     AccumForce += Force;
 }
 
-void clearAccum(){
+void Particle::clearAccum(){
     AccumForce = Vector(0,0,0);
 }
