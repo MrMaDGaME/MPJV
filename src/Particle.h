@@ -13,7 +13,8 @@ public:
 
     Vector position;
     Vector velocity;
-    std::vector<std::pair<Vector, float>> accelerations;
+
+    Vector AccumForce; 
 
     float inv_mass;
     float radius;
@@ -21,8 +22,7 @@ public:
 
     void update();
     void draw();
-    void applyForce(float fx, float fy, float fz, float duration);
-    void applyForce(float fx, float fy, float duration);
-    void applyForce(float fx, float duration);
-    void applyForce(Vector force, float duration);
+
+    void addForce(const Vector& Force);
+    void clearAccum();
 };
