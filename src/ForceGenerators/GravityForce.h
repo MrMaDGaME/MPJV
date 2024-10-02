@@ -3,6 +3,9 @@
 
 class GravityForce : ParticleForceGenerator
 {
+private:
+    Vector gravity;
+    
 public:
-    void UpdateForce(Particle* particle, float deltaTime) const override;
+    void UpdateForce(Particle* particle, float deltaTime) override;
 };
