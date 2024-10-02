@@ -23,6 +23,6 @@ public:
     void update();
     void draw();
 
-    void addForce(const& Vector Force);
+    void addForce(const Vector& Force);
     void clearAccum();
 };
