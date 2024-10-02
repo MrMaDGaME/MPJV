@@ -7,5 +7,5 @@ void GravityForce::UpdateForce(Particle* particle, float deltaTime)
         return;
     }
 
-    //particle->applyForce(gravity * particle->mass);
+    particle->applyForce(gravity * particle->inv_mass, deltaTime);
 }
