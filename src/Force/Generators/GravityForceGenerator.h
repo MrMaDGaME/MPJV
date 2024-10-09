@@ -1,11 +1,13 @@
 #pragma once
 #include "IParticleForceGenerator.h"
 
-class GravityForce : public IParticleForceGenerator
+class GravityForceGenerator : public IParticleForceGenerator
 {
 private:
-    Vector gravity;
+    Vector _gravity;
     
 public:
+    GravityForceGenerator(float gravity);
+    
     void UpdateForce(Particle* particle, float deltaTime) override;
 };

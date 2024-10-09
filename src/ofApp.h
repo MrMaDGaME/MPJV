@@ -5,6 +5,9 @@
 #include "Projectiles/Bullet.h"
 #include "Projectiles/Laser.h"
 #include "Projectiles/CanonBall.h"
+#include "Particle.h"
+#include "GravityForceGenerator.h"
+#include "ParticleForceRegistry.h"
 
 class ofApp : public ofBaseApp {
 public:
@@ -39,5 +42,8 @@ public:
     ofxButton canonballbutton;
     ofxFloatSlider angleSlider;
     ofxFloatSlider speedSlider;
-
+    ParticleForceRegistry particleForceRegistry;
+    GravityForceGenerator gravity = GravityForceGenerator(9.81f);
+    
+    std::vector<Particle *> particles;
 };

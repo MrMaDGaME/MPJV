@@ -1,7 +1,4 @@
 #include "ofApp.h"
-#include "Particle.h"
-
-std::vector<Particle> particles;
 
 //--------------------------------------------------------------
 void ofApp::setup() {
@@ -17,22 +14,25 @@ void ofApp::setup() {
 
     gui.add(angleSlider.setup("Angle", 5,4.7,7.0)); // Angle en degrés
     gui.add(speedSlider.setup("Speed", 10, 0, 12)); // Vitesse ajustée
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
-    for (auto& p : particles) {
+    for (auto* p : particles) {
+        if (p->position.y > ofGetHeight() || p->position.x > ofGetWidth() || p->position.z > 0){
+            delete p;
+        }
 //        p.applyForce(0.f, p.inv_mass != 0 ? 9.81f / p.inv_mass : 0, 0.f, 0.f); // Ajustez si nécessaire
-        p.update();
+        p->update();
     }
-    ofRemove(particles, [](Particle& p) { return p.position.y > ofGetHeight() || p.position.x > ofGetWidth() || p.position.z > 0; });
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
     gui.draw();
-    for (auto& p : particles) {
-        p.draw();
+    for (auto* p : particles) {
+        p->draw();
     }
 
     ofSetColor(ofColor::white);
@@ -106,22 +106,25 @@ void ofApp::onCanonBallButtonPressed() {
 }
 
 void ofApp::spawnBullet(float angle, float speed) {
-    Bullet p(100.f, 700.f, 0.f);
+    Bullet *p = new Bullet(100.f, 700.f, 0.f);
     Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
-    p.velocity = initialVelocity;
+    p->velocity = initialVelocity;
     particles.push_back(p);
+    particleForceRegistry.Add(p, gravity);
 }
 
 void ofApp::spawnLaser(float angle, float speed) {
-    Laser p(100.f, 700.f, 0.f);
+    Laser *p = new Laser(100.f, 700.f, 0.f);
     Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
-    p.velocity = initialVelocity;
+    p->velocity = initialVelocity;
     particles.push_back(p);
+    particleForceRegistry.Add(p, gravity);
 }
 
 void ofApp::spawnCanonBall(float angle, float speed) {
-    CanonBall p(100.f, 700.f, 0.f);
+    CanonBall *p = new CanonBall(100.f, 700.f, 0.f);
     Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
-    p.velocity = initialVelocity;
+    p->velocity = initialVelocity;
     particles.push_back(p);
+    particleForceRegistry.Add(p, gravity);
 }
