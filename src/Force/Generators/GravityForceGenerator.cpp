@@ -1,4 +1,4 @@
-#include "GravityForce.h"
+#include "GravityForceGenerator.h"
 
 void GravityForce::UpdateForce(Particle* particle, float deltaTime)
 {

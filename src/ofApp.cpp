@@ -22,7 +22,7 @@ void ofApp::setup() {
 //--------------------------------------------------------------
 void ofApp::update() {
     for (auto& p : particles) {
-        p.applyForce(0.f, p.inv_mass != 0 ? 9.81f / p.inv_mass : 0, 0.f, 0.f); // Ajustez si nécessaire
+//        p.applyForce(0.f, p.inv_mass != 0 ? 9.81f / p.inv_mass : 0, 0.f, 0.f); // Ajustez si nécessaire
         p.update();
     }
     ofRemove(particles, [](Particle& p) { return p.position.y > ofGetHeight() || p.position.x > ofGetWidth() || p.position.z > 0; });

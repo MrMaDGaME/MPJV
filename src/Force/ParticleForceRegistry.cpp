@@ -1,11 +1,11 @@
 #include "ParticleForceRegistry.h"
 
-void ParticleForceRegistry::Add(Particle* particle, ParticleForceGenerator* forceGenerator)
+void ParticleForceRegistry::Add(Particle* particle, IParticleForceGenerator* forceGenerator)
 {
     registrations.push_back({ particle, forceGenerator });
 }
 
-void ParticleForceRegistry::Remove(Particle* particle, ParticleForceGenerator* forceGenerator)
+void ParticleForceRegistry::Remove(Particle* particle, IParticleForceGenerator* forceGenerator)
 {
     registrations.erase(std::remove_if(registrations.begin(), registrations.end(), [particle, forceGenerator](const ParticleForceRegistration& registration)
     {

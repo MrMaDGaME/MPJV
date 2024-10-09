@@ -1,6 +1,6 @@
 #pragma once
 #include "Particle.h"
-#include "ParticleForceGenerator.h"
+#include "IParticleForceGenerator.h"
 
 class ParticleForceRegistry
 {
@@ -8,15 +8,15 @@ private:
     struct ParticleForceRegistration
     {
         Particle* particle;
-        ParticleForceGenerator* forceGenerator;
+        IParticleForceGenerator* forceGenerator;
     };
     typedef std::vector<ParticleForceRegistration> registry;
 
     registry registrations;
 
 public:
-    void Add(Particle* particle, ParticleForceGenerator* forceGenerator);
-    void Remove(Particle* particle, ParticleForceGenerator* forceGenerator);
+    void Add(Particle* particle, IParticleForceGenerator* forceGenerator);
+    void Remove(Particle* particle, IParticleForceGenerator* forceGenerator);
     void Clear();
     void UpdateForces(float duration);
 };

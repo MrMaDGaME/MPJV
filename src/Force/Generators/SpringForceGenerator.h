@@ -1,9 +1,9 @@
 #pragma once
-#include "ForceGenerator.h"
+#include "IParticleForceGenerator.h"
 #include "Particle.h"
 #include "Vector.h"
 
-class SpringForceGenerator : public ForceGenerator {
+class SpringForceGenerator : public IParticleForceGenerator {
 private:
     Particle* other;
     float springConstant;
@@ -11,5 +11,5 @@ private:
 
 public:
     SpringForceGenerator(Particle* other, float springConstant, float restLength);
-    void applyForce(Particle& particle) override;
+    void UpdateForce(Particle* particle, float deltaTime) override;
 };
