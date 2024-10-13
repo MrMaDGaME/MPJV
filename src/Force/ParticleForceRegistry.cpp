@@ -13,6 +13,14 @@ void ParticleForceRegistry::Remove(Particle* particle, IParticleForceGenerator* 
     }), registrations.end());
 }
 
+void ParticleForceRegistry::Remove(Particle* particle)
+{
+    registrations.erase(std::remove_if(registrations.begin(), registrations.end(), [particle](const ParticleForceRegistration& registration)
+    {
+        return registration.particle == particle;
+    }), registrations.end());
+}
+
 void ParticleForceRegistry::Clear()
 {
     registrations.clear();

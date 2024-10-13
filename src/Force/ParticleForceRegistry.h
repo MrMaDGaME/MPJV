@@ -17,6 +17,7 @@ private:
 public:
     void Add(Particle* particle, IParticleForceGenerator* forceGenerator);
     void Remove(Particle* particle, IParticleForceGenerator* forceGenerator);
+    void Remove(Particle* particle);
     void Clear();
     void UpdateForces(float duration);
 };

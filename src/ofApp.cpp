@@ -21,11 +21,13 @@ void ofApp::setup() {
 void ofApp::update() {
     for (auto* p : particles) {
         if (p->position.y > ofGetHeight() || p->position.x > ofGetWidth() || p->position.z > 0){
+            particleForceRegistry.Remove(p);
             delete p;
         }
 //        p.applyForce(0.f, p.inv_mass != 0 ? 9.81f / p.inv_mass : 0, 0.f, 0.f); // Ajustez si nécessaire
         p->update();
     }
+    //particleForceRegistry.UpdateForces(1.f / 60.f);
 }
 
 //--------------------------------------------------------------
