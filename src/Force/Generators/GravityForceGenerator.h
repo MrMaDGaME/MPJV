@@ -1,5 +1,5 @@
 #pragma once
-#include "IParticleForceGenerator.h"
+#include "Force/IParticleForceGenerator.h"
 
 class GravityForceGenerator : public IParticleForceGenerator
 {

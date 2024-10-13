@@ -6,8 +6,8 @@
 #include "Projectiles/Laser.h"
 #include "Projectiles/CanonBall.h"
 #include "Particle.h"
-#include "GravityForceGenerator.h"
-#include "ParticleForceRegistry.h"
+#include "Force/ParticleForceRegistry.h"
+#include "Force/Generators/GravityForceGenerator.h"
 
 class ofApp : public ofBaseApp {
 public:
@@ -43,7 +43,7 @@ public:
     ofxFloatSlider angleSlider;
     ofxFloatSlider speedSlider;
     ParticleForceRegistry particleForceRegistry;
-    GravityForceGenerator gravity = GravityForceGenerator(9.81f);
+    GravityForceGenerator * gravity = new GravityForceGenerator(9.81f);
     
     std::vector<Particle *> particles;
 };

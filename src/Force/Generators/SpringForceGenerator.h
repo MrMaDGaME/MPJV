@@ -1,7 +1,7 @@
 #pragma once
-#include "IParticleForceGenerator.h"
 #include "Particle.h"
 #include "Vector.h"
+#include "Force/IParticleForceGenerator.h"
 
 class SpringForceGenerator : public IParticleForceGenerator {
 private:
