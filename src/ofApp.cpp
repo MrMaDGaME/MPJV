@@ -43,13 +43,36 @@ void ofApp::draw() {
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
-    if (key == ' ') {
-        
+    switch (key) {
+    case OF_KEY_LEFT:
+        moveInput.x = -1;
+        break;
+    case OF_KEY_RIGHT:
+        moveInput.x = 1;
+        break;
+    case OF_KEY_UP:
+        moveInput.y = -1;
+        break;
+    case OF_KEY_DOWN:
+        moveInput.y = 1;
+        break;
+    default: break;
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key) {
+    switch (key) {
+    case OF_KEY_LEFT:
+    case OF_KEY_RIGHT:
+        moveInput.x = 0;
+        break;
+    case OF_KEY_UP:
+    case OF_KEY_DOWN:
+        moveInput.y = 0;
+        break;
+    default: break;
+    }
 }
 
 //--------------------------------------------------------------
