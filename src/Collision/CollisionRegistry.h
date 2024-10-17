@@ -5,15 +5,15 @@ class CollisionRegistry
 private:
     struct ParticleCollisionEntry
     {
-        Particle* particuleA;
-        Particle* particuleB;
+        Particle* particleA;
+        Particle* particleB;
         float restCoeff; //coefficient of restitution give the elasticity of collision : 0 perfectly inelastic, 1 perfectly elastic
     };
 
     struct ParticleCollisionLinkEntry
     {  
-        Particle* particuleA;
-        Particle* particuleB;
+        Particle* particleA;
+        Particle* particleB;
         float length;
 
     }
