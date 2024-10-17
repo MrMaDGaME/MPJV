@@ -1,11 +1,9 @@
 #pragma once
-
 #include <complex>
 #include <iostream>
 #include <numeric>
 #include <string_view>
 #include <vector>
-
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "Projectiles/Bullet.h"
@@ -17,11 +15,9 @@
 
 class ofApp : public ofBaseApp {
 public:
-
     void setup();
     void update();
     void draw();
-
     void keyPressed(int key);
     void keyReleased(int key);
     void mouseMoved(int x, int y);
@@ -33,11 +29,9 @@ public:
     void windowResized(int w, int h);
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
-
     void spawnBullet(float angle, float speed);
     void spawnLaser(float angle, float speed);
     void spawnCanonBall(float angle, float speed);
-
     // Méthodes de rappel pour les boutons
     void onBulletButtonPressed();
     void onLaserButtonPressed();
@@ -52,6 +46,5 @@ public:
     ParticleForceRegistry particleForceRegistry;
     shared_ptr<IParticleForceGenerator> gravity = make_shared<GravityForceGenerator>(9.81f);
     Vector moveInput;
-
     std::vector<shared_ptr<Particle>> particles;
 };

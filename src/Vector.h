@@ -1,5 +1,4 @@
 #pragma once
-
 #include <math.h>
 
 class Vector {
@@ -8,10 +7,6 @@ public:
     Vector(float x, float y);
     Vector(float x, float y, float z);
     ~Vector();
-
-    float x;
-    float y;
-    float z;
 
     Vector operator+(Vector v);
     Vector operator-(Vector v);
@@ -44,4 +39,8 @@ public:
     bool operator<=(Vector v);
     bool operator>=(Vector v);
     bool operator!();
+
+    float x;
+    float y;
+    float z;
 };

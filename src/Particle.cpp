@@ -36,14 +36,13 @@ void Particle::update() {
 
 void Particle::draw() {
     ofSetColor(color);
-
     ofDrawSphere(position.x, position.y, position.z, radius);
 }
 
-void Particle::addForce(const Vector& Force){
+void Particle::addForce(const Vector& Force) {
     AccumForce += Force;
 }
 
-void Particle::clearAccum(){
-    AccumForce = Vector(0,0,0);
+void Particle::clearAccum() {
+    AccumForce = Vector(0, 0, 0);
 }

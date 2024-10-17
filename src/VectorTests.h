@@ -1,14 +1,14 @@
 #pragma once
-
 #include <iostream>
 #include "Vector.h"
-
 // Fonction utilitaire pour vérifier les assertions
 inline void assertEqual(float a, float b, const std::string& testName) {
-    if (abs(a - b) > 1e-5) {  // tolérance pour les flottants
+    if (abs(a - b) > 1e-5) {
+        // tolérance pour les flottants
         std::cerr << "[FAIL] " << testName << ": attendu " << b << ", obtenu " << a << std::endl;
         exit(1);
-    } else {
+    }
+    else {
         std::cout << "[PASS] " << testName << std::endl;
     }
 }
@@ -17,7 +17,8 @@ inline void assertTrue(bool condition, const std::string& testName) {
     if (!condition) {
         std::cerr << "[FAIL] " << testName << ": condition fausse." << std::endl;
         exit(1);
-    } else {
+    }
+    else {
         std::cout << "[PASS] " << testName << std::endl;
     }
 }
