@@ -22,9 +22,6 @@ Particle::Particle(const float x, const float y, const float z, const float radi
     this->radius = radius;
 }
 
-Particle::~Particle() {
-}
-
 void Particle::update() {
     float last_frame = static_cast<float>(ofGetLastFrameTime());
     Vector acceleration = AccumForce * inv_mass;

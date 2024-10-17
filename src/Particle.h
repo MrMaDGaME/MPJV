@@ -9,8 +9,6 @@ public:
     Particle(float x, float y, float z);
     Particle(float x, float y, float z, float radius, float mass);
 
-    ~Particle();
-
     void update();
     void draw();
     void addForce(const Vector& Force);
