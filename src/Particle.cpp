@@ -30,8 +30,9 @@ void Particle::update() {
     std::cout << "last_frame : " << last_frame << std::endl;
     Vector acceleration = AccumForce * inv_mass;
     // /!\ Orde de calcul important !!! La position doit être calculée avant la vitesse
-    position += (velocity * last_frame + acceleration * last_frame * last_frame / 2); // Passage en cm
+    position += (velocity * last_frame + acceleration * last_frame * last_frame / 2) * 100; // Passage en cm
     velocity += acceleration * last_frame;
+    clearAccum();
 }
 
 void Particle::draw() {

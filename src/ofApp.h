@@ -51,7 +51,7 @@ public:
     ofxFloatSlider angleSlider;
     ofxFloatSlider speedSlider;
     ParticleForceRegistry particleForceRegistry;
-    GravityForceGenerator *gravity = new GravityForceGenerator(7.f);
+    GravityForceGenerator *gravity = new GravityForceGenerator(9.81f);
     Vector moveInput;
     
     std::vector<Particle *> particles;

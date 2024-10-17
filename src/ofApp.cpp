@@ -39,10 +39,6 @@ void ofApp::update() {
     particles.erase(del_it, particles.end());
 
     // Update particles
-    /*for (auto* p : particles) {
-//        p.applyForce(0.f, p.inv_mass != 0 ? 9.81f / p.inv_mass : 0, 0.f, 0.f); // Ajustez si nécessaire
-        p->update();
-    }*/
     particleForceRegistry.UpdateForces();
     for (auto* p : particles) {
         p->update();
