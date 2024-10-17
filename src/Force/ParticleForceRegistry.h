@@ -1,5 +1,5 @@
 #pragma once
-#include "Particle.h"
+#include "../Particle.h"
 #include "IParticleForceGenerator.h"
 
 class ParticleForceRegistry
@@ -19,5 +19,5 @@ public:
     void Remove(Particle* particle, IParticleForceGenerator* forceGenerator);
     void Remove(Particle* particle);
     void Clear();
-    void UpdateForces(float duration);
+    void UpdateForces();
 };

@@ -3,7 +3,7 @@
 SpringForceGenerator::SpringForceGenerator(Particle* other, float springConstant, float restLength)
     : other(other), springConstant(springConstant), restLength(restLength) {}
 
-void SpringForceGenerator::UpdateForce(Particle* particle, float deltaTime) {
+void SpringForceGenerator::UpdateForce(Particle* particle) {
     Vector force = particle->position - other->position;
     float distance = force.magnitude();
     float magnitude = -springConstant * (distance - restLength);

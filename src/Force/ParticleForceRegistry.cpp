@@ -26,10 +26,10 @@ void ParticleForceRegistry::Clear()
     registrations.clear();
 }
 
-void ParticleForceRegistry::UpdateForces(float duration)
+void ParticleForceRegistry::UpdateForces()
 {
     for(auto& registration : registrations)
     {
-        registration.forceGenerator->UpdateForce(registration.particle, duration);
+        registration.forceGenerator->UpdateForce(registration.particle);
     }
 }

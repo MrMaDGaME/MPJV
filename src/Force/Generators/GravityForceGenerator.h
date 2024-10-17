@@ -1,5 +1,5 @@
 #pragma once
-#include "Force/IParticleForceGenerator.h"
+#include "../IParticleForceGenerator.h"
 
 class GravityForceGenerator : public IParticleForceGenerator
 {
@@ -9,5 +9,5 @@ private:
 public:
     GravityForceGenerator(float gravity);
     
-    void UpdateForce(Particle* particle, float deltaTime) override;
+    void UpdateForce(Particle* particle) override;
 };

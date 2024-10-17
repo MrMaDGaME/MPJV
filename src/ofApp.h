@@ -1,5 +1,11 @@
 #pragma once
 
+#include <complex>
+#include <iostream>
+#include <numeric>
+#include <string_view>
+#include <vector>
+
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "Projectiles/Bullet.h"
@@ -11,6 +17,8 @@
 
 class ofApp : public ofBaseApp {
 public:
+    ~ofApp() override;
+
     void setup();
     void update();
     void draw();
@@ -43,7 +51,7 @@ public:
     ofxFloatSlider angleSlider;
     ofxFloatSlider speedSlider;
     ParticleForceRegistry particleForceRegistry;
-    GravityForceGenerator * gravity = new GravityForceGenerator(9.81f);
+    GravityForceGenerator *gravity = new GravityForceGenerator(7.f);
     Vector moveInput;
     
     std::vector<Particle *> particles;

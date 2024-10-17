@@ -1,6 +1,14 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
+ofApp::~ofApp() {
+    for (auto* p : particles) {
+        delete p;
+    }
+    delete gravity;
+}
+
+//--------------------------------------------------------------
 void ofApp::setup() {
     // Initialisation des boutons
     laserbutton.addListener(this, &ofApp::onLaserButtonPressed);
@@ -13,21 +21,32 @@ void ofApp::setup() {
     gui.add(canonballbutton.setup("CanonBall"));
 
     gui.add(angleSlider.setup("Angle", 5,4.7,7.0)); // Angle en degrés
-    gui.add(speedSlider.setup("Speed", 10, 0, 12)); // Vitesse ajustée
+    gui.add(speedSlider.setup("Speed", 10, 0, 50)); // Vitesse ajustée
     
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
-    for (auto* p : particles) {
-        if (p->position.y > ofGetHeight() || p->position.x > ofGetWidth() || p->position.z > 0){
+    // Suppression des particules hors de l'écran
+    auto del_it = std::remove_if(particles.begin(), particles.end(), [this](Particle* p) {
+        if (p->position.y > ofGetHeight() || p->position.x > ofGetWidth() || p->position.z > 0 || p->position.x < 0 || p->position.y < 0) {
             particleForceRegistry.Remove(p);
             delete p;
+            return true;
         }
+        return false;
+    });
+    particles.erase(del_it, particles.end());
+
+    // Update particles
+    /*for (auto* p : particles) {
 //        p.applyForce(0.f, p.inv_mass != 0 ? 9.81f / p.inv_mass : 0, 0.f, 0.f); // Ajustez si nécessaire
         p->update();
+    }*/
+    particleForceRegistry.UpdateForces();
+    for (auto* p : particles) {
+        p->update();
     }
-    //particleForceRegistry.UpdateForces(1.f / 60.f);
 }
 
 //--------------------------------------------------------------

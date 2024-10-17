@@ -26,10 +26,12 @@ Particle::~Particle() {
 }
 
 void Particle::update() {
-
     float last_frame = static_cast<float>(ofGetLastFrameTime());
-    velocity += AccumForce * last_frame;
-    position += (velocity * last_frame + (AccumForce * last_frame * last_frame) / 2) * 100; // Passage en cm
+    std::cout << "last_frame : " << last_frame << std::endl;
+    Vector acceleration = AccumForce * inv_mass;
+    // /!\ Orde de calcul important !!! La position doit être calculée avant la vitesse
+    position += (velocity * last_frame + acceleration * last_frame * last_frame / 2); // Passage en cm
+    velocity += acceleration * last_frame;
 }
 
 void Particle::draw() {
