@@ -1,9 +1,10 @@
 #include "SpringForceGenerator.h"
 
-SpringForceGenerator::SpringForceGenerator(Particle* other, float springConstant, float restLength)
-    : other(other), springConstant(springConstant), restLength(restLength) {}
+SpringForceGenerator::SpringForceGenerator(const shared_ptr<Particle>& other, const float springConstant, const float restLength)
+    : other(other), springConstant(springConstant), restLength(restLength) {
+}
 
-void SpringForceGenerator::UpdateForce(Particle* particle) {
+void SpringForceGenerator::UpdateForce(shared_ptr<Particle>& particle) {
     Vector force = particle->position - other->position;
     float distance = force.magnitude();
     float magnitude = -springConstant * (distance - restLength);

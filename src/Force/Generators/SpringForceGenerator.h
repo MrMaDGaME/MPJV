@@ -5,11 +5,11 @@
 
 class SpringForceGenerator : public IParticleForceGenerator {
 private:
-    Particle* other;
+    shared_ptr<Particle> other;
     float springConstant;
     float restLength;
 
 public:
-    SpringForceGenerator(Particle* other, float springConstant, float restLength);
-    void UpdateForce(Particle* particle) override;
+    SpringForceGenerator(const shared_ptr<Particle>& other, float springConstant, float restLength);
+    void UpdateForce(shared_ptr<Particle>& particle) override;
 };

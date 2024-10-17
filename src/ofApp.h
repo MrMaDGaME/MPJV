@@ -17,7 +17,6 @@
 
 class ofApp : public ofBaseApp {
 public:
-    ~ofApp() override;
 
     void setup();
     void update();
@@ -53,6 +52,6 @@ public:
     ParticleForceRegistry particleForceRegistry;
     shared_ptr<IParticleForceGenerator> gravity = make_shared<GravityForceGenerator>(9.81f);
     Vector moveInput;
-    
-    std::vector<Particle *> particles;
+
+    std::vector<shared_ptr<Particle>> particles;
 };

@@ -1,13 +1,6 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
-ofApp::~ofApp() {
-    for (auto* p : particles) {
-        delete p;
-    }
-}
-
-//--------------------------------------------------------------
 void ofApp::setup() {
     // Initialisation des boutons
     laserbutton.addListener(this, &ofApp::onLaserButtonPressed);
@@ -19,18 +12,16 @@ void ofApp::setup() {
     gui.add(bulletbutton.setup("Bullet"));
     gui.add(canonballbutton.setup("CanonBall"));
 
-    gui.add(angleSlider.setup("Angle", 5,4.7,7.0)); // Angle en degrés
+    gui.add(angleSlider.setup("Angle", 5, 4.7, 7.0)); // Angle en degrés
     gui.add(speedSlider.setup("Speed", 10, 0, 50)); // Vitesse ajustée
-    
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
     // Suppression des particules hors de l'écran
-    auto del_it = std::remove_if(particles.begin(), particles.end(), [this](Particle* p) {
+    auto del_it = std::remove_if(particles.begin(), particles.end(), [this](shared_ptr<Particle>& p) {
         if (p->position.y > ofGetHeight() || p->position.x > ofGetWidth() || p->position.z > 0 || p->position.x < 0 || p->position.y < 0) {
             particleForceRegistry.remove(p);
-            delete p;
             return true;
         }
         return false;
@@ -39,7 +30,7 @@ void ofApp::update() {
 
     // Update particles
     particleForceRegistry.update_forces();
-    for (auto* p : particles) {
+    for (const auto& p : particles) {
         p->update();
     }
 }
@@ -47,7 +38,7 @@ void ofApp::update() {
 //--------------------------------------------------------------
 void ofApp::draw() {
     gui.draw();
-    for (auto* p : particles) {
+    for (const auto& p : particles) {
         p->draw();
     }
 
@@ -145,7 +136,7 @@ void ofApp::onCanonBallButtonPressed() {
 }
 
 void ofApp::spawnBullet(float angle, float speed) {
-    Bullet *p = new Bullet(100.f, 700.f, 0.f);
+    shared_ptr<Bullet> p(new Bullet(100.f, 700.f, 0.f));
     Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
     p->velocity = initialVelocity;
     particles.push_back(p);
@@ -153,7 +144,7 @@ void ofApp::spawnBullet(float angle, float speed) {
 }
 
 void ofApp::spawnLaser(float angle, float speed) {
-    Laser *p = new Laser(100.f, 700.f, 0.f);
+    shared_ptr<Laser> p(new Laser(100.f, 700.f, 0.f));
     Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
     p->velocity = initialVelocity;
     particles.push_back(p);
@@ -161,10 +152,9 @@ void ofApp::spawnLaser(float angle, float speed) {
 }
 
 void ofApp::spawnCanonBall(float angle, float speed) {
-    CanonBall *p = new CanonBall(100.f, 700.f, 0.f);
+    shared_ptr<CanonBall> p(new CanonBall(100.f, 700.f, 0.f));
     Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
     p->velocity = initialVelocity;
     particles.push_back(p);
     particleForceRegistry.add(p, gravity);
-
 }
