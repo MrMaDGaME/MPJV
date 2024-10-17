@@ -8,16 +8,16 @@ private:
     struct ParticleForceRegistration
     {
         Particle* particle;
-        IParticleForceGenerator* forceGenerator;
+        shared_ptr<IParticleForceGenerator> force_generator;
     };
     typedef std::vector<ParticleForceRegistration> registry;
 
-    registry registrations;
+    registry registrations_;
 
 public:
-    void Add(Particle* particle, IParticleForceGenerator* forceGenerator);
-    void Remove(Particle* particle, IParticleForceGenerator* forceGenerator);
-    void Remove(Particle* particle);
-    void Clear();
-    void UpdateForces();
+    void add(Particle* particle, shared_ptr<IParticleForceGenerator>& force_generator);
+    void remove(Particle* particle, shared_ptr<IParticleForceGenerator>& force_generator);
+    void remove(Particle* particle);
+    void clear();
+    void update_forces();
 };

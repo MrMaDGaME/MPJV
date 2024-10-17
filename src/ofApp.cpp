@@ -5,7 +5,6 @@ ofApp::~ofApp() {
     for (auto* p : particles) {
         delete p;
     }
-    delete gravity;
 }
 
 //--------------------------------------------------------------
@@ -30,7 +29,7 @@ void ofApp::update() {
     // Suppression des particules hors de l'écran
     auto del_it = std::remove_if(particles.begin(), particles.end(), [this](Particle* p) {
         if (p->position.y > ofGetHeight() || p->position.x > ofGetWidth() || p->position.z > 0 || p->position.x < 0 || p->position.y < 0) {
-            particleForceRegistry.Remove(p);
+            particleForceRegistry.remove(p);
             delete p;
             return true;
         }
@@ -39,7 +38,7 @@ void ofApp::update() {
     particles.erase(del_it, particles.end());
 
     // Update particles
-    particleForceRegistry.UpdateForces();
+    particleForceRegistry.update_forces();
     for (auto* p : particles) {
         p->update();
     }
@@ -150,7 +149,7 @@ void ofApp::spawnBullet(float angle, float speed) {
     Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
     p->velocity = initialVelocity;
     particles.push_back(p);
-    particleForceRegistry.Add(p, gravity);
+    particleForceRegistry.add(p, gravity);
 }
 
 void ofApp::spawnLaser(float angle, float speed) {
@@ -158,7 +157,7 @@ void ofApp::spawnLaser(float angle, float speed) {
     Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
     p->velocity = initialVelocity;
     particles.push_back(p);
-    particleForceRegistry.Add(p, gravity);
+    particleForceRegistry.add(p, gravity);
 }
 
 void ofApp::spawnCanonBall(float angle, float speed) {
@@ -166,5 +165,6 @@ void ofApp::spawnCanonBall(float angle, float speed) {
     Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
     p->velocity = initialVelocity;
     particles.push_back(p);
-    particleForceRegistry.Add(p, gravity);
+    particleForceRegistry.add(p, gravity);
+
 }

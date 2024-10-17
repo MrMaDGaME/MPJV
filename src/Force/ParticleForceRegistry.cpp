@@ -1,35 +1,41 @@
 #include "ParticleForceRegistry.h"
 
-void ParticleForceRegistry::Add(Particle* particle, IParticleForceGenerator* forceGenerator)
+#include "Generators/ImpulseForceGenerator.h"
+
+void ParticleForceRegistry::add(Particle* particle, shared_ptr<IParticleForceGenerator>& force_generator)
 {
-    registrations.push_back({ particle, forceGenerator });
+    registrations_.push_back({ particle, force_generator });
 }
 
-void ParticleForceRegistry::Remove(Particle* particle, IParticleForceGenerator* forceGenerator)
+void ParticleForceRegistry::remove(Particle* particle, shared_ptr<IParticleForceGenerator>& force_generator)
 {
-    registrations.erase(std::remove_if(registrations.begin(), registrations.end(), [particle, forceGenerator](const ParticleForceRegistration& registration)
+    registrations_.erase(std::remove_if(registrations_.begin(), registrations_.end(), [particle, force_generator](const ParticleForceRegistration& registration)
     {
-        return registration.particle == particle && registration.forceGenerator == forceGenerator;
-    }), registrations.end());
+        return registration.particle == particle && registration.force_generator == force_generator;
+    }), registrations_.end());
 }
 
-void ParticleForceRegistry::Remove(Particle* particle)
+void ParticleForceRegistry::remove(Particle* particle)
 {
-    registrations.erase(std::remove_if(registrations.begin(), registrations.end(), [particle](const ParticleForceRegistration& registration)
+    registrations_.erase(std::remove_if(registrations_.begin(), registrations_.end(), [particle](const ParticleForceRegistration& registration)
     {
         return registration.particle == particle;
-    }), registrations.end());
+    }), registrations_.end());
 }
 
-void ParticleForceRegistry::Clear()
+void ParticleForceRegistry::clear()
 {
-    registrations.clear();
+    registrations_.clear();
 }
 
-void ParticleForceRegistry::UpdateForces()
+void ParticleForceRegistry::update_forces()
 {
-    for(auto& registration : registrations)
+    for(auto& registration : registrations_)
     {
-        registration.forceGenerator->UpdateForce(registration.particle);
+        registration.force_generator->UpdateForce(registration.particle);
     }
+    registrations_.erase(std::remove_if(registrations_.begin(), registrations_.end(), [](ParticleForceRegistration& registration)
+    {
+        return dynamic_pointer_cast<ImpulseForceGenerator>(registration.force_generator) != nullptr;
+    }), registrations_.end());
 }
