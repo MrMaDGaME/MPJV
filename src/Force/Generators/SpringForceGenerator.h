@@ -1,6 +1,4 @@
 #pragma once
-#include "../../Particle.h"
-#include "../../Vector.h"
 #include "../IParticleForceGenerator.h"
 
 class SpringForceGenerator : public IParticleForceGenerator {

@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
-#include "Vector.h"
+#include "../maths/Vector.h"
+
 // Fonction utilitaire pour vérifier les assertions
 inline void assertEqual(float a, float b, const std::string& testName) {
     if (abs(a - b) > 1e-5) {

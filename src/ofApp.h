@@ -6,10 +6,10 @@
 #include <vector>
 #include "ofMain.h"
 #include "ofxGui.h"
-#include "Projectiles/Bullet.h"
-#include "Projectiles/Laser.h"
-#include "Projectiles/CanonBall.h"
-#include "Particle.h"
+#include "Objects/Projectiles/Bullet.h"
+#include "Objects/Projectiles/Laser.h"
+#include "Objects/Projectiles/CanonBall.h"
+#include "Objects/Particle.h"
 #include "Force/ParticleForceRegistry.h"
 #include "Force/Generators/GravityForceGenerator.h"
 

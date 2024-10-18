@@ -1,6 +1,7 @@
 #pragma once
-#include "../Particle.h"
+#include "../Objects/Particle.h"
 #include "IParticleForceGenerator.h"
+#include "Generators/ImpulseForceGenerator.h"
 
 class ParticleForceRegistry {
     struct ParticleForceRegistration {

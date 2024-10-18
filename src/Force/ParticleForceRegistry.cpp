@@ -1,5 +1,4 @@
 #include "ParticleForceRegistry.h"
-#include "Generators/ImpulseForceGenerator.h"
 
 void ParticleForceRegistry::add(const shared_ptr<Particle>& particle, const shared_ptr<IParticleForceGenerator>& force_generator) {
     registrations_.push_back({particle, force_generator});

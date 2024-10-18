@@ -1,5 +1,5 @@
 #include "ofApp.h"
-#include "Force/Generators/ImpulseForceGenerator.h"
+
 //--------------------------------------------------------------
 void ofApp::setup() {
     // Initialisation des boutons

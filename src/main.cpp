@@ -1,6 +1,7 @@
 #include "ofMain.h"
 #include "ofApp.h"
-#include "VectorTests.h"
+#include "tests/VectorTests.h"
+
 //========================================================================
 int main() {
     VectorTest::runAllTests();

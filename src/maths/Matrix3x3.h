@@ -1,4 +1,6 @@
 #pragma once
+#include "ofMathConstants.h"
+
 class Matrix3x3 {
 public:
     Matrix3x3();

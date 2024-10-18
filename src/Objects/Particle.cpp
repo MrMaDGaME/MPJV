@@ -1,5 +1,4 @@
 #include "Particle.h"
-#include <iostream>
 
 Particle::Particle() {
     position = Vector(0, 0, 0);

@@ -1,6 +1,5 @@
 #pragma once
-#include "Vector.h"
-#include <vector>
+#include "../maths/Vector.h"
 #include "ofMain.h"
 
 class Particle {

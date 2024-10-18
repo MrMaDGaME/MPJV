@@ -1,5 +1,4 @@
 #include "Matrix3x3.h"
-#include "ofMathConstants.h"
 
 Matrix3x3::Matrix3x3() {
     for (auto& i : matrix_) for (float& j : i) j = 0;
