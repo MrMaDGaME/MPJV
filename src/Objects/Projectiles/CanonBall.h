@@ -6,6 +6,6 @@
 class CanonBall : public Particle {
 public:
     CanonBall(float x, float y, float z) : Particle(x, y, z,CANONBALL_RADIUS,CANONBALL_MASS) {
-        color = ofColor::darkGray;
+        color_ = ofColor::darkGray;
     }
 };

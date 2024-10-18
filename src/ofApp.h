@@ -10,25 +10,28 @@
 #include "Objects/Projectiles/Laser.h"
 #include "Objects/Projectiles/CanonBall.h"
 #include "Objects/Particle.h"
-#include "Force/ParticleForceRegistry.h"
+#include "Force/ObjectForceRegistry.h"
 #include "Force/Generators/GravityForceGenerator.h"
+#include "Force/Generators/InputForceGenerator.h"
+#include "Force/Generators/FrictionForceGenerator.h"
+#include "Objects/Blob.h"
 
 class ofApp : public ofBaseApp {
 public:
-    void setup();
-    void update();
-    void draw();
-    void keyPressed(int key);
-    void keyReleased(int key);
-    void mouseMoved(int x, int y);
-    void mouseDragged(int x, int y, int button);
-    void mousePressed(int x, int y, int button);
-    void mouseReleased(int x, int y, int button);
-    void mouseEntered(int x, int y);
-    void mouseExited(int x, int y);
-    void windowResized(int w, int h);
-    void dragEvent(ofDragInfo dragInfo);
-    void gotMessage(ofMessage msg);
+    void setup() override;
+    void update() override;
+    void draw() override;
+    void keyPressed(int key) override;
+    void keyReleased(int key) override;
+    void mouseMoved(int x, int y) override;
+    void mouseDragged(int x, int y, int button) override;
+    void mousePressed(int x, int y, int button) override;
+    void mouseReleased(int x, int y, int button) override;
+    void mouseEntered(int x, int y) override;
+    void mouseExited(int x, int y) override;
+    void windowResized(int w, int h) override;
+    void dragEvent(ofDragInfo dragInfo) override;
+    void gotMessage(ofMessage msg) override;
     void spawnBullet(float angle, float speed);
     void spawnLaser(float angle, float speed);
     void spawnCanonBall(float angle, float speed);
@@ -43,8 +46,9 @@ public:
     ofxButton canonballbutton;
     ofxFloatSlider angleSlider;
     ofxFloatSlider speedSlider;
-    ParticleForceRegistry particleForceRegistry;
+    ObjectForceRegistry particleForceRegistry;
     shared_ptr<IParticleForceGenerator> gravity = make_shared<GravityForceGenerator>(9.81f);
-    Vector moveInput;
-    std::vector<shared_ptr<Particle>> particles;
+    shared_ptr<Vector> moveInput = make_shared<Vector>(0.f, 0.f, 0.f);
+    std::vector<shared_ptr<IObject>> objects_;
+    shared_ptr<Blob> blob = nullptr;
 };

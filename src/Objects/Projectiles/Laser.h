@@ -6,6 +6,6 @@
 class Laser : public Particle {
 public:
     Laser(float x, float y, float z) : Particle(x, y, z,LASER_RADIUS,LASER_MASS) {
-        color = ofColor::lawnGreen;
+        color_ = ofColor::lawnGreen;
     }
 };

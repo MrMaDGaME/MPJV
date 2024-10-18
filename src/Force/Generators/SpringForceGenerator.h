@@ -3,11 +3,11 @@
 
 class SpringForceGenerator : public IParticleForceGenerator {
 public:
-    SpringForceGenerator(const shared_ptr<Particle>& other, float springConstant, float restLength);
-    void UpdateForce(shared_ptr<Particle>& particle) override;
+    SpringForceGenerator(const shared_ptr<IObject>& other, float springConstant, float restLength);
+    void UpdateForce(shared_ptr<IObject>& object) override;
 
 private:
-    shared_ptr<Particle> other;
+    shared_ptr<IObject> other;
     float springConstant;
     float restLength;
 };

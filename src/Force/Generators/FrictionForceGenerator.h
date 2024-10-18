@@ -4,7 +4,7 @@
 class FrictionForceGenerator : public IParticleForceGenerator {
 public:
     FrictionForceGenerator(float friction);
-    void UpdateForce(shared_ptr<Particle>& particle) override;
+    void UpdateForce(shared_ptr<IObject>& object) override;
 
 private:
     float friction_;

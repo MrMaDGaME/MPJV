@@ -4,5 +4,5 @@
 class IParticleForceGenerator {
 public:
     virtual ~IParticleForceGenerator() = default;
-    virtual void UpdateForce(shared_ptr<Particle>& particle) = 0;
+    virtual void UpdateForce(shared_ptr<IObject>& object) = 0;
 };

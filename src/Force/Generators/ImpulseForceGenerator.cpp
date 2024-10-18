@@ -6,9 +6,9 @@ ImpulseForceGenerator::ImpulseForceGenerator(const Vector& impulse) : impulse_(i
 ImpulseForceGenerator::ImpulseForceGenerator(const float x, const float y, const float z) : impulse_(x, y, z) {
 }
 
-void ImpulseForceGenerator::UpdateForce(shared_ptr<Particle>& particle) {
-    if (particle == nullptr || particle->inv_mass == 0.0f) {
+void ImpulseForceGenerator::UpdateForce(shared_ptr<IObject>& object) {
+    if (object == nullptr) {
         return;
     }
-    particle->addForce(impulse_ / particle->inv_mass);
+    object->addForce(impulse_);
 }

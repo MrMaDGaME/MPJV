@@ -6,6 +6,6 @@
 class Bullet : public Particle {
 public:
     Bullet(float x, float y, float z) : Particle(x, y, z,BULLET_RADIUS,BULLET_MASS) {
-        color = ofColor::lightYellow;
+        color_ = ofColor::lightYellow;
     }
 };
