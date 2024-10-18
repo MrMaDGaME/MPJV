@@ -1,12 +1,13 @@
 #include "SpringForceGenerator.h"
 
-SpringForceGenerator::SpringForceGenerator(Particle* other, float springConstant, float restLength)
-    : other(other), springConstant(springConstant), restLength(restLength) {}
+SpringForceGenerator::SpringForceGenerator(const shared_ptr<IObject>& other, const float springConstant, const float restLength)
+    : other(other), springConstant(springConstant), restLength(restLength) {
+}
 
-void SpringForceGenerator::UpdateForce(Particle* particle, float deltaTime) {
-    Vector force = particle->position - other->position;
+void SpringForceGenerator::UpdateForce(shared_ptr<IObject>& object) {
+    Vector force = object->get_position() - other->get_position();
     float distance = force.magnitude();
     float magnitude = -springConstant * (distance - restLength);
     force = force.normalize();
-    particle->addForce(Vector(force.x * magnitude, force.y * magnitude, force.z * magnitude));
+    object->addForce(Vector(force.x * magnitude, force.y * magnitude, force.z * magnitude));
 }

@@ -1,8 +1,8 @@
 #pragma once
-#include "Particle.h"
+#include "../Objects/Particle.h"
 
-class IParticleForceGenerator
-{
+class IParticleForceGenerator {
 public:
-    virtual void UpdateForce(Particle* particle, float deltaTime) = 0;
+    virtual ~IParticleForceGenerator() = default;
+    virtual void UpdateForce(shared_ptr<IObject>& object) = 0;
 };

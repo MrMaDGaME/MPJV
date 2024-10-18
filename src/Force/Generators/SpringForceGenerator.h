@@ -1,15 +1,13 @@
 #pragma once
-#include "Particle.h"
-#include "Vector.h"
-#include "Force/IParticleForceGenerator.h"
+#include "../IParticleForceGenerator.h"
 
 class SpringForceGenerator : public IParticleForceGenerator {
+public:
+    SpringForceGenerator(const shared_ptr<IObject>& other, float springConstant, float restLength);
+    void UpdateForce(shared_ptr<IObject>& object) override;
+
 private:
-    Particle* other;
+    shared_ptr<IObject> other;
     float springConstant;
     float restLength;
-
-public:
-    SpringForceGenerator(Particle* other, float springConstant, float restLength);
-    void UpdateForce(Particle* particle, float deltaTime) override;
 };
