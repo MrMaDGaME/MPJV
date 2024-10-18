@@ -1,4 +1,4 @@
-#include "../Particle.h"
+#include "../Objects/Particle.h"
 #include "../Force/IParticleForceGenerator.h"
 class CollisionRegistry
 {
@@ -16,10 +16,10 @@ private:
         Particle* particleB;
         float length;
 
-    }
-    std::vector<ParticleCollisionEntry> RodRegistry;
+    };
+    std::vector<ParticleCollisionLinkEntry> RodRegistry;
     std::vector<ParticleCollisionLinkEntry> CableRegistry;
-    std::vector<ParticleCollisionLinkEntry> InterRegistry;//List of interpenetrationCollision registered
+    std::vector<ParticleCollisionEntry> InterRegistry;//List of interpenetrationCollision registered
 
     
 
@@ -31,7 +31,7 @@ public:
     void CheckCollision(float duration);
 private :
     void CheckRodCollision();
-    void ChekCableCollision();
+    void CheckCableCollision();
     void CheckInterCollision();
 
     void HandleInterCollision(struct ParticleCollisionEntry& collision);
