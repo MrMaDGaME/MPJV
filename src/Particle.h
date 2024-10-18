@@ -8,6 +8,7 @@ public:
     Particle();
     Particle(float x, float y, float z);
     Particle(float x, float y, float z, float radius, float mass);
+    Particle(float x, float y, float z, float radius, bool isKinematic);
 
     void update();
     void draw();

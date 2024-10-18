@@ -16,9 +16,19 @@ Particle::Particle(const float x, const float y, const float z) {
 }
 
 Particle::Particle(const float x, const float y, const float z, const float radius, const float mass) {
+    if (mass <= 0.f) {
+        throw std::invalid_argument("Mass must be positive");
+    }
     position = Vector(x, y, z);
     velocity = Vector(0, 0, 0);
-    this->inv_mass = mass != 0 ? 1 / mass : 0;
+    this->inv_mass = 1 / mass;
+    this->radius = radius;
+}
+
+Particle::Particle(float x, float y, float z, float radius, bool isKinematic = false) {
+    position = Vector(x, y, z);
+    velocity = Vector(0, 0, 0);
+    inv_mass = isKinematic ? 0 : 1;
     this->radius = radius;
 }
 
