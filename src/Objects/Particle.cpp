@@ -88,6 +88,14 @@ float Particle::get_inv_mass() const {
     return inv_mass_;
 }
 
+void Particle::set_global_force_registry(shared_ptr<ObjectForceRegistry> global_ptr){
+    global_force_registry.swap(global_ptr);
+}
+
+shared_ptr<ObjectForceRegistry> Particle::get_global_force_registry(){
+    return global_force_registry;
+}
+
 void Particle::set_inv_mass(float inv_mass) {
     this->inv_mass_ = inv_mass;
 }
