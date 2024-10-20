@@ -10,7 +10,7 @@
 #include "Objects/Projectiles/Laser.h"
 #include "Objects/Projectiles/CanonBall.h"
 #include "Objects/Particle.h"
-#include "Collision/ObjectCollisionRegistry.h"
+#include "Collision/ParticleCollisionRegistry.h"
 #include "Force/ObjectForceRegistry.h"
 #include "Force/Generators/GravityForceGenerator.h"
 #include "Force/Generators/InputForceGenerator.h"
@@ -48,7 +48,7 @@ public:
     ofxFloatSlider angleSlider;
     ofxFloatSlider speedSlider;
     ObjectForceRegistry particleForceRegistry;
-    ObjectCollisionRegistry particleCollisionRegistry = ObjectCollisionRegistry(&particleForceRegistry);
+    ParticleCollisionRegistry particleCollisionRegistry = ParticleCollisionRegistry(&particleForceRegistry);
     shared_ptr<IParticleForceGenerator> gravity = make_shared<GravityForceGenerator>(9.81f);
     shared_ptr<Vector> moveInput = make_shared<Vector>(0.f, 0.f, 0.f);
     std::vector<shared_ptr<IObject>> objects_;

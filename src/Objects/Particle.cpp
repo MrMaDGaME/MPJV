@@ -107,8 +107,8 @@ float Particle::get_radius() const {
     return radius_;
 }
 
-void Particle::checkObjectCollision(std::shared_ptr<IObject>& other, std::shared_ptr<ObjectCollisionRegistry>& collision_registry) {
+void Particle::checkObjectCollision(std::shared_ptr<IObject>& other, std::shared_ptr<ParticleCollisionRegistry>& collision_registry) {
 }
 
-void Particle::checkParticleCollision(std::shared_ptr<Particle>& particle, std::shared_ptr<ObjectCollisionRegistry>& collision_registry) {
+void Particle::checkParticleCollision(std::shared_ptr<Particle>& particle, std::shared_ptr<ParticleCollisionRegistry>& collision_registry) {
 }

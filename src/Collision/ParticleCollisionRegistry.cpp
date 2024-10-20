@@ -1,37 +1,37 @@
-#include "ObjectCollisionRegistry.h"
+#include "ParticleCollisionRegistry.h"
 
-ObjectCollisionRegistry::ObjectCollisionRegistry(ObjectForceRegistry *force_registry)
+ParticleCollisionRegistry::ParticleCollisionRegistry(ObjectForceRegistry *force_registry)
 { this->force_registry = force_registry;
 }
 
-void ObjectCollisionRegistry::AddRodCollision(shared_ptr<IObject>& particleA,shared_ptr<IObject>& particleB, float length)
+void ParticleCollisionRegistry::AddRodCollision(shared_ptr<Particle>& particleA,shared_ptr<Particle>& particleB, float length)
 {
     RodRegistry.push_back({ particleA, particleB, length});
 }
-void ObjectCollisionRegistry::AddCableCollision(shared_ptr<IObject>& particleA, shared_ptr<IObject>& particleB, float length){
+void ParticleCollisionRegistry::AddCableCollision(shared_ptr<Particle>& particleA, shared_ptr<Particle>& particleB, float length){
     CableRegistry.push_back({ particleA, particleB, length});
 }
-void ObjectCollisionRegistry::AddInterCollision(shared_ptr<IObject>& particleA, shared_ptr<IObject>& particleB,float length)//Add a collision listener between particleA and B of type interpenetration
+void ParticleCollisionRegistry::AddInterCollision(shared_ptr<Particle>& particleA, shared_ptr<Particle>& particleB,float length)//Add a collision listener between particleA and B of type interpenetration
 {
     InterRegistry.push_back({ particleA, particleB, length });
 }
 
-void ObjectCollisionRegistry::CheckCollision(float duration){
+void ParticleCollisionRegistry::CheckCollision(float duration){
     CheckRodCollision();
     CheckCableCollision();
     CheckInterCollision();
 }
 
 
-void ObjectCollisionRegistry::CheckRodCollision(){
+void ParticleCollisionRegistry::CheckRodCollision(){
     for(auto couple: RodRegistry){
         
     }
 }
-void ObjectCollisionRegistry::CheckCableCollision(){
+void ParticleCollisionRegistry::CheckCableCollision(){
 
 }
-void ObjectCollisionRegistry::CheckInterCollision(){
+void ParticleCollisionRegistry::CheckInterCollision(){
     /*for(auto couple: InterRegistry){
         Vector posA = couple.particleA->get_position();
         Vector posB = couple.particleB->get_position();
@@ -46,7 +46,7 @@ void ObjectCollisionRegistry::CheckInterCollision(){
     }*/
 }
 
-void ObjectCollisionRegistry::HandleInterCollision(ParticleCollisionEntry& collision){
+void ParticleCollisionRegistry::HandleInterCollision(ParticleCollisionEntry& collision){
     /*shared_ptr<IObject>& particleA = collision.particleA;
     shared_ptr<IObject>& particleB = collision.particleB;
 
