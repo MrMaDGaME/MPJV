@@ -23,8 +23,8 @@ public:
     void set_velocity(const Vector& velocity) override;
     [[nodiscard]] float get_inv_mass() const override;
     void set_inv_mass(float inv_mass) override;
-    void checkObjectCollision(std::shared_ptr<IObject>& other, std::shared_ptr<ParticleCollisionRegistry>& collision_registry) override;
-    void checkParticleCollision(std::shared_ptr<Particle>& particle, std::shared_ptr<ParticleCollisionRegistry>& collision_registry) override;
+    void checkObjectCollision(std::shared_ptr<IObject>& other, std::shared_ptr<ObjectCollisionRegistry>& collision_registry) override;
+    void checkParticleCollision(std::shared_ptr<Particle>& particle, std::shared_ptr<ObjectCollisionRegistry>& collision_registry) override;
 
     void split();
 

@@ -2,7 +2,7 @@
 #include "../Objects/IObject.h"
 #include "../Force/ObjectForceRegistry.h"
 
-class ParticleCollisionRegistry {
+class ObjectCollisionRegistry {
     struct ParticleCollisionEntry {
         shared_ptr<IObject> particleA;
         shared_ptr<IObject> particleB;
@@ -20,7 +20,7 @@ class ParticleCollisionRegistry {
     std::vector<ParticleCollisionEntry> InterRegistry; //List of interpenetrationCollision registered
 
 public:
-    ParticleCollisionRegistry(ObjectForceRegistry* force_registry);
+    ObjectCollisionRegistry(ObjectForceRegistry* force_registry);
 
     void AddRodCollision(shared_ptr<IObject>& particleA, shared_ptr<IObject>& particleB, float length);
     void AddCableCollision(shared_ptr<IObject>& particleA, shared_ptr<IObject>& particleB, float length);
