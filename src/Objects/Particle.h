@@ -24,6 +24,8 @@ public:
     [[nodiscard]] float get_terminal_velocity() const;
     void set_terminal_velocity(float terminal_velocity);
     [[nodiscard]] float get_radius() const;
+    void checkObjectCollision(std::shared_ptr<IObject>& other, std::shared_ptr<ParticleCollisionRegistry>& collision_registry) override;
+    void checkParticleCollision(std::shared_ptr<Particle>& particle, std::shared_ptr<ParticleCollisionRegistry>& collision_registry) override;
 
 protected:
     ofColor color_;

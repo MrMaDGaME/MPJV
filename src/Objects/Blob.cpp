@@ -59,6 +59,12 @@ void Blob::set_inv_mass(float inv_mass) {
     particles[0]->set_inv_mass(inv_mass);
 }
 
+void Blob::checkObjectCollision(std::shared_ptr<IObject>& other, std::shared_ptr<ParticleCollisionRegistry>& collision_registry) {
+}
+
+void Blob::checkParticleCollision(std::shared_ptr<Particle>& particle, std::shared_ptr<ParticleCollisionRegistry>& collision_registry) {
+}
+
 void Blob::split() {
     auto new_particle = make_shared<Particle>(particles[0]->get_position().x,
                                               particles[0]->get_position().y,
