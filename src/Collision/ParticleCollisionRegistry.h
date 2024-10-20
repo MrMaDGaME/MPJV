@@ -20,6 +20,12 @@ class ParticleCollisionRegistry {
     std::vector<ParticleCollisionEntry> InterRegistry; //List of interpenetrationCollision registered
 
 public:
+    enum CollisionType : uint8_t {
+        Rod,
+        Cable,
+        Inter
+    };
+
     ParticleCollisionRegistry(ObjectForceRegistry* force_registry);
 
     void AddRodCollision(shared_ptr<Particle>& particleA, shared_ptr<Particle>& particleB, float length);
