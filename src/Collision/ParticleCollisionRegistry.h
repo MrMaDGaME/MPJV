@@ -1,3 +1,4 @@
+#pragma once
 #include "../Objects/Particle.h"
 #include "../Force/IParticleForceGenerator.h"
 #include "../Force/ObjectForceRegistry.h"
@@ -7,15 +8,15 @@ class ParticleCollisionRegistry
 private:
     struct ParticleCollisionEntry
     {
-        shared_ptr<Particle>& particleA;
-        shared_ptr<Particle>& particleB;
+        shared_ptr<Particle> particleA;
+        shared_ptr<Particle> particleB;
         float restCoeff; //coefficient of restitution give the elasticity of collision : 0 perfectly inelastic, 1 perfectly elastic
     };
 
     struct ParticleCollisionLinkEntry
     {  
-        shared_ptr<Particle>& particleA;
-        shared_ptr<Particle>& particleB;
+        shared_ptr<Particle> particleA;
+        shared_ptr<Particle> particleB;
         float length;
 
     };
