@@ -1,12 +1,17 @@
 #include "CollisionRegistry.h"
 
-void CollisionRegistry::AddRodCollision(Particle* particleA, Particle* particleB){
+CollisionRegistry::CollisionRegistry(ObjectForceRegistry *force_registry)
+{ this->force_registry = force_registry;
+}
+
+void CollisionRegistry::AddRodCollision(shared_ptr<Particle>& particleA,shared_ptr<Particle>& particleB)
+{
     RodRegistry.push_back({ particleA, particleB });
 }
-void CollisionRegistry::AddCableCollision(Particle* particleA, Particle* particleB, float length){
+void CollisionRegistry::AddCableCollision(shared_ptr<Particle>& particleA, shared_ptr<Particle>& particleB, float length){
     CableRegistry.push_back({ particleA, particleB, length});
 }
-void CollisionRegistry::AddInterCollision(Particle* particleA, Particle* particleB,float length)//Add a collision listener between particleA and B of type interpenetration
+void CollisionRegistry::AddInterCollision(shared_ptr<Particle>& particleA, shared_ptr<Particle>& particleB,float length)//Add a collision listener between particleA and B of type interpenetration
 {
     InterRegistry.push_back({ particleA, particleB, length });
 }
@@ -42,8 +47,8 @@ void CollisionRegistry::CheckInterCollision(){
 }
 
 void CollisionRegistry::HandleInterCollision(struct ParticleCollisionEntry& collision){
-    Particle* particleA = collision.particleA;
-    Particle* particleB = collision.particleB; 
+    shared_ptr<Particle>& particleA = collision.particleA;
+    shared_ptr<Particle>& particleB = collision.particleB; 
 
     Vector normal = particleA->get_position() - particleB->get_position();
 
@@ -65,7 +70,10 @@ void CollisionRegistry::HandleInterCollision(struct ParticleCollisionEntry& coll
 
     particleB->set_position(particleB->get_position() - normal * deplB);
 
-    
+    force_registry->add(particleA,make_shared<ImpulseForceGenerator>(normal*-impluseValue));
+    force_registry->add(particleB,make_shared<ImpulseForceGenerator>(normal*-impluseValue));
+
+
 }
 
 
