@@ -1,4 +1,4 @@
-﻿#include "Blob.h"
+#include "Blob.h"
 
 #include "../Force/Generators/SpringForceGenerator.h"
 
@@ -10,7 +10,7 @@ Blob::Blob(float x,
            const ofColor& color,
            float terminal_velocity,
            float spring_constant,
-           float spring_rest_length) : color_(color), spring_constant_(spring_constant), spring_rest_length_(spring_rest_length) {
+           float spring_rest_length) : color_(color), spring_constant_(spring_constant), spring_rest_length_(spring_rest_length),particleCount_(1), displayedParticleCount_(1)  {
     if (terminal_velocity < 0) {
         throw std::invalid_argument("Terminal velocity must be greater than or equal to 0");
     }
@@ -23,6 +23,10 @@ void Blob::update() {
     for (const auto& particle : particles) {
         particle->update();
     }
+
+    // Mettre à jour le compteur de particules affiché
+    displayedParticleCount_ += (particles.size() - displayedParticleCount_) * animationSpeed;
+    displayedParticleCount_ *= dampingFactor;
 }
 
 void Blob::draw() {
@@ -70,4 +74,8 @@ void Blob::split() {
     particles.push_back(new_particle);
     force_registry->add(new_particle, make_shared<SpringForceGenerator>(particles[0], spring_constant_, spring_rest_length_));
     force_registry->add(particles[0], make_shared<SpringForceGenerator>(new_particle, spring_constant_, spring_rest_length_));
+}
+
+int Blob::get_particle_count() const {
+    return particles.size();
 }
