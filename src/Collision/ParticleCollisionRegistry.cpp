@@ -11,9 +11,9 @@ void ParticleCollisionRegistry::AddRodCollision(shared_ptr<Particle>& particleA,
 void ParticleCollisionRegistry::AddCableCollision(shared_ptr<Particle>& particleA, shared_ptr<Particle>& particleB, float length){
     CableRegistry.push_back({ particleA, particleB, length});
 }
-void ParticleCollisionRegistry::AddInterCollision(shared_ptr<Particle>& particleA, shared_ptr<Particle>& particleB,float length)//Add a collision listener between particleA and B of type interpenetration
+void ParticleCollisionRegistry::AddInterCollision(shared_ptr<Particle>& particleA, shared_ptr<Particle>& particleB,float restCoeff)//Add a collision listener between particleA and B of type interpenetration
 {
-    InterRegistry.push_back({ particleA, particleB, length });
+    InterRegistry.push_back({ particleA, particleB, restCoeff });
 }
 
 void ParticleCollisionRegistry::CheckCollision(float duration){
@@ -29,7 +29,18 @@ void ParticleCollisionRegistry::CheckRodCollision(){
     }
 }
 void ParticleCollisionRegistry::CheckCableCollision(){
+    for(auto couple : CableRegistry){
+        Vector posA = couple.particleA->get_position();
+        Vector posB = couple.particleB->get_position();
+        float sq_dist = (posA.x -posB.x)*(posA.x -posB.x) + (posA.y -posB.y)*(posA.y -posB.y) + (posA.z -posB.z)*(posA.z -posB.z);
 
+        float dist_max = couple.length;
+        dist_max = dist_max*dist_max;
+
+        if(sq_dist > dist_max){
+            HandleCableCollision(couple);
+        }
+        }
 }
 void ParticleCollisionRegistry::CheckInterCollision(){
     for(auto couple: InterRegistry){
@@ -45,6 +56,34 @@ void ParticleCollisionRegistry::CheckInterCollision(){
         }
     }
 }
+
+void ParticleCollisionRegistry::HandleCableCollision(ParticleCollisionLinkEntry& collision){
+    shared_ptr<Particle>& particleA = collision.particleA;
+    shared_ptr<Particle>& particleB = collision.particleB;
+
+    Vector normal = particleA->get_position() - particleB->get_position();
+
+
+    float interpdist = normal.magnitude() - collision.length; // interpenetration distance 
+
+    normal.normalize(); //normal length set to 1
+
+    Vector relativeSpeed = particleA->get_velocity() - particleB->get_velocity();
+
+    float impluseValue = (relativeSpeed*normal)/(particleA->get_inv_mass() + particleB->get_inv_mass());
+
+    float deplA = interpdist* (1/particleA->get_inv_mass())/((1/particleA->get_inv_mass())+(1/particleB->get_inv_mass()));
+
+    particleA->set_position(particleA->get_position() - normal * deplA);
+
+    float deplB = interpdist*(1/particleB->get_inv_mass())/((1/particleA->get_inv_mass())+(1/particleB->get_inv_mass()));
+
+    particleB->set_position(particleB->get_position() + normal * deplB);
+
+    force_registry->add(particleA,make_shared<ImpulseForceGenerator>(normal*-impluseValue));
+    force_registry->add(particleB,make_shared<ImpulseForceGenerator>(normal*impluseValue));
+}
+
 
 void ParticleCollisionRegistry::HandleInterCollision(ParticleCollisionEntry& collision){
     shared_ptr<Particle>& particleA = collision.particleA;
@@ -70,7 +109,7 @@ void ParticleCollisionRegistry::HandleInterCollision(ParticleCollisionEntry& col
 
     particleB->set_position(particleB->get_position() - normal * deplB);
 
-    force_registry->add(particleA,make_shared<ImpulseForceGenerator>(normal*-impluseValue));
+    force_registry->add(particleA,make_shared<ImpulseForceGenerator>(normal*impluseValue));
     force_registry->add(particleB,make_shared<ImpulseForceGenerator>(normal*-impluseValue));
 
 

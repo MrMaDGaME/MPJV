@@ -40,6 +40,7 @@ private :
     void CheckCableCollision();
     void CheckInterCollision();
 
+    void HandleCableCollision(ParticleCollisionLinkEntry& collision);
     void HandleInterCollision(ParticleCollisionEntry& collision);
 
     ObjectForceRegistry* force_registry;
