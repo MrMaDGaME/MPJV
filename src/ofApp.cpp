@@ -18,6 +18,8 @@ void ofApp::setup() {
     particleForceRegistry.add(blob, input_force);
     auto friction = make_shared<FrictionForceGenerator>(10.f);
     particleForceRegistry.add(blob, friction);
+
+    objects_.push_back(make_shared<Particle>(500.f, 500.f, 0.f, 100.f, 200.f, ofColor::blue, 100.f));
 }
 
 //--------------------------------------------------------------
