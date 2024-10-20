@@ -33,7 +33,6 @@ private:
     Vector velocity_;
     Vector accum_force_;
     float inv_mass_;
-    shared_ptr<ObjectForceRegistry> global_force_registry;
     float terminal_velocity_ = -1;
     float radius_;
 };

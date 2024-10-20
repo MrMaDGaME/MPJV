@@ -64,10 +64,6 @@ void CollisionRegistry::HandleInterCollision(struct ParticleCollisionEntry& coll
     float deplB = interpdist*(1/particleB->get_inv_mass())/((1/particleA->get_inv_mass())+(1/particleB->get_inv_mass()));
 
     particleB->set_position(particleB->get_position() - normal * deplB);
-    
-
-    particleA->get_global_force_registry()->add(new_particle, make_shared<ImpulseForceGenerator>(normal*impluseValue));
-    particleB->get_global_force_registry()->add(new_particle, make_shared<ImpulseForceGenerator>(normal*-impluseValue));
 
     
 }

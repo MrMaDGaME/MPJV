@@ -59,15 +59,6 @@ void Blob::set_inv_mass(float inv_mass) {
     particles[0]->set_inv_mass(inv_mass);
 }
 
-void Blob::set_global_force_registry(shared_ptr<ObjectForceRegistry> global_ptr){
-    particle[0]->global_force_registry.swap(global_ptr);
-}
-
-shared_ptr<ObjectForceRegistry> Blob::get_global_force_registry(){
-    return Particle[0]->get_global_force_registry();
-}
-
-
 void Blob::split() {
     auto new_particle = make_shared<Particle>(particles[0]->get_position().x,
                                               particles[0]->get_position().y,
