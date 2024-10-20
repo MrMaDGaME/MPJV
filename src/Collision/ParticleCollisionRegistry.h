@@ -2,7 +2,7 @@
 #include "../Force/IParticleForceGenerator.h"
 #include "../Force/ObjectForceRegistry.h"
 
-class CollisionRegistry
+class ParticleCollisionRegistry
 {
 private:
     struct ParticleCollisionEntry
@@ -27,7 +27,7 @@ private:
 
 public:
 
-    CollisionRegistry(ObjectForceRegistry* force_registry);
+    ParticleCollisionRegistry(ObjectForceRegistry* force_registry);
 
     void AddRodCollision(shared_ptr<Particle>& particleA, shared_ptr<Particle>& particleB);
     void AddCableCollision(shared_ptr<Particle>& particleA, shared_ptr<Particle>& particleB, float length);

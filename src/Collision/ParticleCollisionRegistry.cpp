@@ -1,37 +1,37 @@
-#include "CollisionRegistry.h"
+#include "ParticleCollisionRegistry.h"
 
-CollisionRegistry::CollisionRegistry(ObjectForceRegistry *force_registry)
+ParticleCollisionRegistry::ParticleCollisionRegistry(ObjectForceRegistry *force_registry)
 { this->force_registry = force_registry;
 }
 
-void CollisionRegistry::AddRodCollision(shared_ptr<Particle>& particleA,shared_ptr<Particle>& particleB)
+void ParticleCollisionRegistry::AddRodCollision(shared_ptr<Particle>& particleA,shared_ptr<Particle>& particleB)
 {
     RodRegistry.push_back({ particleA, particleB });
 }
-void CollisionRegistry::AddCableCollision(shared_ptr<Particle>& particleA, shared_ptr<Particle>& particleB, float length){
+void ParticleCollisionRegistry::AddCableCollision(shared_ptr<Particle>& particleA, shared_ptr<Particle>& particleB, float length){
     CableRegistry.push_back({ particleA, particleB, length});
 }
-void CollisionRegistry::AddInterCollision(shared_ptr<Particle>& particleA, shared_ptr<Particle>& particleB,float length)//Add a collision listener between particleA and B of type interpenetration
+void ParticleCollisionRegistry::AddInterCollision(shared_ptr<Particle>& particleA, shared_ptr<Particle>& particleB,float length)//Add a collision listener between particleA and B of type interpenetration
 {
     InterRegistry.push_back({ particleA, particleB, length });
 }
 
-void CollisionRegistry::CheckCollision(float duration){
+void ParticleCollisionRegistry::CheckCollision(float duration){
     CheckRodCollision();
     CheckCableCollision();
     CheckInterCollision();
 }
 
 
-void CollisionRegistry::CheckRodCollision(){
+void ParticleCollisionRegistry::CheckRodCollision(){
     for(auto couple: RodRegistry){
         
     }
 }
-void CollisionRegistry::CheckCableCollision(){
+void ParticleCollisionRegistry::CheckCableCollision(){
 
 }
-void CollisionRegistry::CheckInterCollision(){
+void ParticleCollisionRegistry::CheckInterCollision(){
     for(auto couple: InterRegistry){
         Vector posA = couple.particleA->get_position();
         Vector posB = couple.particleB->get_position();
@@ -46,7 +46,7 @@ void CollisionRegistry::CheckInterCollision(){
     }
 }
 
-void CollisionRegistry::HandleInterCollision(struct ParticleCollisionEntry& collision){
+void ParticleCollisionRegistry::HandleInterCollision(struct ParticleCollisionEntry& collision){
     shared_ptr<Particle>& particleA = collision.particleA;
     shared_ptr<Particle>& particleB = collision.particleB; 
 
