@@ -44,12 +44,21 @@ void ofApp::update() {
 //--------------------------------------------------------------
 void ofApp::draw() {
     gui.draw();
+    
+    // Dessiner les objets
     for (const auto& p : objects_) {
         p->draw();
     }
+
+    // Affichage du framerate
     ofSetColor(ofColor::white);
     ofDrawBitmapString("rafraîchissement : " + ofToString(ofGetFrameRate()) + " fps", 10, 10);
+
+    // Afficher le nombre de particules attachées au Blob
+    ofSetColor(ofColor::orange);
+    ofDrawBitmapString("Compteur de particules : " + ofToString(int(blob->get_particle_count())), 10, 30);
 }
+
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
