@@ -32,7 +32,7 @@ void ParticleCollisionRegistry::CheckCableCollision(){
 
 }
 void ParticleCollisionRegistry::CheckInterCollision(){
-    /*for(auto couple: InterRegistry){
+    for(auto couple: InterRegistry){
         Vector posA = couple.particleA->get_position();
         Vector posB = couple.particleB->get_position();
         float sq_dist = (posA.x -posB.x)*(posA.x -posB.x) + (posA.y -posB.y)*(posA.y -posB.y) + (posA.z -posB.z)*(posA.z -posB.z);
@@ -43,12 +43,12 @@ void ParticleCollisionRegistry::CheckInterCollision(){
         if(sq_dist < dist_min){
             HandleInterCollision(couple);
         }
-    }*/
+    }
 }
 
 void ParticleCollisionRegistry::HandleInterCollision(ParticleCollisionEntry& collision){
-    /*shared_ptr<IObject>& particleA = collision.particleA;
-    shared_ptr<IObject>& particleB = collision.particleB;
+    shared_ptr<Particle>& particleA = collision.particleA;
+    shared_ptr<Particle>& particleB = collision.particleB;
 
     Vector normal = particleA->get_position() - particleB->get_position();
 
@@ -71,7 +71,7 @@ void ParticleCollisionRegistry::HandleInterCollision(ParticleCollisionEntry& col
     particleB->set_position(particleB->get_position() - normal * deplB);
 
     force_registry->add(particleA,make_shared<ImpulseForceGenerator>(normal*-impluseValue));
-    force_registry->add(particleB,make_shared<ImpulseForceGenerator>(normal*-impluseValue));*/
+    force_registry->add(particleB,make_shared<ImpulseForceGenerator>(normal*-impluseValue));
 
 
 }
