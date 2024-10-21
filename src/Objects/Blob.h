@@ -9,8 +9,8 @@ class Blob : public IObject {
         shared_ptr<SpringForceGenerator> spring_from_to;
         shared_ptr<SpringForceGenerator> spring_to_from;
     };
-
     
+
 public:
     Blob(float x,
          float y,
@@ -54,7 +54,6 @@ private:
     float spring_constant_;
     float spring_rest_length_;
     
-    int particleCount_; // Nombre de particules attachées au Blob
     // Attributs pour le compteur de particules
     float displayedParticleCount_; // Compteur de particules affiché avec animation
     float animationSpeed = 0.8f; // Vitesse de l'animation

@@ -1,6 +1,6 @@
 #include "ParticleCollisionRegistry.h"
 
-ParticleCollisionRegistry::ParticleCollisionRegistry(ObjectForceRegistry *force_registry)
+ParticleCollisionRegistry::ParticleCollisionRegistry(shared_ptr<ObjectForceRegistry> force_registry)
 { this->force_registry = force_registry;
 }
 

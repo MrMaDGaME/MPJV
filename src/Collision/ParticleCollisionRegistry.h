@@ -21,7 +21,7 @@ class ParticleCollisionRegistry {
     std::vector<ParticleCollisionEntry> InterRegistry; //List of interpenetrationCollision registered
 
 public:
-    ParticleCollisionRegistry(ObjectForceRegistry* force_registry);
+    ParticleCollisionRegistry(shared_ptr<ObjectForceRegistry> force_registry);
 
     void AddRodCollision(std::shared_ptr<Particle> particleA, std::shared_ptr<Particle> particleB, float length);
     void AddCableCollision(std::shared_ptr<Particle> particleA, std::shared_ptr<Particle> particleB, float length);
@@ -39,5 +39,5 @@ private :
     void HandleCableCollision(ParticleCollisionLinkEntry& collision);
     void HandleInterCollision(ParticleCollisionEntry& collision);
 
-    ObjectForceRegistry* force_registry;
+    shared_ptr<ObjectForceRegistry> force_registry;
 };

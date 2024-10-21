@@ -41,14 +41,20 @@ public:
     void onLaserButtonPressed();
     void onCanonBallButtonPressed();
 
+    // static helper methods
+    static void add_object(shared_ptr<IObject> object);
+    static void remove_object(shared_ptr<IObject> object);
+    
+    
+
     ofxPanel gui;
     ofxButton laserbutton;
     ofxButton bulletbutton;
     ofxButton canonballbutton;
     ofxFloatSlider angleSlider;
     ofxFloatSlider speedSlider;
-    ObjectForceRegistry particleForceRegistry;
-    shared_ptr<ParticleCollisionRegistry> particleCollisionRegistry = make_shared<ParticleCollisionRegistry>(&particleForceRegistry);
+    shared_ptr<ObjectForceRegistry> particleForceRegistry = make_shared<ObjectForceRegistry>();
+    shared_ptr<ParticleCollisionRegistry> particleCollisionRegistry = make_shared<ParticleCollisionRegistry>(particleForceRegistry);
     shared_ptr<IParticleForceGenerator> gravity = make_shared<GravityForceGenerator>(9.81f);
     shared_ptr<Vector> moveInput = make_shared<Vector>(0.f, 0.f, 0.f);
     static std::vector<shared_ptr<IObject>> objects_;

@@ -14,12 +14,12 @@ void ofApp::setup() {
     gui.add(canonballbutton.setup("CanonBall"));
     gui.add(angleSlider.setup("Angle", 5, 4.7f, 7.0)); // Angle en degrés
     gui.add(speedSlider.setup("Speed", 10, 0, 50)); // Vitesse ajustée
-    blob = make_shared<Blob>(100.f, 700.f, 0.f, 10.f, 1.f, ofColor::orange, 5.f, 10.f, 10.f);
+    blob = make_shared<Blob>(100.f, 700.f, 0.f, 10.f, 1.f, ofColor::orange, 5.f, 10.f, 100.f);
     objects_.push_back(blob);
     auto input_force = make_shared<InputForceGenerator>(moveInput, 100.f);
-    particleForceRegistry.add(blob, input_force);
+    particleForceRegistry->add(blob, input_force);
     auto friction = make_shared<FrictionForceGenerator>(10.f);
-    particleForceRegistry.add(blob, friction);
+    particleForceRegistry->add(blob, friction);
 
     objects_.push_back(make_shared<Particle>(600.f, 700.f, 0.f, 100.f, 10.f, ofColor::blue, 100.f));
     objects_.push_back(make_shared<Particle>(100.f, 200.f, 0.f, 100.f, 10.f, ofColor::blue, 100.f));
@@ -41,14 +41,14 @@ void ofApp::update() {
                                  [this](shared_ptr<IObject>& p) {
                                      if (p->get_position().y > static_cast<float>(ofGetHeight()) || p->get_position().x > static_cast<float>(
                                          ofGetWidth()) || p->get_position().z > 0 || p->get_position().x < 0 || p->get_position().y < 0) {
-                                         particleForceRegistry.remove(p);
+                                         particleForceRegistry->remove(p);
                                          return true;
                                      }
                                      return false;
                                  });
     objects_.erase(del_it, objects_.end());
     // Update particles
-    particleForceRegistry.update_forces();
+    particleForceRegistry->update_forces();
     particleCollisionRegistry->CheckCollision(0.0f);
     for (const auto& p : objects_) {
         p->update();
@@ -172,12 +172,23 @@ void ofApp::onCanonBallButtonPressed() {
     spawnCanonBall(angle, speed);
 }
 
+void ofApp::add_object(shared_ptr<IObject> object)
+{
+    objects_.push_back(object);
+}
+
+void ofApp::remove_object(shared_ptr<IObject> object)
+{
+    objects_.erase(std::remove(objects_.begin(), objects_.end(), object), objects_.end());
+}
+
+
 void ofApp::spawnBullet(float angle, float speed) {
     const auto p = make_shared<Bullet>(100.f, 700.f, 0.f);
     Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
     p->set_velocity(initialVelocity);
     objects_.push_back(p);
-    particleForceRegistry.add(p, gravity);
+    particleForceRegistry->add(p, gravity);
 }
 
 void ofApp::spawnLaser(float angle, float speed) {
@@ -185,7 +196,7 @@ void ofApp::spawnLaser(float angle, float speed) {
     Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
     p->set_velocity(initialVelocity);
     objects_.push_back(p);
-    particleForceRegistry.add(p, gravity);
+    particleForceRegistry->add(p, gravity);
 }
 
 void ofApp::spawnCanonBall(float angle, float speed) {
@@ -193,5 +204,5 @@ void ofApp::spawnCanonBall(float angle, float speed) {
     Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
     p->set_velocity(initialVelocity);
     objects_.push_back(p);
-    particleForceRegistry.add(p, gravity);
+    particleForceRegistry->add(p, gravity);
 }
