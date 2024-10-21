@@ -20,14 +20,34 @@ Blob::Blob(float x,
 
 void Blob::update() {
     force_registry->update_forces();
+
+    // Mettre à jour les particules
     for (const auto& particle : particles) {
         particle->update();
+    }
+
+    // Calculer la vitesse moyenne de toutes les particules
+    Vector averageVelocity(0, 0, 0);
+    for (const auto& particle : particles) {
+        averageVelocity += particle->get_velocity();
+    }
+    averageVelocity /= static_cast<float>(particles.size());
+
+    // Limiter la vitesse globale si elle dépasse la vitesse terminale
+    if (averageVelocity.magnitude() > terminal_velocity_) {
+        averageVelocity = averageVelocity.normalize() * terminal_velocity_;
+    }
+
+    // Appliquer la vitesse limitée à toutes les particules
+    for (const auto& particle : particles) {
+        particle->set_velocity(averageVelocity);
     }
 
     // Mettre à jour le compteur de particules affiché
     displayedParticleCount_ += (particles.size() - displayedParticleCount_) * animationSpeed;
     displayedParticleCount_ *= dampingFactor;
 }
+
 
 void Blob::draw() {
     for (const auto& particle : particles) {
