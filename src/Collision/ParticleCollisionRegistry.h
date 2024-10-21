@@ -35,6 +35,7 @@ private :
     void CheckCableCollision();
     void CheckInterCollision();
 
+    void HandleRodCollision(ParticleCollisionLinkEntry& collision);
     void HandleCableCollision(ParticleCollisionLinkEntry& collision);
     void HandleInterCollision(ParticleCollisionEntry& collision);
 
