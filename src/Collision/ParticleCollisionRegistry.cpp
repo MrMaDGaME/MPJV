@@ -134,8 +134,9 @@ void ParticleCollisionRegistry::HandleInterCollision(ParticleCollisionEntry& col
 
 
     Vector relativeSpeed = particleA->get_velocity() - particleB->get_velocity();
+    float last_frame = static_cast<float>(ofGetLastFrameTime());
 
-    float impluseValue = (collision.restCoeff + 1) * (relativeSpeed*normal)/(particleA->get_inv_mass() + particleB->get_inv_mass());
+    float impluseValue = (collision.restCoeff + 1) * (relativeSpeed*normal)/((particleA->get_inv_mass() + particleB->get_inv_mass())*last_frame);
 
     float deplA = interpdist* (1/particleA->get_inv_mass())/((1/particleA->get_inv_mass())+(1/particleB->get_inv_mass()));
 
@@ -146,7 +147,7 @@ void ParticleCollisionRegistry::HandleInterCollision(ParticleCollisionEntry& col
     particleB->set_position(particleB->get_position() - normal * deplB);
 
     force_registry->add(particleA,make_shared<ImpulseForceGenerator>(normal*-impluseValue));
-    force_registry->add(particleB,make_shared<ImpulseForceGenerator>(normal*-impluseValue));
+    force_registry->add(particleB,make_shared<ImpulseForceGenerator>(normal*impluseValue));
 
 
 }
