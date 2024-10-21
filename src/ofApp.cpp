@@ -1,5 +1,7 @@
 #include "ofApp.h"
 
+std::vector<std::shared_ptr<IObject>> ofApp::objects_;
+
 //--------------------------------------------------------------
 void ofApp::setup() {
     // Initialisation des boutons
@@ -45,6 +47,7 @@ void ofApp::update() {
     objects_.erase(del_it, objects_.end());
     // Update particles
     particleForceRegistry.update_forces();
+    particleCollisionRegistry->CheckCollision(0.0f);
     for (const auto& p : objects_) {
         p->update();
     }
@@ -76,7 +79,10 @@ void ofApp::keyPressed(int key) {
         moveInput->y = 1;
         break;
     case ' ':
-        blob->split();
+        blob->add_new_blob();
+        break;
+    case 's':
+        blob->divide();
         break;
     default:
         break;

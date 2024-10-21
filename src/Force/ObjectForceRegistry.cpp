@@ -4,13 +4,15 @@ void ObjectForceRegistry::add(const std::shared_ptr<IObject>& object, const std:
     registrations_.push_back({object, force_generator});
 }
 
-void ObjectForceRegistry::remove(std::shared_ptr<IObject>& object, std::shared_ptr<IParticleForceGenerator>& force_generator) {
+bool ObjectForceRegistry::remove(std::shared_ptr<IObject>& object, std::shared_ptr<IParticleForceGenerator>& force_generator) {
+    auto initial_size = registrations_.size();
     registrations_.erase(std::remove_if(registrations_.begin(),
                                         registrations_.end(),
                                         [object, force_generator](const ParticleForceRegistration& registration) {
                                             return registration.object == object && registration.force_generator == force_generator;
                                         }),
                          registrations_.end());
+    return registrations_.size() < initial_size;
 }
 
 void ObjectForceRegistry::remove(std::shared_ptr<IObject>& object) {
