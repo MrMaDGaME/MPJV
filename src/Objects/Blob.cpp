@@ -1,4 +1,4 @@
-﻿#include "Blob.h"
+#include "Blob.h"
 
 #include "ofApp.h"
 #include "../Force/Generators/SpringForceGenerator.h"
@@ -11,7 +11,7 @@ Blob::Blob(float x,
            const ofColor& color,
            float terminal_velocity,
            float spring_constant,
-           float spring_rest_length) : color_(color), spring_constant_(spring_constant), spring_rest_length_(spring_rest_length) {
+           float spring_rest_length) : color_(color), spring_constant_(spring_constant), spring_rest_length_(spring_rest_length),particleCount_(1), displayedParticleCount_(1)  {
     if (terminal_velocity < 0) {
         throw std::invalid_argument("Terminal velocity must be greater than or equal to 0");
     }
@@ -29,10 +29,34 @@ Blob::Blob(shared_ptr<Particle> particle, const ofColor& color, float terminal_v
 
 void Blob::update() {
     force_registry->update_forces();
+
+    // Mettre à jour les particules
     for (const auto& particle : particles) {
         particle->update();
     }
+
+    // Calculer la vitesse moyenne de toutes les particules
+    Vector averageVelocity(0, 0, 0);
+    for (const auto& particle : particles) {
+        averageVelocity += particle->get_velocity();
+    }
+    averageVelocity /= static_cast<float>(particles.size());
+
+    // Limiter la vitesse globale si elle dépasse la vitesse terminale
+    if (averageVelocity.magnitude() > terminal_velocity_) {
+        averageVelocity = averageVelocity.normalize() * terminal_velocity_;
+    }
+
+    // Appliquer la vitesse limitée à toutes les particules
+    for (const auto& particle : particles) {
+        particle->set_velocity(averageVelocity);
+    }
+
+    // Mettre à jour le compteur de particules affiché
+    displayedParticleCount_ += (particles.size() - displayedParticleCount_) * animationSpeed;
+    displayedParticleCount_ *= dampingFactor;
 }
+
 
 void Blob::draw() {
     for (const auto& particle : particles) {
@@ -149,4 +173,8 @@ void Blob::divide()
     }
 
     ofApp::objects_.push_back(new_blob);
+}
+
+int Blob::get_particle_count() const {
+    return particles.size();
 }

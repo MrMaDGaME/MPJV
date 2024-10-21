@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Particle.h"
 #include "../Force/ObjectForceRegistry.h"
 #include "Force/Generators/SpringForceGenerator.h"
@@ -42,6 +42,7 @@ public:
     void split(shared_ptr<Particle> other);
     void merge(shared_ptr<Particle> other);
     void divide();
+    int get_particle_count() const;
 
 
     std::vector<shared_ptr<Particle>> particles; // 0 is the main particle
@@ -52,4 +53,12 @@ private:
     shared_ptr<ObjectForceRegistry> force_registry = make_shared<ObjectForceRegistry>();
     float spring_constant_;
     float spring_rest_length_;
+    
+    int particleCount_; // Nombre de particules attachées au Blob
+    // Attributs pour le compteur de particules
+    float displayedParticleCount_; // Compteur de particules affiché avec animation
+    float animationSpeed = 0.8f; // Vitesse de l'animation
+    float dampingFactor = 0.9f; // Facteur d'amortissement
+    Vector position_;
+
 };
