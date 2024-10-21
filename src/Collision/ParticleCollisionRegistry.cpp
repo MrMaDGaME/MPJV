@@ -66,7 +66,7 @@ void ParticleCollisionRegistry::CheckInterCollision(){
     }
 }
 
-void HandleRodCollision(ParticleCollisionLinkEntry& collision){
+void ParticleCollisionRegistry::HandleRodCollision(ParticleCollisionLinkEntry& collision){
     std::shared_ptr<Particle>& particleA = collision.particleA;
     std::shared_ptr<Particle>& particleB = collision.particleB;
 
