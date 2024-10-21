@@ -114,7 +114,6 @@ void Blob::add_new_blob() { // maybe make blob a particle because we can't get t
                                               particles[0]->get_inv_mass(),
                                               color_,
                                               terminal_velocity_);
-    particles.push_back(new_particle);
     merge(new_particle);
 }
 
