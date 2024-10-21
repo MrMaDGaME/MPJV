@@ -48,7 +48,7 @@ public:
     ofxFloatSlider angleSlider;
     ofxFloatSlider speedSlider;
     ObjectForceRegistry particleForceRegistry;
-    ParticleCollisionRegistry particleCollisionRegistry = ParticleCollisionRegistry(&particleForceRegistry);
+    shared_ptr<ParticleCollisionRegistry> particleCollisionRegistry = make_shared<ParticleCollisionRegistry>(&particleForceRegistry);
     shared_ptr<IParticleForceGenerator> gravity = make_shared<GravityForceGenerator>(9.81f);
     shared_ptr<Vector> moveInput = make_shared<Vector>(0.f, 0.f, 0.f);
     std::vector<shared_ptr<IObject>> objects_;

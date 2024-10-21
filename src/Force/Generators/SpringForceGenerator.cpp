@@ -1,10 +1,10 @@
 #include "SpringForceGenerator.h"
 
-SpringForceGenerator::SpringForceGenerator(const shared_ptr<IObject>& other, const float springConstant, const float restLength)
+SpringForceGenerator::SpringForceGenerator(const std::shared_ptr<IObject>& other, const float springConstant, const float restLength)
     : other(other), springConstant(springConstant), restLength(restLength) {
 }
 
-void SpringForceGenerator::UpdateForce(shared_ptr<IObject>& object) {
+void SpringForceGenerator::UpdateForce(std::shared_ptr<IObject>& object) {
     Vector force = object->get_position() - other->get_position();
     float distance = force.magnitude();
     float magnitude = -springConstant * (distance - restLength);

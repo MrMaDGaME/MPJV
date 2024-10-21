@@ -1,8 +1,8 @@
 #pragma once
-#include "../Objects/Particle.h"
+#include "../Objects/IObject.h"
 
 class IParticleForceGenerator {
 public:
     virtual ~IParticleForceGenerator() = default;
-    virtual void UpdateForce(shared_ptr<IObject>& object) = 0;
+    virtual void UpdateForce(std::shared_ptr<IObject>& object) = 0;
 };

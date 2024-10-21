@@ -6,7 +6,7 @@ ImpulseForceGenerator::ImpulseForceGenerator(const Vector& impulse) : impulse_(i
 ImpulseForceGenerator::ImpulseForceGenerator(const float x, const float y, const float z) : impulse_(x, y, z) {
 }
 
-void ImpulseForceGenerator::UpdateForce(shared_ptr<IObject>& object) {
+void ImpulseForceGenerator::UpdateForce(std::shared_ptr<IObject>& object) {
     if (object == nullptr) {
         return;
     }

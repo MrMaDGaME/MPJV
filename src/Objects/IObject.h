@@ -1,10 +1,11 @@
 ﻿#pragma once
 #include <memory>
+
 #include "../maths/Vector.h"
+#include "../Collision/CollisionType.h"
 
-class Particle;
 class ParticleCollisionRegistry;
-
+class Particle;
 
 class IObject {
 public:
@@ -19,6 +20,8 @@ public:
     virtual void set_velocity(const Vector& velocity) = 0;
     [[nodiscard]] virtual float get_inv_mass() const = 0;
     virtual void set_inv_mass(float inv_mass) = 0;
-    virtual void checkObjectCollision(std::shared_ptr<IObject>& other, std::shared_ptr<ParticleCollisionRegistry>& collision_registry) = 0;
-    virtual void checkParticleCollision(std::shared_ptr<Particle>& particle, std::shared_ptr<ParticleCollisionRegistry>& collision_registry) = 0;
+    virtual void fill_object_collision(std::shared_ptr<IObject> other, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+    CollisionType collision_type, float coeff) = 0;
+    virtual void fill_particle_collision(std::shared_ptr<Particle> particle, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+    CollisionType collision_type, float coeff) = 0;
 };

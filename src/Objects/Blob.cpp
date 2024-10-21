@@ -59,10 +59,18 @@ void Blob::set_inv_mass(float inv_mass) {
     particles[0]->set_inv_mass(inv_mass);
 }
 
-void Blob::checkObjectCollision(std::shared_ptr<IObject>& other, std::shared_ptr<ParticleCollisionRegistry>& collision_registry) {
+void Blob::fill_object_collision(std::shared_ptr<IObject> other, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+    const CollisionType collision_type, const float coeff) {
+    for (const auto& p : particles) {
+        p->fill_object_collision(other, collision_registry, collision_type, coeff);
+    }
 }
 
-void Blob::checkParticleCollision(std::shared_ptr<Particle>& particle, std::shared_ptr<ParticleCollisionRegistry>& collision_registry) {
+void Blob::fill_particle_collision(std::shared_ptr<Particle> particle, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+    const CollisionType collision_type, const float coeff) {
+    for (const auto& p : particles) {
+        p->fill_particle_collision(particle, collision_registry, collision_type, coeff);
+    }
 }
 
 void Blob::split() {

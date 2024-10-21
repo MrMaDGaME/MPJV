@@ -1,9 +1,8 @@
 #pragma once
 #include "IObject.h"
-#include "../maths/Vector.h"
 #include "ofMain.h"
 
-class Particle : public IObject {
+class Particle : public IObject, public std::enable_shared_from_this<Particle> {
 public:
     Particle();
     Particle(float x, float y, float z);
@@ -24,8 +23,10 @@ public:
     [[nodiscard]] float get_terminal_velocity() const;
     void set_terminal_velocity(float terminal_velocity);
     [[nodiscard]] float get_radius() const;
-    void checkObjectCollision(std::shared_ptr<IObject>& other, std::shared_ptr<ParticleCollisionRegistry>& collision_registry) override;
-    void checkParticleCollision(std::shared_ptr<Particle>& particle, std::shared_ptr<ParticleCollisionRegistry>& collision_registry) override;
+    void fill_object_collision(std::shared_ptr<IObject> other, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+    CollisionType collision_type, float coeff) override;
+    void fill_particle_collision(std::shared_ptr<Particle> particle, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+    CollisionType collision_type, float coeff) override;
 
 protected:
     ofColor color_;

@@ -4,14 +4,14 @@ ParticleCollisionRegistry::ParticleCollisionRegistry(ObjectForceRegistry *force_
 { this->force_registry = force_registry;
 }
 
-void ParticleCollisionRegistry::AddRodCollision(shared_ptr<Particle>& particleA,shared_ptr<Particle>& particleB, float length)
+void ParticleCollisionRegistry::AddRodCollision(std::shared_ptr<Particle> particleA,std::shared_ptr<Particle> particleB, float length)
 {
     RodRegistry.push_back({ particleA, particleB, length});
 }
-void ParticleCollisionRegistry::AddCableCollision(shared_ptr<Particle>& particleA, shared_ptr<Particle>& particleB, float length){
+void ParticleCollisionRegistry::AddCableCollision(std::shared_ptr<Particle> particleA, std::shared_ptr<Particle> particleB, float length){
     CableRegistry.push_back({ particleA, particleB, length});
 }
-void ParticleCollisionRegistry::AddInterCollision(shared_ptr<Particle>& particleA, shared_ptr<Particle>& particleB,float length)//Add a collision listener between particleA and B of type interpenetration
+void ParticleCollisionRegistry::AddInterCollision(std::shared_ptr<Particle> particleA, std::shared_ptr<Particle> particleB,float length)//Add a collision listener between particleA and B of type interpenetration
 {
     InterRegistry.push_back({ particleA, particleB, length });
 }
@@ -47,8 +47,8 @@ void ParticleCollisionRegistry::CheckInterCollision(){
 }
 
 void ParticleCollisionRegistry::HandleInterCollision(ParticleCollisionEntry& collision){
-    shared_ptr<Particle>& particleA = collision.particleA;
-    shared_ptr<Particle>& particleB = collision.particleB;
+    std::shared_ptr<Particle>& particleA = collision.particleA;
+    std::shared_ptr<Particle>& particleB = collision.particleB;
 
     Vector normal = particleA->get_position() - particleB->get_position();
 

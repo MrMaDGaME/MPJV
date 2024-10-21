@@ -1,17 +1,18 @@
 #pragma once
-#include "../Objects/IObject.h"
+
 #include "../Force/ObjectForceRegistry.h"
+#include "../Objects/Particle.h"
 
 class ParticleCollisionRegistry {
     struct ParticleCollisionEntry {
-        shared_ptr<Particle> particleA;
-        shared_ptr<Particle> particleB;
+        std::shared_ptr<Particle> particleA;
+        std::shared_ptr<Particle> particleB;
         float restCoeff; //coefficient of restitution give the elasticity of collision : 0 perfectly inelastic, 1 perfectly elastic
     };
 
     struct ParticleCollisionLinkEntry {
-        shared_ptr<Particle> particleA;
-        shared_ptr<Particle> particleB;
+        std::shared_ptr<Particle> particleA;
+        std::shared_ptr<Particle> particleB;
         float length;
     };
 
@@ -20,17 +21,11 @@ class ParticleCollisionRegistry {
     std::vector<ParticleCollisionEntry> InterRegistry; //List of interpenetrationCollision registered
 
 public:
-    enum CollisionType : uint8_t {
-        Rod,
-        Cable,
-        Inter
-    };
-
     ParticleCollisionRegistry(ObjectForceRegistry* force_registry);
 
-    void AddRodCollision(shared_ptr<Particle>& particleA, shared_ptr<Particle>& particleB, float length);
-    void AddCableCollision(shared_ptr<Particle>& particleA, shared_ptr<Particle>& particleB, float length);
-    void AddInterCollision(shared_ptr<Particle>& particleA, shared_ptr<Particle>& particleB, float length);
+    void AddRodCollision(std::shared_ptr<Particle> particleA, std::shared_ptr<Particle> particleB, float length);
+    void AddCableCollision(std::shared_ptr<Particle> particleA, std::shared_ptr<Particle> particleB, float length);
+    void AddInterCollision(std::shared_ptr<Particle> particleA, std::shared_ptr<Particle> particleB, float length);
     //Add a collision listener between particleA and B of type interpenetrationCollision
 
     void CheckCollision(float duration);
