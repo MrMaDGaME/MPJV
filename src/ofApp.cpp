@@ -19,11 +19,13 @@ void ofApp::setup() {
     auto friction = make_shared<FrictionForceGenerator>(10.f);
     particleForceRegistry.add(blob, friction);
 
-    objects_.push_back(make_shared<Particle>(500.f, 500.f, 0.f, 100.f, 200.f, ofColor::blue, 100.f));
+    objects_.push_back(make_shared<Particle>(600.f, 700.f, 0.f, 100.f, 10.f, ofColor::blue, 100.f));
+    objects_.push_back(make_shared<Particle>(100.f, 200.f, 0.f, 100.f, 10.f, ofColor::blue, 100.f));
+    objects_.at(2)->set_velocity(Vector(1,1,0));
     for (auto object = objects_.begin(); object != objects_.end(); ++object) {
         for (auto other = object; other != objects_.end(); ++other) {
             if (object != other) {
-                object->get()->fill_object_collision(*other, particleCollisionRegistry, Inter, 0.5f);
+                object->get()->fill_object_collision(*other, particleCollisionRegistry, Inter, 1.0f);
             }
         }
     }
@@ -48,6 +50,7 @@ void ofApp::update() {
     for (const auto& p : objects_) {
         p->update();
     }
+    particleCollisionRegistry->CheckCollision(0.0f);
 }
 
 //--------------------------------------------------------------
