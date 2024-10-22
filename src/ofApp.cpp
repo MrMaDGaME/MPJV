@@ -20,14 +20,35 @@ void ofApp::setup() {
     particleForceRegistry->add(blob, input_force);
     auto friction = make_shared<FrictionForceGenerator>(10.f);
     particleForceRegistry->add(blob, friction);
+    
+    auto obstacleA =make_shared<Particle>(600.f, 700.f, 0.f, 100.f, 10.f, ofColor::blue, 100.f);
+    auto obstacleB =make_shared<Particle>(100.f, 200.f, 0.f, 100.f, 10.f, ofColor::blue, 100.f);
+    objects_.push_back(obstacleA);
+    objects_.push_back(obstacleB);
 
-    objects_.push_back(make_shared<Particle>(600.f, 700.f, 0.f, 100.f, 10.f, ofColor::blue, 100.f));
-    objects_.push_back(make_shared<Particle>(100.f, 200.f, 0.f, 100.f, 10.f, ofColor::blue, 100.f));
-    objects_.at(2)->set_velocity(Vector(1,1,0));
+    obstacleB->set_velocity(Vector(1,1,0));
+    
+    //auto obstacleC =make_shared<Particle>(1000.f, 700.f, 0.f, 50.f, 10.f, ofColor::white, 100.f);
+    auto obstacleC =make_shared<Particle>(900.f, 700.f, 0.f, 50.f, true);
+    auto obstacleD =make_shared<Particle>(1100.f, 700.f, 0.f, 50.f, true);
+    objects_.push_back(obstacleC);
+    objects_.push_back(obstacleD);
+    
+    auto obstacleE = make_shared<Particle>(900.f, 600.f, 0.f, 50.f, 10.f, ofColor::yellow, 100.f);
+    auto obstacleF = make_shared<Particle>(1100.f, 400.f, 0.f, 50.f, 10.f, ofColor::yellow, 100.f);
+
+    objects_.push_back(obstacleE);
+    objects_.push_back(obstacleF);
+    
+    auto gravity = make_shared<GravityForceGenerator>();
+    particleForceRegistry.add(obstacleE, gravity);
+    particleForceRegistry.add(obstacleF, gravity);
+
+    particleCollisionRegistry->AddCableCollision(obstacleA, obstacleB, 300);
     for (auto object = objects_.begin(); object != objects_.end(); ++object) {
         for (auto other = object; other != objects_.end(); ++other) {
             if (object != other) {
-                object->get()->fill_object_collision(*other, particleCollisionRegistry, Inter, 1.0f);
+                object->get()->fill_object_collision(*other, particleCollisionRegistry, Inter, 0.99f);
             }
         }
     }
