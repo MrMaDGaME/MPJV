@@ -158,17 +158,17 @@ void ParticleCollisionRegistry::HandleInterCollision(ParticleCollisionEntry& col
 
 
     if(particleA->get_velocity().magnitude() == 0.f ){
-        if (particleB->get_velocity()*DEFAULT_GRAVITY_DIRECTION <= DEFAULT_GRAVITY*last_frame) {
-            //Vector newVelocity =particleB->get_velocity() - DEFAULT_GRAVITY_DIRECTION *(particleB->get_velocity() *DEFAULT_GRAVITY_DIRECTION);
-            Vector newVelocity = Vector(0,0,0);
+        if (particleB->get_velocity()*DEFAULT_GRAVITY_DIRECTION == DEFAULT_GRAVITY*last_frame) {
+            Vector newVelocity =particleB->get_velocity() - DEFAULT_GRAVITY_DIRECTION *(particleB->get_velocity() *DEFAULT_GRAVITY_DIRECTION);
+            //Vector newVelocity = Vector(0,0,0);
             particleB->set_velocity(newVelocity);
         return;
         }
     }else if (particleB->get_velocity().magnitude() == 0.f)
     {
-        if (particleA->get_velocity()*DEFAULT_GRAVITY_DIRECTION <= DEFAULT_GRAVITY*last_frame) {
-            //Vector newVelocity =particleA->get_velocity() - DEFAULT_GRAVITY_DIRECTION* (particleA->get_velocity() * DEFAULT_GRAVITY_DIRECTION);
-            Vector newVelocity = Vector(0,0,0);
+        if (particleA->get_velocity()*DEFAULT_GRAVITY_DIRECTION == DEFAULT_GRAVITY*last_frame) {
+            Vector newVelocity =particleA->get_velocity() - DEFAULT_GRAVITY_DIRECTION* (particleA->get_velocity() * DEFAULT_GRAVITY_DIRECTION);
+            //Vector newVelocity = Vector(0,0,0);
             particleA->set_velocity(newVelocity);
             return; 
         }
