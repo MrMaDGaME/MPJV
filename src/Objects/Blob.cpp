@@ -30,30 +30,51 @@ Blob::Blob(shared_ptr<Particle> particle, const ofColor& color, float terminal_v
 void Blob::update() {
     force_registry->update_forces();
 
-    // Mettre à jour les particules
     for (const auto& particle : particles) {
         particle->update();
     }
 
-    // Calculer la vitesse moyenne de toutes les particules
     Vector averageVelocity(0, 0, 0);
     for (const auto& particle : particles) {
         averageVelocity += particle->get_velocity();
     }
     averageVelocity /= static_cast<float>(particles.size());
 
-    // Limiter la vitesse globale si elle dépasse la vitesse terminale
     if (averageVelocity.magnitude() > terminal_velocity_) {
         averageVelocity = averageVelocity.normalize() * terminal_velocity_;
     }
 
-    // Appliquer la vitesse limitée à toutes les particules
     for (const auto& particle : particles) {
         particle->set_velocity(averageVelocity);
     }
 
-    // Mettre à jour le compteur de particules affiché
-    displayedParticleCount_ += (particles.size() - displayedParticleCount_) * animationSpeed;
+    float minDistance = particles[0]->get_radius() * 2.0f;  // Assurer une distance minimale
+    
+    for (size_t i = 0; i < particles.size(); ++i) {
+        for (size_t j = i + 1; j < particles.size(); ++j) {
+            Vector pos1 = particles[i]->get_position();
+            Vector pos2 = particles[j]->get_position();
+            Vector delta = pos1 - pos2;
+            float distance = delta.magnitude();
+
+            if (distance < minDistance) {
+                // Calculer une force de répulsion pour séparer les particules
+                Vector separationForce = delta.normalize() * (minDistance - distance) * 0.5f; // Diviser par 2 pour répartir la force
+                particles[i]->set_position(pos1 + separationForce);
+                particles[j]->set_position(pos2 - separationForce);
+            }
+        }
+    }
+
+    float targetParticleCount = static_cast<float>(particles.size());
+    float difference = targetParticleCount - displayedParticleCount_;
+
+    if (abs(difference) > 0.01f) {
+        displayedParticleCount_ += difference * animationSpeed;
+    } else {
+        displayedParticleCount_ = targetParticleCount;
+    }
+
     displayedParticleCount_ *= dampingFactor;
 }
 
