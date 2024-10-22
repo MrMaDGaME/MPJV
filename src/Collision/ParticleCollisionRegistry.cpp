@@ -79,13 +79,17 @@ void ParticleCollisionRegistry::HandleRodCollision(ParticleCollisionLinkEntry& c
 
     Vector relativeSpeed = particleA->get_velocity() - particleB->get_velocity();
 
+    float particuleAMass = particleA->get_inv_mass() != 0.f ? 1/particleA->get_inv_mass() : 0;
+    float particuleBMass = particleB->get_inv_mass() != 0.f ? 1/particleB->get_inv_mass() : 0;
+
+
     float impluseValue = (relativeSpeed*normal)/(particleA->get_inv_mass() + particleB->get_inv_mass());
 
-    float deplA = interpdist* (1/particleA->get_inv_mass())/((1/particleA->get_inv_mass())+(1/particleB->get_inv_mass()));
+    float deplA = interpdist* (particuleAMass)/(particuleAMass+particuleBMass);
 
     particleA->set_position(particleA->get_position() - normal * deplA);
 
-    float deplB = interpdist*(1/particleB->get_inv_mass())/((1/particleA->get_inv_mass())+(1/particleB->get_inv_mass()));
+    float deplB = interpdist*(particuleBMass)/(particuleAMass+particuleBMass);
 
     particleB->set_position(particleB->get_position() + normal * deplB);
 
@@ -107,13 +111,16 @@ void ParticleCollisionRegistry::HandleCableCollision(ParticleCollisionLinkEntry&
 
     Vector relativeSpeed = particleA->get_velocity() - particleB->get_velocity();
 
+    float particuleAMass = particleA->get_inv_mass() != 0.f ? 1/particleA->get_inv_mass() : 0;
+    float particuleBMass = particleB->get_inv_mass() != 0.f ? 1/particleB->get_inv_mass() : 0;
+
     float impluseValue = (relativeSpeed*normal)/(particleA->get_inv_mass() + particleB->get_inv_mass());
 
-    float deplA = interpdist* (1/particleA->get_inv_mass())/((1/particleA->get_inv_mass())+(1/particleB->get_inv_mass()));
+    float deplA = interpdist* (particuleAMass)/(particuleAMass+particuleBMass);
 
     particleA->set_position(particleA->get_position() - normal * deplA);
 
-    float deplB = interpdist*(1/particleB->get_inv_mass())/((1/particleA->get_inv_mass())+(1/particleB->get_inv_mass()));
+    float deplB = interpdist*(particuleBMass)/(particuleAMass+particuleBMass);
 
     particleB->set_position(particleB->get_position() + normal * deplB);
 
@@ -136,13 +143,16 @@ void ParticleCollisionRegistry::HandleInterCollision(ParticleCollisionEntry& col
     Vector relativeSpeed = particleA->get_velocity() - particleB->get_velocity();
     float last_frame = static_cast<float>(ofGetLastFrameTime());
 
+    float particuleAMass = particleA->get_inv_mass() != 0.f ? 1/particleA->get_inv_mass() : 0;
+    float particuleBMass = particleB->get_inv_mass() != 0.f ? 1/particleB->get_inv_mass() : 0;
+    std::cout <<"particules Mass " << particuleAMass << "and" << particuleBMass << "\n";
     float impluseValue = (collision.restCoeff + 1) * (relativeSpeed*normal)/((particleA->get_inv_mass() + particleB->get_inv_mass())*last_frame);
 
-    float deplA = interpdist* (1/particleA->get_inv_mass())/((1/particleA->get_inv_mass())+(1/particleB->get_inv_mass()));
+    float deplA = interpdist* (particuleAMass)/(particuleAMass+particuleBMass);
 
     particleA->set_position(particleA->get_position() + normal * deplA);
 
-    float deplB = interpdist*(1/particleB->get_inv_mass())/((1/particleA->get_inv_mass())+(1/particleB->get_inv_mass()));
+    float deplB = interpdist*(particuleBMass)/(particuleAMass+particuleBMass);
 
     particleB->set_position(particleB->get_position() - normal * deplB);
 
