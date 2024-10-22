@@ -146,9 +146,7 @@ void Blob::split(shared_ptr<Particle> other)
 void Blob::merge(shared_ptr<Particle> other)
 {
     particles.push_back(other);
-    add_link(particles[0], other);
-    // add a link to the particle before the new particle and after the new particle, make sure to use % to get the correct index
-    
+    refresh_springs();
 }
 
 void Blob::divide()
@@ -181,17 +179,57 @@ void Blob::add_link(shared_ptr<Particle> p1, shared_ptr<Particle> p2)
     particle_links.push_back(link);
 }
 
-void Blob::remove_all_links(shared_ptr<Particle> p)
-{
-    auto it = std::remove_if(particle_links.begin(), particle_links.end(), [&p](const ParticleLink& link) {
+void Blob::remove_all_links(shared_ptr<Particle> p) {
+    // Collect links to be removed
+    std::vector<ParticleLink> links_to_remove;
+    for (const auto& link : particle_links) {
+        if (link.p1 == p || link.p2 == p) {
+            links_to_remove.push_back(link);
+        }
+    }
+
+    // Remove the spring forces
+    for (const auto& link : links_to_remove) {
+        bool success1 = force_registry->remove(std::static_pointer_cast<IObject>(link.p2), std::static_pointer_cast<IParticleForceGenerator>(link.spring_from_to));
+        bool success2 = force_registry->remove(std::static_pointer_cast<IObject>(link.p1), std::static_pointer_cast<IParticleForceGenerator>(link.spring_to_from));
+
+        if (success1) {
+            std::cout << "Successfully removed the spring from p2 to p1" << std::endl;
+        } else {
+            std::cout << "Failed to remove the spring from p2 to p1" << std::endl;
+        }
+        if (success2) {
+            std::cout << "Successfully removed the spring from p1 to p2" << std::endl;
+        } else {
+            std::cout << "Failed to remove the spring from p1 to p2" << std::endl;
+        }
+    }
+
+    // Erase the links from the particle_links vector
+    particle_links.erase(std::remove_if(particle_links.begin(), particle_links.end(), [&p](const ParticleLink& link) {
         return link.p1 == p || link.p2 == p;
-    });
-    particle_links.erase(it, particle_links.end());
+    }), particle_links.end());
 }
 
 void Blob::refresh_springs()
 {
-    
+    // remove all links, then for each particle other than the main one, add a link between the main particle and the other particle, and the other and the previous, and the other and the next % particles.size()
+    for(const auto& particle : particles) {
+        remove_all_links(particle);
+    }
+
+    for(int i = 1; i < particles.size(); i++) {
+        add_link(particles[0], particles[i]);
+        add_link(particles[i], particles[(i - 1) % particles.size()]);
+
+        if(i == particles.size() - 1) {
+            add_link(particles[i], particles[1]);
+        }
+        else
+        {
+            add_link(particles[i], particles[(i + 1)]);
+        }
+    }
 }
 
 int Blob::get_particle_count() const {
