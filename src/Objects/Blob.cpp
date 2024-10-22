@@ -121,11 +121,11 @@ void Blob::split(shared_ptr<Particle> other)
 {
     // if other is in the particle_links vector, remove it and remove the spring forces
     auto it = std::find_if(particle_links.begin(), particle_links.end(), [&other](const ParticleLink& link) {
-        return link.other_particle == other;
+        return link.p2 == other;
     });
 
     if(it != particle_links.end()) {
-        bool success1 = force_registry->remove(std::static_pointer_cast<IObject>(it->other_particle), std::static_pointer_cast<IParticleForceGenerator>(it->spring_from_to));
+        bool success1 = force_registry->remove(std::static_pointer_cast<IObject>(it->p2), std::static_pointer_cast<IParticleForceGenerator>(it->spring_from_to));
         bool success2 = force_registry->remove(std::static_pointer_cast<IObject>(particles[0]), std::static_pointer_cast<IParticleForceGenerator>(it->spring_to_from));
         particle_links.erase(it);
         particles.erase(std::remove(particles.begin(), particles.end(), other), particles.end());
@@ -145,15 +145,10 @@ void Blob::split(shared_ptr<Particle> other)
 
 void Blob::merge(shared_ptr<Particle> other)
 {
-    const auto spring_from_to = make_shared<SpringForceGenerator>(particles[0], spring_constant_, spring_rest_length_);
-    const auto spring_to_from = make_shared<SpringForceGenerator>(other, spring_constant_, spring_rest_length_);
-    
-    force_registry->add(particles[0], spring_to_from);
-    force_registry->add(other, spring_from_to);
-
-    const ParticleLink link = {other, spring_from_to, spring_to_from};
-    particle_links.push_back(link);
     particles.push_back(other);
+    add_link(particles[0], other);
+    // add a link to the particle before the new particle and after the new particle, make sure to use % to get the correct index
+    
 }
 
 void Blob::divide()
@@ -172,6 +167,31 @@ void Blob::divide()
     }
 
     ofApp::objects_.push_back(new_blob);
+}
+
+void Blob::add_link(shared_ptr<Particle> p1, shared_ptr<Particle> p2)
+{
+    const auto spring_from_to = make_shared<SpringForceGenerator>(p1, spring_constant_, spring_rest_length_);
+    const auto spring_to_from = make_shared<SpringForceGenerator>(p2, spring_constant_, spring_rest_length_);
+
+    force_registry->add(p1, spring_to_from);
+    force_registry->add(p2, spring_from_to);
+
+    const ParticleLink link = {p1, p2, spring_from_to, spring_to_from};
+    particle_links.push_back(link);
+}
+
+void Blob::remove_all_links(shared_ptr<Particle> p)
+{
+    auto it = std::remove_if(particle_links.begin(), particle_links.end(), [&p](const ParticleLink& link) {
+        return link.p1 == p || link.p2 == p;
+    });
+    particle_links.erase(it, particle_links.end());
+}
+
+void Blob::refresh_springs()
+{
+    
 }
 
 int Blob::get_particle_count() const {

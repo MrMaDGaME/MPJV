@@ -5,7 +5,8 @@
 
 class Blob : public IObject {
     struct ParticleLink {
-        shared_ptr<Particle> other_particle;
+        shared_ptr<Particle> p1;
+        shared_ptr<Particle> p2;
         shared_ptr<SpringForceGenerator> spring_from_to;
         shared_ptr<SpringForceGenerator> spring_to_from;
     };
@@ -42,6 +43,9 @@ public:
     void split(shared_ptr<Particle> other);
     void merge(shared_ptr<Particle> other);
     void divide();
+    void add_link(shared_ptr<Particle> p1, shared_ptr<Particle> p2);
+    void remove_all_links(shared_ptr<Particle> p);
+    void refresh_springs();
     int get_particle_count() const;
 
 
