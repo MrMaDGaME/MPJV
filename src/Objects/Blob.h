@@ -40,8 +40,8 @@ public:
     CollisionType collision_type, float coeff) override;
 
     void add_new_blob();
-    void split(shared_ptr<Particle> other);
-    void merge(shared_ptr<Particle> other);
+    void split(const shared_ptr<Particle>& other);
+    void merge(const shared_ptr<Particle>& other);
     void divide();
     void add_link(shared_ptr<Particle> p1, shared_ptr<Particle> p2);
     void remove_all_links(shared_ptr<Particle> p);

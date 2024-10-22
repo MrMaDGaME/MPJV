@@ -33,49 +33,6 @@ void Blob::update() {
     for (const auto& particle : particles) {
         particle->update();
     }
-
-    Vector averageVelocity(0, 0, 0);
-    for (const auto& particle : particles) {
-        averageVelocity += particle->get_velocity();
-    }
-    averageVelocity /= static_cast<float>(particles.size());
-
-    if (averageVelocity.magnitude() > terminal_velocity_) {
-        averageVelocity = averageVelocity.normalize() * terminal_velocity_;
-    }
-
-    for (const auto& particle : particles) {
-        particle->set_velocity(averageVelocity);
-    }
-
-    float minDistance = particles[0]->get_radius() * 2.0f;  // Assurer une distance minimale
-    
-    for (size_t i = 0; i < particles.size(); ++i) {
-        for (size_t j = i + 1; j < particles.size(); ++j) {
-            Vector pos1 = particles[i]->get_position();
-            Vector pos2 = particles[j]->get_position();
-            Vector delta = pos1 - pos2;
-            float distance = delta.magnitude();
-
-            if (distance < minDistance) {
-                // Calculer une force de répulsion pour séparer les particules
-                Vector separationForce = delta.normalize() * (minDistance - distance) * 0.5f; // Diviser par 2 pour répartir la force
-                particles[i]->set_position(pos1 + separationForce);
-                particles[j]->set_position(pos2 - separationForce);
-            }
-        }
-    }
-
-    float targetParticleCount = static_cast<float>(particles.size());
-    float difference = targetParticleCount - displayedParticleCount_;
-
-    if (abs(difference) > 0.01f) {
-        displayedParticleCount_ += difference * animationSpeed;
-    } else {
-        displayedParticleCount_ = targetParticleCount;
-    }
-
-    displayedParticleCount_ *= dampingFactor;
 }
 
 
@@ -86,7 +43,9 @@ void Blob::draw() {
 }
 
 void Blob::addForce(const Vector& force) {
-    particles[0]->addForce(force);
+    for(auto& particle : particles) {
+        particle->addForce(force);
+    }
 }
 
 Vector Blob::get_position() const {
@@ -109,7 +68,7 @@ float Blob::get_inv_mass() const {
     return particles[0]->get_inv_mass();
 }
 
-void Blob::set_inv_mass(float inv_mass) {
+void Blob::set_inv_mass(const float inv_mass) {
     particles[0]->set_inv_mass(inv_mass);
 }
 
@@ -128,43 +87,23 @@ void Blob::fill_particle_collision(std::shared_ptr<Particle> particle, std::shar
 }
 
 void Blob::add_new_blob() { // maybe make blob a particle because we can't get the reference of the blob back after adding it to the vector
-    auto new_particle = make_shared<Particle>(particles[0]->get_position().x,
-                                              particles[0]->get_position().y,
-                                              particles[0]->get_position().z,
-                                              particles[0]->get_radius(),
-                                              particles[0]->get_inv_mass(),
-                                              color_,
-                                              terminal_velocity_);
+    const auto new_particle = make_shared<Particle>(particles[0]->get_position().x,
+                                                    particles[0]->get_position().y,
+                                                    particles[0]->get_position().z,
+                                                    particles[0]->get_radius(),
+                                                    particles[0]->get_inv_mass(),
+                                                    color_,
+                                                    terminal_velocity_);
     merge(new_particle);
 }
 
-void Blob::split(shared_ptr<Particle> other)
+void Blob::split(const shared_ptr<Particle>& other)
 {
-    // if other is in the particle_links vector, remove it and remove the spring forces
-    auto it = std::find_if(particle_links.begin(), particle_links.end(), [&other](const ParticleLink& link) {
-        return link.p2 == other;
-    });
-
-    if(it != particle_links.end()) {
-        bool success1 = force_registry->remove(std::static_pointer_cast<IObject>(it->p2), std::static_pointer_cast<IParticleForceGenerator>(it->spring_from_to));
-        bool success2 = force_registry->remove(std::static_pointer_cast<IObject>(particles[0]), std::static_pointer_cast<IParticleForceGenerator>(it->spring_to_from));
-        particle_links.erase(it);
-        particles.erase(std::remove(particles.begin(), particles.end(), other), particles.end());
-
-        if(success1) {
-            std::cout << "Successfully removed the spring forces" << std::endl;
-        } else {
-            std::cout << "Failed to remove the spring forces" << std::endl;
-        }
-        if(success2) {
-            std::cout << "Successfully removed the spring forces" << std::endl;
-        } else {
-            std::cout << "Failed to remove the spring forces" << std::endl;
-        }
-    }
+    remove_all_links(other);
+    particles.erase(std::remove(particles.begin(), particles.end(), other), particles.end());
 }
 
-void Blob::merge(shared_ptr<Particle> other)
+void Blob::merge(const shared_ptr<Particle>& other)
 {
     particles.push_back(other);
     refresh_springs();
@@ -211,19 +150,8 @@ void Blob::remove_all_links(shared_ptr<Particle> p) {
 
     // Remove the spring forces
     for (const auto& link : links_to_remove) {
-        bool success1 = force_registry->remove(std::static_pointer_cast<IObject>(link.p2), std::static_pointer_cast<IParticleForceGenerator>(link.spring_from_to));
-        bool success2 = force_registry->remove(std::static_pointer_cast<IObject>(link.p1), std::static_pointer_cast<IParticleForceGenerator>(link.spring_to_from));
-
-        if (success1) {
-            std::cout << "Successfully removed the spring from p2 to p1" << std::endl;
-        } else {
-            std::cout << "Failed to remove the spring from p2 to p1" << std::endl;
-        }
-        if (success2) {
-            std::cout << "Successfully removed the spring from p1 to p2" << std::endl;
-        } else {
-            std::cout << "Failed to remove the spring from p1 to p2" << std::endl;
-        }
+        force_registry->remove(std::static_pointer_cast<IObject>(link.p2), std::static_pointer_cast<IParticleForceGenerator>(link.spring_from_to));
+        force_registry->remove(std::static_pointer_cast<IObject>(link.p1), std::static_pointer_cast<IParticleForceGenerator>(link.spring_to_from));
     }
 
     // Erase the links from the particle_links vector
@@ -238,7 +166,7 @@ void Blob::refresh_springs()
     for(const auto& particle : particles) {
         remove_all_links(particle);
     }
-    std::cout << "Force registry size after remove : " << force_registry->registrations_.size() << std::endl;
+    
     for(int i = 1; i < particles.size(); i++) {
         add_link(particles[0], particles[i]);
         add_link(particles[i], particles[(i - 1) % particles.size()]);

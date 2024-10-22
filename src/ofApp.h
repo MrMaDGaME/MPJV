@@ -44,6 +44,7 @@ public:
     // static helper methods
     static void add_object(shared_ptr<IObject> object);
     static void remove_object(shared_ptr<IObject> object);
+    static shared_ptr<ObjectForceRegistry> get_force_registry();
     
     
 
