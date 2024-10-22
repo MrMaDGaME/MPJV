@@ -24,6 +24,17 @@ void ObjectForceRegistry::remove(std::shared_ptr<IObject>& object) {
                          registrations_.end());
 }
 
+template <typename T>
+void ObjectForceRegistry::remove_all_of_type(std::shared_ptr<IObject>& object)
+{
+    registrations_.erase(std::remove_if(registrations_.begin(),
+                        registrations_.end(),
+                        [&object](const ParticleForceRegistration& registration) {
+                            return registration.object == object && dynamic_cast<T*>(registration.force_generator.get()) != nullptr;
+                        }),
+         registrations_.end());
+}
+
 void ObjectForceRegistry::clear() {
     registrations_.clear();
 }

@@ -11,7 +11,7 @@ Blob::Blob(float x,
            const ofColor& color,
            float terminal_velocity,
            float spring_constant,
-           float spring_rest_length) : color_(color), spring_constant_(spring_constant), spring_rest_length_(spring_rest_length),particleCount_(1), displayedParticleCount_(1)  {
+           float spring_rest_length) : color_(color), spring_constant_(spring_constant), spring_rest_length_(spring_rest_length), displayedParticleCount_(1)  {
     if (terminal_velocity < 0) {
         throw std::invalid_argument("Terminal velocity must be greater than or equal to 0");
     }
