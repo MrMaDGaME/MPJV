@@ -238,7 +238,7 @@ void Blob::refresh_springs()
     for(const auto& particle : particles) {
         remove_all_links(particle);
     }
-
+    std::cout << "Force registry size after remove : " << force_registry->registrations_.size() << std::endl;
     for(int i = 1; i < particles.size(); i++) {
         add_link(particles[0], particles[i]);
         add_link(particles[i], particles[(i - 1) % particles.size()]);

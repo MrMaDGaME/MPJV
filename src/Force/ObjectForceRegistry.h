@@ -19,7 +19,6 @@ public:
 
     void clear();
     void update_forces();
-
-private:
+    
     std::vector<ParticleForceRegistration> registrations_;
 };
