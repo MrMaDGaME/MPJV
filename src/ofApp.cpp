@@ -41,8 +41,8 @@ void ofApp::setup() {
     objects_.push_back(obstacleF);
     
     auto gravity = make_shared<GravityForceGenerator>();
-    particleForceRegistry.add(obstacleE, gravity);
-    particleForceRegistry.add(obstacleF, gravity);
+    particleForceRegistry->add(obstacleE, gravity);
+    particleForceRegistry->add(obstacleF, gravity);
 
     particleCollisionRegistry->AddCableCollision(obstacleA, obstacleB, 300);
     for (auto object = objects_.begin(); object != objects_.end(); ++object) {
