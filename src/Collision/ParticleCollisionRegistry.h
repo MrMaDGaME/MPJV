@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Force/ObjectForceRegistry.h"
+#include "../Force/Generators/GravityForceGenerator.h"
 #include "../Objects/Particle.h"
 
 class ParticleCollisionRegistry {
