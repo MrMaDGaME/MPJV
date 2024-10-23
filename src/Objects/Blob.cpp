@@ -154,6 +154,8 @@ void Blob::add_link(shared_ptr<Particle> p1, shared_ptr<Particle> p2)
 
     const ParticleLink link = {p1, p2, spring_from_to, spring_to_from};
     particle_links.push_back(link);
+
+    collision_registry->AddCableCollision(p1,p2, spring_rest_length_);
 }
 
 void Blob::remove_all_links(shared_ptr<Particle> p) {
@@ -169,6 +171,7 @@ void Blob::remove_all_links(shared_ptr<Particle> p) {
     for (const auto& link : links_to_remove) {
         force_registry->remove(std::static_pointer_cast<IObject>(link.p2), std::static_pointer_cast<IParticleForceGenerator>(link.spring_from_to));
         force_registry->remove(std::static_pointer_cast<IObject>(link.p1), std::static_pointer_cast<IParticleForceGenerator>(link.spring_to_from));
+        collision_registry->RemoveCableCollision(link.p1, link.p2);
     }
 
     // Erase the links from the particle_links vector

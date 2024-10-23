@@ -29,6 +29,8 @@ public:
     void AddInterCollision(std::shared_ptr<Particle> particleA, std::shared_ptr<Particle> particleB, float length);
     //Add a collision listener between particleA and B of type interpenetrationCollision
 
+    void RemoveCableCollision(std::shared_ptr<Particle> particleA, std::shared_ptr<Particle> particleB);
+
     void CheckCollision(float duration);
 
 private :
