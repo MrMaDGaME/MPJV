@@ -4,16 +4,6 @@ std::vector<std::shared_ptr<IObject>> ofApp::objects_;
 
 //--------------------------------------------------------------
 void ofApp::setup() {
-    // Initialisation des boutons
-    laserbutton.addListener(this, &ofApp::onLaserButtonPressed);
-    bulletbutton.addListener(this, &ofApp::onBulletButtonPressed);
-    canonballbutton.addListener(this, &ofApp::onCanonBallButtonPressed);
-    gui.setup();
-    gui.add(laserbutton.setup("Laser"));
-    gui.add(bulletbutton.setup("Bullet"));
-    gui.add(canonballbutton.setup("CanonBall"));
-    gui.add(angleSlider.setup("Angle", 5, 4.7f, 7.0)); // Angle en degrés
-    gui.add(speedSlider.setup("Speed", 10, 0, 50)); // Vitesse ajustée
     blob = make_shared<Blob>(100.f, 700.f, 0.f, 10.f, 1.f, ofColor::orange, 5.f, 10.f, 100.f);
     objects_.push_back(blob);
     auto input_force = make_shared<InputForceGenerator>(moveInput, 100.f);
@@ -79,8 +69,6 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-    gui.draw();
-    
     // Dessiner les objets
     for (const auto& p : objects_) {
         p->draw();
