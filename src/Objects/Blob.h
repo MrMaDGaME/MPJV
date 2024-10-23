@@ -53,12 +53,13 @@ public:
 
 
     std::vector<shared_ptr<Particle>> particles; // 0 is the main particle
-    std::vector<ParticleLink> particle_links; // 0 and 1 == 1 in particles, 2 and 3 == 2 in particles, etc.
+    std::vector<ParticleLink> particle_links;
+    shared_ptr<ParticleCollisionRegistry> collision_registry;
 private:
     ofColor color_;
     float terminal_velocity_;
     shared_ptr<ObjectForceRegistry> force_registry = make_shared<ObjectForceRegistry>();
-    shared_ptr<ParticleCollisionRegistry> collision_registry;
+    
     float spring_constant_;
     float spring_rest_length_;
     

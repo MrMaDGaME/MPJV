@@ -133,6 +133,7 @@ void Blob::divide()
     shared_ptr<Particle> newBlobParticle = particles[1];
     split(newBlobParticle);
     auto new_blob = make_shared<Blob>(newBlobParticle, color_, terminal_velocity_, spring_constant_, spring_rest_length_);
+    new_blob->collision_registry = collision_registry;
 
     const int division = static_cast<int>(std::round(particles.size() * 0.5f));
     std::vector<std::shared_ptr<Particle>> particles_to_split(particles.begin() + 1, particles.begin() + division);

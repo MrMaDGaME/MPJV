@@ -4,7 +4,7 @@ std::vector<std::shared_ptr<IObject>> ofApp::objects_;
 
 //--------------------------------------------------------------
 void ofApp::setup() {
-    blob = make_shared<Blob>(100.f, 700.f, 0.f, 10.f, 1.f, ofColor::orange, 5.f, 10.f, 100.f);
+    blob = make_shared<Blob>(100.f, 700.f, 0.f, 10.f, 1.f, ofColor::orange, 5.f, 1.f, 100.f);
     objects_.push_back(blob);
     auto input_force = make_shared<InputForceGenerator>(moveInput, 100.f);
     particleForceRegistry->add(blob, input_force);

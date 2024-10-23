@@ -16,13 +16,13 @@ void ParticleCollisionRegistry::AddInterCollision(std::shared_ptr<Particle> part
     InterRegistry.push_back({ particleA, particleB, restCoeff });
 }
 
-void RemoveCableCollision(std::shared_ptr<Particle> particleA, std::shared_ptr<Particle> particleB){
-    for(iterator = CableRegistry.begin(); iterator != CableRegistry.end();){
-        link = *iterator;
-        if((link->particleA.get() == particleA.get()) and( link->particleB.get() == particleB.get)  ){
-            iterator = CableRegistry.erase(link);
-        }else if ((link->particleB.get() == particleA.get()) and( link->particleA.get() == particleB.get)){
-            iterator = CableRegistry.erase(link);
+void ParticleCollisionRegistry::RemoveCableCollision(std::shared_ptr<Particle> particleA, std::shared_ptr<Particle> particleB){
+    for(auto iterator = CableRegistry.begin(); iterator != CableRegistry.end();){
+        auto link = *iterator;
+        if((link.particleA.get() == particleA.get()) &&( link.particleB.get() == particleB.get())  ){
+            iterator = CableRegistry.erase(iterator);
+        }else if ((link.particleB.get() == particleA.get()) &&( link.particleA.get() == particleB.get())){
+            iterator = CableRegistry.erase(iterator);
         }else{
             iterator++;
         }
