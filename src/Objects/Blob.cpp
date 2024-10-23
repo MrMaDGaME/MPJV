@@ -74,6 +74,7 @@ void Blob::set_inv_mass(const float inv_mass) {
 
 void Blob::fill_object_collision(std::shared_ptr<IObject> other, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
     const CollisionType collision_type, const float coeff) {
+    this.collision_registry = collision_registry;
     for (const auto& p : particles) {
         p->fill_object_collision(other, collision_registry, collision_type, coeff);
     }
@@ -94,6 +95,13 @@ void Blob::add_new_blob() { // maybe make blob a particle because we can't get t
                                                     particles[0]->get_inv_mass(),
                                                     color_,
                                                     terminal_velocity_);
+    for (shared_ptr<IObject> other : ofApp::objects_){
+        if (other != this){
+            sstd::cout << "NOT GO DABDABOOM \n"
+        }else{
+            std::cout << "OK SAME BLOB \n";
+        }
+    }
     merge(new_particle);
 }
 

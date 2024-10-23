@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Particle.h"
 #include "../Force/ObjectForceRegistry.h"
 #include "Force/Generators/SpringForceGenerator.h"
@@ -55,6 +55,7 @@ private:
     ofColor color_;
     float terminal_velocity_;
     shared_ptr<ObjectForceRegistry> force_registry = make_shared<ObjectForceRegistry>();
+    shared_ptr<ParticleCollisionRegistry> collision_registry;
     float spring_constant_;
     float spring_rest_length_;
     
