@@ -97,9 +97,7 @@ void Blob::add_new_blob() { // maybe make blob a particle because we can't get t
                                                     terminal_velocity_);
     for (shared_ptr<IObject> other : ofApp::objects_){
         if (other.get() != this){
-            std::cout << "NOT GO DABDABOOM \n";
-        }else{
-            std::cout << "OK SAME BLOB \n";
+            new_particle->fill_object_collision(other, collision_registry,Inter,DEFAULT_BOUNCE);
         }
     }
     merge(new_particle);
