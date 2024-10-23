@@ -105,6 +105,8 @@ void ofApp::keyPressed(int key) {
     case 's':
         blob->divide();
         break;
+    case 'm':
+        blob->merge_with_nearest_blob();
     default:
         break;
     }

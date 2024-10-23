@@ -113,6 +113,19 @@ void Blob::merge(const shared_ptr<Particle>& other)
     refresh_springs();
 }
 
+void Blob::merge(shared_ptr<Blob>& other)
+{
+    // Collect particles to be split
+    std::vector<shared_ptr<Particle>> particles_to_split = other->particles;
+
+    // Split all particles from the other blob and merge them with this blob
+    for (const auto& particle : particles_to_split) {
+        other->split(particle);
+        merge(particle);
+    }
+    ofApp::remove_object(other);
+}
+
 void Blob::divide()
 {
     if(particles.size() <= 1) return;
@@ -166,7 +179,6 @@ void Blob::remove_all_links(shared_ptr<Particle> p) {
 
 void Blob::refresh_springs()
 {
-    // remove all links, then for each particle other than the main one, add a link between the main particle and the other particle, and the other and the previous, and the other and the next % particles.size()
     for(const auto& particle : particles) {
         remove_all_links(particle);
     }
@@ -182,6 +194,50 @@ void Blob::refresh_springs()
         {
             add_link(particles[i], particles[(i + 1)]);
         }
+    }
+}
+
+shared_ptr<Blob> Blob::get_nearest_blob() const
+{
+    // Find the nearest blob
+    shared_ptr<Blob> nearest_blob = nullptr;
+    float min_distance = std::numeric_limits<float>::max();
+    for (auto& object : ofApp::objects_)
+    {
+        // Try to cast the object to a Blob
+        auto blob = std::dynamic_pointer_cast<Blob>(object);
+        // Check if the cast was successful and the blob is different from the current one
+        if (blob && blob.get() != this)
+        {
+            // Calculate the squared distance between the current blob and the other blob
+            Vector posA = this->get_position();
+            Vector posB = blob->get_position();
+            float sq_dist = (posA.x - posB.x) * (posA.x - posB.x) +
+                            (posA.y - posB.y) * (posA.y - posB.y) +
+                            (posA.z - posB.z) * (posA.z - posB.z);
+
+            // Update the nearest blob if the current one is closer
+            if (sq_dist < min_distance)
+            {
+                min_distance = sq_dist;
+                nearest_blob = blob;
+            }
+        }
+    }
+    return nearest_blob;
+}
+
+void Blob::merge_with_nearest_blob()
+{
+    if (shared_ptr<Blob> nearest_blob = get_nearest_blob())
+    {
+        ofLogNotice("Blob") << "Merging with nearest blob";
+        merge(nearest_blob);
+    }
+    else
+    {
+        // print a message to the console
+        ofLogNotice("Blob") << "No nearest blob found";
     }
 }
 

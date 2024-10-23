@@ -42,10 +42,13 @@ public:
     void add_new_blob();
     void split(const shared_ptr<Particle>& other);
     void merge(const shared_ptr<Particle>& other);
+    void merge(shared_ptr<Blob>& other);
     void divide();
     void add_link(shared_ptr<Particle> p1, shared_ptr<Particle> p2);
     void remove_all_links(shared_ptr<Particle> p);
     void refresh_springs();
+    shared_ptr<Blob> get_nearest_blob() const;
+    void merge_with_nearest_blob();
     int get_particle_count() const;
 
 
