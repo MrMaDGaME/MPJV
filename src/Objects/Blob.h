@@ -35,7 +35,7 @@ public:
     [[nodiscard]] float get_inv_mass() const override;
     void set_inv_mass(float inv_mass) override;
     void fill_object_collision(std::shared_ptr<IObject> other, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
-    CollisionType collision_type, float coeff) override;
+    CollisionType collision_type, float coeff) override; // Initiates the collisions with other objects for all the particles in the blob
     void fill_particle_collision(std::shared_ptr<Particle> particle, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
     CollisionType collision_type, float coeff) override;
 
