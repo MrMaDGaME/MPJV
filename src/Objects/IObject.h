@@ -21,7 +21,7 @@ public:
     [[nodiscard]] virtual float get_inv_mass() const = 0;
     virtual void set_inv_mass(float inv_mass) = 0;
     virtual void fill_object_collision(std::shared_ptr<IObject> other, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
-    CollisionType collision_type, float coeff) = 0;
+    CollisionType collision_type, float coeff) = 0; //Called to initialise collision listener with another IObject without knowing it's nature : other object, collision_registry : the collision_registry to register it, collision_type : element of an enum, coeff is the value defining bounce on interpenetration and length on rod and cable
     virtual void fill_particle_collision(std::shared_ptr<Particle> particle, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
-    CollisionType collision_type, float coeff) = 0;
+    CollisionType collision_type, float coeff) = 0; //Called to initialise collision listener with a Particle without knowing it's nature : other object, collision_registry : the collision_registry to register it, collision_type : element of an enum, coeff is the value defining bounce on interpenetration and length on rod and cable
 };
