@@ -4,13 +4,15 @@ std::vector<std::shared_ptr<IObject>> ofApp::objects_;
 
 //--------------------------------------------------------------
 void ofApp::setup() {
+    // Setup blob
     blob = make_shared<Blob>(100.f, 700.f, 0.f, 10.f, 1.f, ofColor::orange, 5.f, 1.f, 100.f);
     objects_.push_back(blob);
     auto input_force = make_shared<InputForceGenerator>(moveInput, 100.f);
     particleForceRegistry->add(blob, input_force);
     auto friction = make_shared<FrictionForceGenerator>(10.f);
     particleForceRegistry->add(blob, friction);
-    
+
+    // Create Objects
     auto obstacleA =make_shared<Particle>(600.f, 700.f, 0.f, 100.f, 10.f, ofColor::blue, 100.f);
     auto obstacleB =make_shared<Particle>(100.f, 200.f, 0.f, 100.f, 10.f, ofColor::blue, 100.f);
     objects_.push_back(obstacleA);
@@ -18,7 +20,6 @@ void ofApp::setup() {
 
     obstacleB->set_velocity(Vector(1,1,0));
     
-    //auto obstacleC =make_shared<Particle>(1000.f, 700.f, 0.f, 50.f, 10.f, ofColor::white, 100.f);
     auto obstacleC =make_shared<Particle>(900.f, 700.f, 0.f, 50.f, true);
     auto obstacleD =make_shared<Particle>(1100.f, 700.f, 0.f, 50.f, true);
     objects_.push_back(obstacleC);
@@ -34,6 +35,7 @@ void ofApp::setup() {
     particleForceRegistry->add(obstacleE, gravity);
     particleForceRegistry->add(obstacleF, gravity);
 
+    // Initialize collisions
     particleCollisionRegistry->AddCableCollision(obstacleA, obstacleB, 300);
     for (auto object = objects_.begin(); object != objects_.end(); ++object) {
         for (auto other = object; other != objects_.end(); ++other) {
@@ -46,7 +48,7 @@ void ofApp::setup() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
-    // Suppression des particules hors de l'écran
+    // Delete objects that are out of bounds
     auto del_it = std::remove_if(objects_.begin(),
                                  objects_.end(),
                                  [this](shared_ptr<IObject>& p) {
@@ -69,16 +71,16 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-    // Dessiner les objets
+    // Draw objects
     for (const auto& p : objects_) {
         p->draw();
     }
 
-    // Affichage du framerate
+    // Display the frame rate
     ofSetColor(ofColor::white);
     ofDrawBitmapString("rafraîchissement : " + ofToString(ofGetFrameRate()) + " fps", 10, 10);
 
-    // Afficher le nombre de particules attachées au Blob
+    // Display the number of particles in the blob
     ofSetColor(ofColor::orange);
     ofDrawBitmapString("Compteur de particules : " + ofToString(int(blob->get_particle_count())), 10, 30);
 }
@@ -164,22 +166,22 @@ void ofApp::gotMessage(ofMessage msg) {
 void ofApp::dragEvent(ofDragInfo dragInfo) {
 }
 
-// Méthodes de rappel modifiées pour les boutons
+
 void ofApp::onBulletButtonPressed() {
     float angle = angleSlider;
-    float speed = speedSlider; // Vitesse sans réduction
+    float speed = speedSlider; 
     spawnBullet(angle, speed);
 }
 
 void ofApp::onLaserButtonPressed() {
     float angle = angleSlider;
-    float speed = speedSlider; // Vitesse sans réduction
+    float speed = speedSlider; 
     spawnLaser(angle, speed);
 }
 
 void ofApp::onCanonBallButtonPressed() {
     float angle = angleSlider;
-    float speed = speedSlider; // Vitesse sans réduction
+    float speed = speedSlider; 
     spawnCanonBall(angle, speed);
 }
 

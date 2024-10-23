@@ -56,10 +56,10 @@ public:
     ofxButton canonballbutton;
     ofxFloatSlider angleSlider;
     ofxFloatSlider speedSlider;
-    shared_ptr<ObjectForceRegistry> particleForceRegistry = make_shared<ObjectForceRegistry>();
-    shared_ptr<ParticleCollisionRegistry> particleCollisionRegistry = make_shared<ParticleCollisionRegistry>(particleForceRegistry);
+    shared_ptr<ObjectForceRegistry> particleForceRegistry = make_shared<ObjectForceRegistry>(); // The global force registry
+    shared_ptr<ParticleCollisionRegistry> particleCollisionRegistry = make_shared<ParticleCollisionRegistry>(particleForceRegistry); // The global collision registry
     shared_ptr<IParticleForceGenerator> gravity = make_shared<GravityForceGenerator>(9.81f);
     shared_ptr<Vector> moveInput = make_shared<Vector>(0.f, 0.f, 0.f);
-    static std::vector<shared_ptr<IObject>> objects_;
-    shared_ptr<Blob> blob = nullptr;
+    static std::vector<shared_ptr<IObject>> objects_; // The global list of objects
+    shared_ptr<Blob> blob = nullptr; // The blob controlled by the player
 };
