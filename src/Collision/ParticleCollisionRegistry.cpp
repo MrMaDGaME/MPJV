@@ -20,9 +20,9 @@ void ParticleCollisionRegistry::RemoveCableCollision(std::shared_ptr<Particle> p
     for(auto iterator = CableRegistry.begin(); iterator != CableRegistry.end();){
         auto link = *iterator;
         if((link.particleA.get() == particleA.get()) &&( link.particleB.get() == particleB.get())  ){
-            iterator = CableRegistry.erase(iterator);
+            iterator = CableRegistry.erase(iterator); //erase return next element of iterator allowing to delete while iterating
         }else if ((link.particleB.get() == particleA.get()) &&( link.particleA.get() == particleB.get())){
-            iterator = CableRegistry.erase(iterator);
+            iterator = CableRegistry.erase(iterator); //erase return next element of iterator allowing to delete while iterating
         }else{
             iterator++;
         }
@@ -170,7 +170,7 @@ void ParticleCollisionRegistry::HandleInterCollision(ParticleCollisionEntry& col
     particleB->set_position(particleB->get_position() - normal * deplB);
 
 
-
+    //Check if the object is at rest on another object and if so avoid moving it.
     if(particleA->get_velocity().magnitude() == 0.f ){
         if (particleB->get_velocity()*DEFAULT_GRAVITY_DIRECTION == DEFAULT_GRAVITY*last_frame) {
             Vector newVelocity =particleB->get_velocity() - DEFAULT_GRAVITY_DIRECTION *(particleB->get_velocity() *DEFAULT_GRAVITY_DIRECTION);
