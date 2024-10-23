@@ -4,7 +4,7 @@
 #include "Force/Generators/SpringForceGenerator.h"
 
 class Blob : public IObject {
-    struct ParticleLink {
+    struct ParticleLink { // A link between two particles
         shared_ptr<Particle> p1;
         shared_ptr<Particle> p2;
         shared_ptr<SpringForceGenerator> spring_from_to;
@@ -39,22 +39,22 @@ public:
     void fill_particle_collision(std::shared_ptr<Particle> particle, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
     CollisionType collision_type, float coeff) override;
 
-    void add_new_blob();
-    void split(const shared_ptr<Particle>& other);
-    void merge(const shared_ptr<Particle>& other);
-    void merge(shared_ptr<Blob>& other);
-    void divide();
-    void add_link(shared_ptr<Particle> p1, shared_ptr<Particle> p2);
-    void remove_all_links(shared_ptr<Particle> p);
-    void refresh_springs();
-    shared_ptr<Blob> get_nearest_blob() const;
-    void merge_with_nearest_blob();
+    void add_new_blob(); // Spawns a particle and merges it with the blob
+    void split(const shared_ptr<Particle>& other); // Removes the particle from the blob
+    void merge(const shared_ptr<Particle>& other); // Adds the particle to the blob
+    void merge(shared_ptr<Blob>& other); // Splits all the particles from the other blob and merges them with this blob, also deletes the other blob
+    void divide(); // Splits the blob into two blobs
+    void add_link(shared_ptr<Particle> p1, shared_ptr<Particle> p2); // Creates a link between two particles
+    void remove_all_links(shared_ptr<Particle> p); // Removes all links from a particle
+    void refresh_springs(); // Destroy all links and create new ones
+    shared_ptr<Blob> get_nearest_blob() const; // Returns the nearest blob
+    void merge_with_nearest_blob(); // Merges with the nearest blob if there is one
     int get_particle_count() const;
 
 
     std::vector<shared_ptr<Particle>> particles; // 0 is the main particle
-    std::vector<ParticleLink> particle_links;
-    shared_ptr<ParticleCollisionRegistry> collision_registry;
+    std::vector<ParticleLink> particle_links; // All the links between particles in the blob
+    shared_ptr<ParticleCollisionRegistry> collision_registry; // A reference to the global collision registry
 private:
     ofColor color_;
     float terminal_velocity_;
@@ -62,11 +62,5 @@ private:
     
     float spring_constant_;
     float spring_rest_length_;
-    
-    // Attributs pour le compteur de particules
-    float displayedParticleCount_; // Compteur de particules affiché avec animation
-    float animationSpeed = 0.8f; // Vitesse de l'animation
-    float dampingFactor = 0.9f; // Facteur d'amortissement
     Vector position_;
-
 };

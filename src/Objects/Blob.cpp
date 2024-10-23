@@ -11,7 +11,7 @@ Blob::Blob(float x,
            const ofColor& color,
            float terminal_velocity,
            float spring_constant,
-           float spring_rest_length) : color_(color), spring_constant_(spring_constant), spring_rest_length_(spring_rest_length), displayedParticleCount_(1)  {
+           float spring_rest_length) : color_(color), spring_constant_(spring_constant), spring_rest_length_(spring_rest_length)  {
     if (terminal_velocity < 0) {
         throw std::invalid_argument("Terminal velocity must be greater than or equal to 0");
     }
@@ -128,13 +128,16 @@ void Blob::merge(shared_ptr<Blob>& other)
 
 void Blob::divide()
 {
+    // Can't divide if there is only one particle
     if(particles.size() <= 1) return;
 
+    // Create a new blob with the second particle
     shared_ptr<Particle> newBlobParticle = particles[1];
     split(newBlobParticle);
     auto new_blob = make_shared<Blob>(newBlobParticle, color_, terminal_velocity_, spring_constant_, spring_rest_length_);
     new_blob->collision_registry = collision_registry;
 
+    // Split half of the particles from the current blob and merge them with the new blob
     const int division = static_cast<int>(std::round(particles.size() * 0.5f));
     std::vector<std::shared_ptr<Particle>> particles_to_split(particles.begin() + 1, particles.begin() + division);
     for (const auto& particle : particles_to_split) {
@@ -147,12 +150,15 @@ void Blob::divide()
 
 void Blob::add_link(shared_ptr<Particle> p1, shared_ptr<Particle> p2)
 {
+    // Create spring forces
     const auto spring_from_to = make_shared<SpringForceGenerator>(p1, spring_constant_, spring_rest_length_);
     const auto spring_to_from = make_shared<SpringForceGenerator>(p2, spring_constant_, spring_rest_length_);
 
+    // Add the spring forces to the force registry
     force_registry->add(p1, spring_to_from);
     force_registry->add(p2, spring_from_to);
 
+    // Register the link
     const ParticleLink link = {p1, p2, spring_from_to, spring_to_from};
     particle_links.push_back(link);
 
@@ -183,10 +189,12 @@ void Blob::remove_all_links(shared_ptr<Particle> p) {
 
 void Blob::refresh_springs()
 {
+    // Destroy all links
     for(const auto& particle : particles) {
         remove_all_links(particle);
     }
-    
+
+    // Recreate links with the new order
     for(int i = 1; i < particles.size(); i++) {
         add_link(particles[0], particles[i]);
         add_link(particles[i], particles[(i - 1) % particles.size()]);
@@ -240,7 +248,6 @@ void Blob::merge_with_nearest_blob()
     }
     else
     {
-        // print a message to the console
         ofLogNotice("Blob") << "No nearest blob found";
     }
 }
