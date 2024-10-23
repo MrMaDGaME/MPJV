@@ -87,7 +87,7 @@ void Blob::fill_particle_collision(std::shared_ptr<Particle> particle, std::shar
     }
 }
 
-void Blob::add_new_blob() { // maybe make blob a particle because we can't get the reference of the blob back after adding it to the vector
+void Blob::add_new_blob() {
     const auto new_particle = make_shared<Particle>(particles[0]->get_position().x,
                                                     particles[0]->get_position().y,
                                                     particles[0]->get_position().z,
