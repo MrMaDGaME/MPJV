@@ -17,6 +17,8 @@
 #include "Force/Generators/FrictionForceGenerator.h"
 #include "Objects/Blob.h"
 
+#define DEFAULT_BOUNCE 0.99f
+
 class ofApp : public ofBaseApp {
 public:
     void setup() override;

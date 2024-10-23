@@ -38,7 +38,7 @@ void ofApp::setup() {
     for (auto object = objects_.begin(); object != objects_.end(); ++object) {
         for (auto other = object; other != objects_.end(); ++other) {
             if (object != other) {
-                object->get()->fill_object_collision(*other, particleCollisionRegistry, Inter, 0.99f);
+                object->get()->fill_object_collision(*other, particleCollisionRegistry, Inter, DEFAULT_GRAVITY);
             }
         }
     }
