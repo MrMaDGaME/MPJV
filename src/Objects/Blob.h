@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Particle.h"
 #include "../Force/ObjectForceRegistry.h"
-#include "Force/Generators/SpringForceGenerator.h"
+#include "../Force/Generators/SpringForceGenerator.h"
 
 class Blob : public IObject {
     struct ParticleLink { // A link between two particles
@@ -10,7 +10,6 @@ class Blob : public IObject {
         shared_ptr<SpringForceGenerator> spring_from_to;
         shared_ptr<SpringForceGenerator> spring_to_from;
     };
-    
 
 public:
     Blob(float x,
@@ -34,10 +33,14 @@ public:
     void set_velocity(const Vector& velocity) override;
     [[nodiscard]] float get_inv_mass() const override;
     void set_inv_mass(float inv_mass) override;
-    void fill_object_collision(std::shared_ptr<IObject> other, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
-    CollisionType collision_type, float coeff) override; // Initiates the collisions with other objects for all the particles in the blob
-    void fill_particle_collision(std::shared_ptr<Particle> particle, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
-    CollisionType collision_type, float coeff) override;
+    void fill_object_collision(std::shared_ptr<IObject> other,
+                               std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+                               CollisionType collision_type,
+                               float coeff) override; // Initiates the collisions with other objects for all the particles in the blob
+    void fill_particle_collision(std::shared_ptr<Particle> particle,
+                                 std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+                                 CollisionType collision_type,
+                                 float coeff) override;
 
     void add_new_blob(); // Spawns a particle and merges it with the blob
     void split(const shared_ptr<Particle>& other); // Removes the particle from the blob
@@ -51,7 +54,6 @@ public:
     void merge_with_nearest_blob(); // Merges with the nearest blob if there is one
     int get_particle_count() const;
 
-
     std::vector<shared_ptr<Particle>> particles; // 0 is the main particle
     std::vector<ParticleLink> particle_links; // All the links between particles in the blob
     shared_ptr<ParticleCollisionRegistry> collision_registry; // A reference to the global collision registry
@@ -59,7 +61,7 @@ private:
     ofColor color_;
     float terminal_velocity_;
     shared_ptr<ObjectForceRegistry> force_registry = make_shared<ObjectForceRegistry>();
-    
+
     float spring_constant_;
     float spring_rest_length_;
     Vector position_;

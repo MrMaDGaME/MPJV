@@ -47,8 +47,6 @@ public:
     static void add_object(shared_ptr<IObject> object);
     static void remove_object(shared_ptr<IObject> object);
     static shared_ptr<ObjectForceRegistry> get_force_registry();
-    
-    
 
     ofxPanel gui;
     ofxButton laserbutton;
@@ -57,7 +55,8 @@ public:
     ofxFloatSlider angleSlider;
     ofxFloatSlider speedSlider;
     shared_ptr<ObjectForceRegistry> particleForceRegistry = make_shared<ObjectForceRegistry>(); // The global force registry
-    shared_ptr<ParticleCollisionRegistry> particleCollisionRegistry = make_shared<ParticleCollisionRegistry>(particleForceRegistry); // The global collision registry
+    shared_ptr<ParticleCollisionRegistry> particleCollisionRegistry = make_shared<ParticleCollisionRegistry>(particleForceRegistry);
+    // The global collision registry
     shared_ptr<IParticleForceGenerator> gravity = make_shared<GravityForceGenerator>(9.81f);
     shared_ptr<Vector> moveInput = make_shared<Vector>(0.f, 0.f, 0.f);
     static std::vector<shared_ptr<IObject>> objects_; // The global list of objects

@@ -9,9 +9,7 @@ inline void assertEqual(float a, float b, const std::string& testName) {
         std::cerr << "[FAIL] " << testName << ": attendu " << b << ", obtenu " << a << std::endl;
         exit(1);
     }
-    else {
-        std::cout << "[PASS] " << testName << std::endl;
-    }
+    std::cout << "[PASS] " << testName << std::endl;
 }
 
 inline void assertTrue(bool condition, const std::string& testName) {
@@ -19,9 +17,7 @@ inline void assertTrue(bool condition, const std::string& testName) {
         std::cerr << "[FAIL] " << testName << ": condition fausse." << std::endl;
         exit(1);
     }
-    else {
-        std::cout << "[PASS] " << testName << std::endl;
-    }
+    std::cout << "[PASS] " << testName << std::endl;
 }
 
 // Classe de test pour Vector

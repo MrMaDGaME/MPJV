@@ -110,13 +110,15 @@ float Particle::get_radius() const {
 
 void Particle::fill_object_collision(std::shared_ptr<IObject> other,
                                      std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
-                                     const CollisionType collision_type, const float coeff) {
+                                     const CollisionType collision_type,
+                                     const float coeff) {
     other->fill_particle_collision(shared_from_this(), collision_registry, collision_type, coeff);
 }
 
 void Particle::fill_particle_collision(std::shared_ptr<Particle> particle,
                                        std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
-                                       const CollisionType collision_type, const float coeff) {
+                                       const CollisionType collision_type,
+                                       const float coeff) {
     switch (collision_type) {
     case Rod:
         collision_registry->AddRodCollision(shared_from_this(), particle, coeff);
