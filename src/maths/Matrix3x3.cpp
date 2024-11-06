@@ -53,44 +53,65 @@ Matrix3x3 Matrix3x3::transpose() const {
 }
 
 Matrix3x3 Matrix3x3::translate(const float tx, const float ty) {
-    Matrix3x3 result;
-    result(0, 0) = 1;
-    result(0, 1) = 0;
+    Matrix3x3 result = identity();
     result(0, 2) = tx;
-    result(1, 0) = 0;
-    result(1, 1) = 1;
     result(1, 2) = ty;
-    result(2, 0) = 0;
-    result(2, 1) = 0;
-    result(2, 2) = 1;
     return result;
 }
 
 Matrix3x3 Matrix3x3::rotate(const float angle) {
-    Matrix3x3 result;
+    Matrix3x3 result = identity();
     const float rad = angle * PI / 180.0f;
     result(0, 0) = cos(rad);
     result(0, 1) = -sin(rad);
-    result(0, 2) = 0;
     result(1, 0) = sin(rad);
     result(1, 1) = cos(rad);
-    result(1, 2) = 0;
-    result(2, 0) = 0;
-    result(2, 1) = 0;
-    result(2, 2) = 1;
+    return result;
+}
+
+Matrix3x3 Matrix3x3::rotateX(const float angle) {
+    Matrix3x3 result = identity();
+    const float rad = angle * PI / 180.0f;
+    result(1, 1) = cos(rad);
+    result(1, 2) = -sin(rad);
+    result(2, 1) = sin(rad);
+    result(2, 2) = cos(rad);
+    return result;
+}
+
+Matrix3x3 Matrix3x3::rotateY(const float angle) {
+    Matrix3x3 result = identity();
+    const float rad = angle * PI / 180.0f;
+    result(0, 0) = cos(rad);
+    result(0, 2) = sin(rad);
+    result(2, 0) = -sin(rad);
+    result(2, 2) = cos(rad);
+    return result;
+}
+
+Matrix3x3 Matrix3x3::rotateZ(const float angle) {
+    Matrix3x3 result = identity();
+    const float rad = angle * PI / 180.0f;
+    result(0, 0) = cos(rad);
+    result(0, 1) = -sin(rad);
+    result(1, 0) = sin(rad);
+    result(1, 1) = cos(rad);
     return result;
 }
 
 Matrix3x3 Matrix3x3::scale(const float sx, const float sy) {
-    Matrix3x3 result;
+    Matrix3x3 result = identity();
     result(0, 0) = sx;
-    result(0, 1) = 0;
-    result(0, 2) = 0;
-    result(1, 0) = 0;
     result(1, 1) = sy;
-    result(1, 2) = 0;
-    result(2, 0) = 0;
-    result(2, 1) = 0;
-    result(2, 2) = 1;
+    return result;
+}
+
+Matrix3x3 Matrix3x3::identity() {
+    Matrix3x3 result;
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            result(i, j) = (i == j) ? 1.0f : 0.0f;
+        }
+    }
     return result;
 }

@@ -14,7 +14,11 @@ public:
     [[nodiscard]] Matrix3x3 transpose() const;
     static Matrix3x3 translate(float tx, float ty);
     static Matrix3x3 rotate(float angle);
+    static Matrix3x3 rotateX(float angle);
+    static Matrix3x3 rotateY(float angle);
+    static Matrix3x3 rotateZ(float angle);
     static Matrix3x3 scale(float sx, float sy);
+    static Matrix3x3 identity();
 
 private:
     float matrix_[3][3];
