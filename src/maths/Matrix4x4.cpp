@@ -44,6 +44,59 @@ Matrix4x4 Matrix4x4::operator*(const Matrix4x4& other) const {
     return result;
 }
 
+Matrix4x4 Matrix4x4::operator*(float scalar) const {
+    Matrix4x4 result;
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            result(i, j) = matrix_[i][j] * scalar;
+        }
+    }
+    return result;
+}
+
+Matrix4x4 Matrix4x4::operator*(const Quaternion& q) const {
+    Matrix4x4 result;
+    float qw = q.getW();
+    float qx = q.getX();
+    float qy = q.getY();
+    float qz = q.getZ();
+
+    // Convert quaternion to 4x4 rotation matrix
+    Matrix4x4 rotation = identity();
+    rotation(0, 0) = 1 - 2 * qy * qy - 2 * qz * qz;
+    rotation(0, 1) = 2 * qx * qy - 2 * qz * qw;
+    rotation(0, 2) = 2 * qx * qz + 2 * qy * qw;
+    rotation(1, 0) = 2 * qx * qy + 2 * qz * qw;
+    rotation(1, 1) = 1 - 2 * qx * qx - 2 * qz * qz;
+    rotation(1, 2) = 2 * qy * qz - 2 * qx * qw;
+    rotation(2, 0) = 2 * qx * qz - 2 * qy * qw;
+    rotation(2, 1) = 2 * qy * qz + 2 * qx * qw;
+    rotation(2, 2) = 1 - 2 * qx * qx - 2 * qy * qy;
+
+    // Multiply the current matrix with the rotation matrix
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            result(i, j) = 0;
+            for (int k = 0; k < 4; ++k) {
+                result(i, j) += matrix_[i][k] * rotation(k, j);
+            }
+        }
+    }
+
+    return result;
+}
+
+Matrix4x4 Matrix4x4::operator/(float scalar) const
+{
+    Matrix4x4 result;
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            result(i, j) = matrix_[i][j] / scalar;
+        }
+    }
+    return result;
+}
+
 float Matrix4x4::determinant() const {
     float det = 0.0f;
     for (int i = 0; i < 4; ++i) {

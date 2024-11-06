@@ -41,6 +41,58 @@ Matrix3x3 Matrix3x3::operator*(const Matrix3x3& other) const {
     return result;
 }
 
+Matrix3x3 Matrix3x3::operator*(const float scalar) const {
+    Matrix3x3 result;
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            result(i, j) = matrix_[i][j] * scalar;
+        }
+    }
+    return result;
+}
+
+Matrix3x3 Matrix3x3::operator*(const Quaternion& q) const {
+    Matrix3x3 result;
+    float qw = q.getW();
+    float qx = q.getX();
+    float qy = q.getY();
+    float qz = q.getZ();
+
+    // Convert quaternion to 3x3 rotation matrix
+    Matrix3x3 rotation;
+    rotation(0, 0) = 1 - 2 * qy * qy - 2 * qz * qz;
+    rotation(0, 1) = 2 * qx * qy - 2 * qz * qw;
+    rotation(0, 2) = 2 * qx * qz + 2 * qy * qw;
+    rotation(1, 0) = 2 * qx * qy + 2 * qz * qw;
+    rotation(1, 1) = 1 - 2 * qx * qx - 2 * qz * qz;
+    rotation(1, 2) = 2 * qy * qz - 2 * qx * qw;
+    rotation(2, 0) = 2 * qx * qz - 2 * qy * qw;
+    rotation(2, 1) = 2 * qy * qz + 2 * qx * qw;
+    rotation(2, 2) = 1 - 2 * qx * qx - 2 * qy * qy;
+
+    // Multiply the current matrix with the rotation matrix
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            result(i, j) = 0;
+            for (int k = 0; k < 3; ++k) {
+                result(i, j) += matrix_[i][k] * rotation(k, j);
+            }
+        }
+    }
+
+    return result;
+}
+
+Matrix3x3 Matrix3x3::operator/(float scalar) const {
+    Matrix3x3 result;
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            result(i, j) = matrix_[i][j] / scalar;
+        }
+    }
+    return result;
+}
+
 float Matrix3x3::determinant() const {
     return matrix_[0][0] * (matrix_[1][1] * matrix_[2][2] - matrix_[1][2] * matrix_[2][1]) - matrix_[0][1] * (matrix_[1][0] * matrix_[2][2] - matrix_[
         1][2] * matrix_[2][0]) + matrix_[0][2] * (matrix_[1][0] * matrix_[2][1] - matrix_[1][1] * matrix_[2][0]);

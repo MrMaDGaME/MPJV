@@ -1,4 +1,5 @@
 #pragma once
+#include "Quaternion.h"
 
 class Matrix4x4 {
 public:
@@ -9,6 +10,9 @@ public:
     Matrix4x4 operator+(const Matrix4x4& other) const;
     Matrix4x4 operator-(const Matrix4x4& other) const;
     Matrix4x4 operator*(const Matrix4x4& other) const;
+    Matrix4x4 operator*(float scalar) const;
+    Matrix4x4 operator*(const Quaternion& q) const;
+    Matrix4x4 operator/(float scalar) const;
     [[nodiscard]] float determinant() const;
     [[nodiscard]] Matrix4x4 transpose() const;
     static Matrix4x4 translate(float tx, float ty, float tz);
