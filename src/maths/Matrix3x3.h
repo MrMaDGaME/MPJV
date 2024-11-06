@@ -1,5 +1,6 @@
 #pragma once
 #include "ofMathConstants.h"
+#include <cmath>
 #include "Quaternion.h"
 
 class Matrix3x3 {

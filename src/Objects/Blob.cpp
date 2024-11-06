@@ -167,8 +167,12 @@ void Blob::remove_all_links(shared_ptr<Particle> p) {
     }
     // Remove the spring forces
     for (const auto& link : links_to_remove) {
-        force_registry->remove(std::static_pointer_cast<IObject>(link.p2), std::static_pointer_cast<IParticleForceGenerator>(link.spring_from_to));
-        force_registry->remove(std::static_pointer_cast<IObject>(link.p1), std::static_pointer_cast<IParticleForceGenerator>(link.spring_to_from));
+        auto p2_casted = std::static_pointer_cast<IObject>(link.p2);
+        auto spring_from_to_casted = std::static_pointer_cast<IParticleForceGenerator>(link.spring_from_to);
+        force_registry->remove(p2_casted, spring_from_to_casted);
+        auto p1_casted = std::static_pointer_cast<IObject>(link.p1);
+        auto spring_to_from_casted = std::static_pointer_cast<IParticleForceGenerator>(link.spring_to_from);
+        force_registry->remove(p1_casted,spring_to_from_casted );
         collision_registry->RemoveCableCollision(link.p1, link.p2);
     }
     // Erase the links from the particle_links vector
