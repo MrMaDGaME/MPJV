@@ -39,4 +39,4 @@ protected:
     ofColor color_;
 
 
-}
+};
