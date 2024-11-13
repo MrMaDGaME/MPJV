@@ -1,14 +1,14 @@
 #pragma once
-#include <cmath>
-#include "Quaternion.h"
 #include <glm/glm.hpp>
 
 #include "ofMatrix4x4.h"
+#include "Quaternion.h"
 
 class Matrix4x4 {
 public:
     Matrix4x4();
     Matrix4x4(float mat[4][4]);
+    Matrix4x4(const Quaternion& q);
     float& operator()(int row, int col);
     const float& operator()(int row, int col) const;
     Matrix4x4 operator+(const Matrix4x4& other) const;

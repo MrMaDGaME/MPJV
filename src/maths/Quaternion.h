@@ -1,9 +1,6 @@
 ﻿#pragma once
 
-#include <iostream>
-#include <cmath>
-
-#include "Matrix4x4.h"
+class Matrix4x4;
 
 class Quaternion {
 public:

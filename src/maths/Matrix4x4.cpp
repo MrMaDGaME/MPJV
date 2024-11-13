@@ -11,6 +11,33 @@ Matrix4x4::Matrix4x4(float mat[4][4]) {
     for (int i = 0; i < 4; ++i) for (int j = 0; j < 4; ++j) matrix_[i][j] = mat[i][j];
 }
 
+Matrix4x4::Matrix4x4(const Quaternion& q) {
+    const float qw = q.getW();
+    const float qx = q.getX();
+    const float qy = q.getY();
+    const float qz = q.getZ();
+
+    matrix_[0][0] = 1 - 2 * qy * qy - 2 * qz * qz;
+    matrix_[0][1] = 2 * qx * qy - 2 * qz * qw;
+    matrix_[0][2] = 2 * qx * qz + 2 * qy * qw;
+    matrix_[0][3] = 0;
+
+    matrix_[1][0] = 2 * qx * qy + 2 * qz * qw;
+    matrix_[1][1] = 1 - 2 * qx * qx - 2 * qz * qz;
+    matrix_[1][2] = 2 * qy * qz - 2 * qx * qw;
+    matrix_[1][3] = 0;
+
+    matrix_[2][0] = 2 * qx * qz - 2 * qy * qw;
+    matrix_[2][1] = 2 * qy * qz + 2 * qx * qw;
+    matrix_[2][2] = 1 - 2 * qx * qx - 2 * qy * qy;
+    matrix_[2][3] = 0;
+
+    matrix_[3][0] = 0;
+    matrix_[3][1] = 0;
+    matrix_[3][2] = 0;
+    matrix_[3][3] = 1;
+}
+
 float& Matrix4x4::operator()(const int row, const int col) {
     return matrix_[row][col];
 }
