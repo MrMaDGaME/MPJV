@@ -30,15 +30,13 @@ public:
                                          CollisionType collision_type,
                                          float coeff) override;
 
-protected :
-    ofColor color_;
-
-private :
+protected:
     Vector position_;
     Vector velocity_;
     Vector accum_force_;
     float inv_mass_;
     Matrix3x3 inv_inertia_;
+    ofColor color_;
 
 
 }
