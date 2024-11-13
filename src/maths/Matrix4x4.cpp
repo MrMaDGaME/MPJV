@@ -235,3 +235,14 @@ Matrix4x4 Matrix4x4::identity() {
     }
     return result;
 }
+
+glm::mat4 Matrix4x4::to_glm() const
+{
+    glm::mat4 result;
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            result[i][j] = matrix_[i][j];
+        }
+    }
+    return result;
+}
