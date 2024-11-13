@@ -53,11 +53,11 @@ void RigidBody::set_velocity(const Vector& velocity) {
 void RigidBody::set_inv_mass(float inv_mass) {
     this->inv_mass_ = inv_mass;
 }
-    // virtual void fill_object_collision(std::shared_ptr<IObject> other,
-    //                                    std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
-    //                                    CollisionType collision_type,
-    //                                    float coeff) ;
-    // void fill_particle_collision(std::shared_ptr<Particle> particle,
-    //                                      std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
-    //                                      CollisionType collision_type,
-    //                                      float coeff) ;
+void fill_object_collision(std::shared_ptr<IObject> other,
+                                       std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+                                       CollisionType collision_type,
+                                       float coeff) {}
+void fill_particle_collision(std::shared_ptr<Particle> particle,
+                                         std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+                                         CollisionType collision_type,
+                                         float coeff){}
