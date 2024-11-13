@@ -17,3 +17,6 @@ Makefile
 *.entitlements
 *.make
 *.plist
+*.DS_Store
+
+

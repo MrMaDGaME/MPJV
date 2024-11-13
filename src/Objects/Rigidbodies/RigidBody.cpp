@@ -22,10 +22,6 @@ RigidBody::RigidBody(float x, float y, float z, float mass, Matrix3x3 inertia, o
 
 //    void update() ;
 
-// void RigidBody::draw() {
-//     ofSetColor(color_);
-//     ofDrawRectangle(position_.x, position_.y, position_.z, width_, height_);
-// }
 void RigidBody::addForce(const Vector& force) {
         accum_force_ += force;
 }
