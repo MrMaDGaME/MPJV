@@ -1,15 +1,16 @@
 #pragma once
 #include "IObject.h"
 #include "ofMain.h"
+#include "../maths/Matrix3x3.h"
 
 class RigidBody : public IObject, public std::enable_shared_from_this<RigidBody> {
+
+protected:
+    RigidBody(float x, float y, float z, float mass,Matrix3x3 inertia);
+    RigidBody(float x, float y, float z, float mass, Matrix3x3 inertia, ofColor color);
 public:
-
-    RigidBody(float x, float y, float z, float height, float width, float mass,float inertia);
-    RigidBody(float x, float y, float z, float height, float width, float mass, float intertia, ofColor color);
-
     void update() override;
-    void draw() override;
+    virtual void draw() override;
     void addForce(const Vector& force) override;
     void addForce(const Vector& applyPoint, const Vector& force);
 
@@ -29,17 +30,14 @@ public:
                                          CollisionType collision_type,
                                          float coeff) override;
 
-protected :
-    ofColor color_;
-
-private :
+protected:
     Vector position_;
     Vector velocity_;
     Vector accum_force_;
+    Vector accum_torque;
     float inv_mass_;
-    float height_;
-    float width_;
-    float inertia_;
+    Matrix3x3 inv_inertia_;
+    ofColor color_;
 
 
-}
+};
