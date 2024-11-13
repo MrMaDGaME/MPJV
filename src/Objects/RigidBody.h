@@ -1,38 +1,16 @@
-#include "RigidBody.h"
+#pragma once
+#include "IObject.h"
+#include "ofMain.h"
 
-RigidBody::RigidBody(float x, float y, float z, float height, float width, float mass,float inertia){
-    if (mass <= 0.f) {
-        throw std::invalid_argument("Mass must be positive");
-    }
-    position_ = Vector (x,y,z);
-    velocity_ = Vector(0,0,0);
-    inv_mass_ = 1/mass;
-    height_ = height;
-    width_ = width;
-    inertia_ = inertia; 
-}
-    
-RigidBody::RigidBody(float x, float y, float z, float height, float width, float mass, float intertia, ofColor color){
-        if (mass <= 0.f) {
-        throw std::invalid_argument("Mass must be positive");
-    }
-    position_ = Vector (x,y,z);
-    velocity_ = Vector(0,0,0);
-    inv_mass_ = 1/mass;
-    height_ = height;
-    width_ = width;
-    inertia_ = inertia; 
-}
+class RigidBody : public IObject, public std::enable_shared_from_this<RigidBody> {
+public:
 
-//    void update() override;
+    RigidBody(float x, float y, float z, float height, float width, float mass,float inertia);
+    RigidBody(float x, float y, float z, float height, float width, float mass, float intertia, ofColor color);
 
-void RigidBody::draw() {
-    ofSetColor(color_);
-    ofDrawRectangle(position_.x, position_.y, position_.z, width_, height_);
-}
-void RigidBody::addForce(const Vector& force) override{
-        accu
-}
+    void update() override;
+    void draw() override;
+    void addForce(const Vector& force) override;
     void addForce(const Vector& applyPoint, const Vector& force);
 
 
@@ -50,3 +28,18 @@ void RigidBody::addForce(const Vector& force) override{
                                          std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
                                          CollisionType collision_type,
                                          float coeff) override;
+
+protected :
+    ofColor color_;
+
+private :
+    Vector position_;
+    Vector velocity_;
+    Vector accum_force_;
+    float inv_mass_;
+    float height_;
+    float width_;
+    float inertia_;
+
+
+}
