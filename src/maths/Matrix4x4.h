@@ -3,6 +3,8 @@
 #include "Quaternion.h"
 #include <glm/glm.hpp>
 
+#include "ofMatrix4x4.h"
+
 class Matrix4x4 {
 public:
     Matrix4x4();
@@ -27,6 +29,8 @@ public:
     static Matrix4x4 identity();
 
     [[nodiscard]] glm::mat4 to_glm() const;
+    [[nodiscard]] ofMatrix4x4 ToOfMatrix() const;
+    
     
 private:
     float matrix_[4][4];

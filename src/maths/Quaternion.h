@@ -3,6 +3,8 @@
 #include <iostream>
 #include <cmath>
 
+#include "Matrix4x4.h"
+
 class Quaternion {
 public:
     // Constructeurs
@@ -27,6 +29,7 @@ public:
     [[nodiscard]] Quaternion conjugate() const;
     [[nodiscard]] Quaternion inverse() const;
     void normalize();
+    [[nodiscard]] Matrix4x4 ToMatrix() const;
 
     // Affichage
     void print() const;

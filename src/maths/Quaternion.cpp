@@ -72,6 +72,22 @@ void Quaternion::normalize() {
     z /= n;
 }
 
+Matrix4x4 Quaternion::ToMatrix() const {
+    // Convert quaternion to 4x4 rotation matrix
+    Matrix4x4 rotation = Matrix4x4::identity();
+    rotation(0, 0) = 1 - 2 * y * y - 2 * z * z;
+    rotation(0, 1) = 2 * x * y - 2 * z * w;
+    rotation(0, 2) = 2 * x * z + 2 * y * w;
+    rotation(1, 0) = 2 * x * y + 2 * z * w;
+    rotation(1, 1) = 1 - 2 * x * x - 2 * z * z;
+    rotation(1, 2) = 2 * y * z - 2 * x * w;
+    rotation(2, 0) = 2 * x * z - 2 * y * w;
+    rotation(2, 1) = 2 * y * z + 2 * x * w;
+    rotation(2, 2) = 1 - 2 * x * x - 2 * y * y;
+
+    return rotation;
+}
+
 // Affichage
 void Quaternion::print() const {
     std::cout << "(" << w << ", " << x << ", " << y << ", " << z << ")" << std::endl;

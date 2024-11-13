@@ -246,3 +246,14 @@ glm::mat4 Matrix4x4::to_glm() const
     }
     return result;
 }
+
+ofMatrix4x4 Matrix4x4::ToOfMatrix() const
+{
+    ofMatrix4x4 result;
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            result(i, j) = matrix_[i][j];
+        }
+    }
+    return result;
+}
