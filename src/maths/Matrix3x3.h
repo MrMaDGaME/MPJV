@@ -17,6 +17,7 @@ public:
     Matrix3x3 operator/(float scalar) const;
     [[nodiscard]] float determinant() const;
     [[nodiscard]] Matrix3x3 transpose() const;
+    [[nodiscard]] Matrix3x3 inverse() const;
     static Matrix3x3 translate(float tx, float ty);
     static Matrix3x3 rotate(float angle);
     static Matrix3x3 rotateX(float angle);

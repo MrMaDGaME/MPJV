@@ -104,6 +104,29 @@ Matrix3x3 Matrix3x3::transpose() const {
     return result;
 }
 
+Matrix3x3 Matrix3x3::inverse() const {
+    Matrix3x3 result;
+    float det = determinant();
+
+    if (det == 0) {
+        throw std::runtime_error("Matrix is singular and cannot be inverted.");
+    }
+
+    float invDet = 1.0f / det;
+
+    result(0, 0) = (matrix_[1][1] * matrix_[2][2] - matrix_[1][2] * matrix_[2][1]) * invDet;
+    result(0, 1) = (matrix_[0][2] * matrix_[2][1] - matrix_[0][1] * matrix_[2][2]) * invDet;
+    result(0, 2) = (matrix_[0][1] * matrix_[1][2] - matrix_[0][2] * matrix_[1][1]) * invDet;
+    result(1, 0) = (matrix_[1][2] * matrix_[2][0] - matrix_[1][0] * matrix_[2][2]) * invDet;
+    result(1, 1) = (matrix_[0][0] * matrix_[2][2] - matrix_[0][2] * matrix_[2][0]) * invDet;
+    result(1, 2) = (matrix_[0][2] * matrix_[1][0] - matrix_[0][0] * matrix_[1][2]) * invDet;
+    result(2, 0) = (matrix_[1][0] * matrix_[2][1] - matrix_[1][1] * matrix_[2][0]) * invDet;
+    result(2, 1) = (matrix_[0][1] * matrix_[2][0] - matrix_[0][0] * matrix_[2][1]) * invDet;
+    result(2, 2) = (matrix_[0][0] * matrix_[1][1] - matrix_[0][1] * matrix_[1][0]) * invDet;
+
+    return result;
+}
+
 Matrix3x3 Matrix3x3::translate(const float tx, const float ty) {
     Matrix3x3 result = identity();
     result(0, 2) = tx;

@@ -121,6 +121,33 @@ Matrix4x4 Matrix4x4::transpose() const {
     return result;
 }
 
+Matrix4x4 Matrix4x4::inverse() const {
+    float det = determinant();
+    if (det == 0) {
+        throw std::runtime_error("Matrix is singular and cannot be inverted.");
+    }
+
+    Matrix4x4 result;
+    float invDet = 1.0f / det;
+
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            Matrix3x3 subMatrix;
+            for (int subRow = 0; subRow < 3; ++subRow) {
+                for (int subCol = 0; subCol < 3; ++subCol) {
+                    int rowIndex = subRow < i ? subRow : subRow + 1;
+                    int colIndex = subCol < j ? subCol : subCol + 1;
+                    subMatrix(subRow, subCol) = matrix_[rowIndex][colIndex];
+                }
+            }
+            float subDet = subMatrix.determinant();
+            result(j, i) = ((i + j) % 2 == 0 ? 1 : -1) * subDet * invDet;
+        }
+    }
+
+    return result;
+}
+
 Matrix4x4 Matrix4x4::translate(const float tx, const float ty, const float tz) {
     Matrix4x4 result = identity(); // Initialize as identity matrix
     result(0, 3) = tx;

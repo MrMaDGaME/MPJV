@@ -16,6 +16,7 @@ public:
     Matrix4x4 operator/(float scalar) const;
     [[nodiscard]] float determinant() const;
     [[nodiscard]] Matrix4x4 transpose() const;
+    [[nodiscard]] Matrix4x4 inverse() const;
     static Matrix4x4 translate(float tx, float ty, float tz);
     static Matrix4x4 rotate(float angle, float x, float y, float z);
     static Matrix4x4 rotateX(float angle);
