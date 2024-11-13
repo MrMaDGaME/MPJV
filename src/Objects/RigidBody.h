@@ -1,13 +1,14 @@
 #pragma once
 #include "IObject.h"
 #include "ofMain.h"
+#include "../maths/Matrix3x3.h"
 
 class RigidBody : public IObject, public std::enable_shared_from_this<RigidBody> {
+
+protected:
+    RigidBody(float x, float y, float z, float mass,float inertia);
+    RigidBody(float x, float y, float z, float mass, float intertia, ofColor color);
 public:
-
-    RigidBody(float x, float y, float z, float height, float width, float mass,float inertia);
-    RigidBody(float x, float y, float z, float height, float width, float mass, float intertia, ofColor color);
-
     void update() override;
     void draw() override;
     void addForce(const Vector& force) override;
@@ -37,9 +38,7 @@ private :
     Vector velocity_;
     Vector accum_force_;
     float inv_mass_;
-    float height_;
-    float width_;
-    float inertia_;
+    Matrix3x3 inv_inertia_;
 
 
 }

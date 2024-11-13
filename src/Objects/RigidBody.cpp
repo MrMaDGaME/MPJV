@@ -1,26 +1,22 @@
 #include "RigidBody.h"
 
-RigidBody::RigidBody(float x, float y, float z, float height, float width, float mass,float inertia){
+RigidBody::RigidBody(float x, float y, float z, float mass,float inertia){
     if (mass <= 0.f) {
         throw std::invalid_argument("Mass must be positive");
     }
     position_ = Vector (x,y,z);
     velocity_ = Vector(0,0,0);
     inv_mass_ = 1/mass;
-    height_ = height;
-    width_ = width;
     inertia_ = inertia; 
 }
     
-RigidBody::RigidBody(float x, float y, float z, float height, float width, float mass, float intertia, ofColor color){
+RigidBody::RigidBody(float x, float y, float z, float mass, float intertia, ofColor color){
         if (mass <= 0.f) {
         throw std::invalid_argument("Mass must be positive");
     }
     position_ = Vector (x,y,z);
     velocity_ = Vector(0,0,0);
     inv_mass_ = 1/mass;
-    height_ = height;
-    width_ = width;
     inertia_ = inertia; 
 }
 
@@ -31,9 +27,11 @@ void RigidBody::draw() {
     ofDrawRectangle(position_.x, position_.y, position_.z, width_, height_);
 }
 void RigidBody::addForce(const Vector& force) override{
-        accu
+        accum_force_ += force;
 }
-    void addForce(const Vector& applyPoint, const Vector& force);
+    void addForce(const Vector& applyPoint, const Vector& force){
+        accum_force_ += force;
+    }
 
 
     [[nodiscard]] Vector get_position() const override;
