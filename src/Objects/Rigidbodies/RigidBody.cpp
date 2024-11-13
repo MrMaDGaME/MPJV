@@ -5,6 +5,7 @@ RigidBody::RigidBody(float x, float y, float z, float mass,Matrix3x3 inertia){
         throw std::invalid_argument("Mass must be positive");
     }
     position_ = Vector (x,y,z);
+    rotation_ = Quaternion();
     velocity_ = Vector(0,0,0);
     inv_mass_ = 1/mass;
     inv_inertia_ = inertia.inverse(); 
@@ -15,6 +16,7 @@ RigidBody::RigidBody(float x, float y, float z, float mass, Matrix3x3 inertia, o
         throw std::invalid_argument("Mass must be positive");
     }
     position_ = Vector (x,y,z);
+    rotation_ = Quaternion();
     velocity_ = Vector(0,0,0);
     inv_mass_ = 1/mass;
     inv_inertia_ = inertia.inverse(); 
@@ -31,6 +33,10 @@ void RigidBody::addForce(const Vector& applyPoint, const Vector& force){
         accum_torque +=  l^force;
     }
 
+void rotate(Quaternion rot_quat){
+    
+
+}
 
 [[nodiscard]] Vector RigidBody::get_position() const {
     return position_;

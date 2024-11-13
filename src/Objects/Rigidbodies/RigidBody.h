@@ -1,7 +1,8 @@
 #pragma once
-#include "IObject.h"
+#include "../IObject.h"
 #include "ofMain.h"
-#include "../maths/Matrix3x3.h"
+#include "../../maths/Matrix3x3.h"
+#include "../../maths/Quaternion.h"
 
 class RigidBody : public IObject, public std::enable_shared_from_this<RigidBody> {
 
@@ -13,6 +14,7 @@ public:
     void addForce(const Vector& force) override;
     void addForce(const Vector& applyPoint, const Vector& force);
 
+    void rotate(Quaternion rot_quat);
 
     [[nodiscard]] Vector get_position() const override;
     void set_position(const Vector& position) override;
@@ -31,6 +33,7 @@ public:
 
 protected:
     Vector position_;
+    Quaternion rotation_;
     Vector velocity_;
     Vector accum_force_;
     Vector accum_torque;
