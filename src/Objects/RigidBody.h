@@ -6,11 +6,11 @@
 class RigidBody : public IObject, public std::enable_shared_from_this<RigidBody> {
 
 protected:
-    RigidBody(float x, float y, float z, float mass,float inertia);
-    RigidBody(float x, float y, float z, float mass, float intertia, ofColor color);
+    RigidBody(float x, float y, float z, float mass,Matrix3x3 inertia);
+    RigidBody(float x, float y, float z, float mass, Matrix3x3 inertia, ofColor color);
 public:
     void update() override;
-    void draw() override;
+    virtual void draw() override;
     void addForce(const Vector& force) override;
     void addForce(const Vector& applyPoint, const Vector& force);
 
@@ -34,6 +34,7 @@ protected:
     Vector position_;
     Vector velocity_;
     Vector accum_force_;
+    Vector accum_torque;
     float inv_mass_;
     Matrix3x3 inv_inertia_;
     ofColor color_;
