@@ -1,6 +1,7 @@
 #pragma once
 #include <cmath>
 #include "Quaternion.h"
+#include <glm/glm.hpp>
 
 class Matrix4x4 {
 public:
@@ -24,6 +25,8 @@ public:
     static Matrix4x4 rotateZ(float angle);
     static Matrix4x4 scale(float sx, float sy, float sz);
     static Matrix4x4 identity();
+
+    [[nodiscard]] glm::mat4 to_glm() const;
     
 private:
     float matrix_[4][4];
