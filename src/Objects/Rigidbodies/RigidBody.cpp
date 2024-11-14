@@ -22,7 +22,14 @@ RigidBody::RigidBody(float x, float y, float z, float mass, Matrix3x3 inertia, o
     inv_inertia_ = inertia.inverse(); 
 }
 
-//    void update() ;
+void RigidBody::update(){
+        float last_frame = static_cast<float>(ofGetLastFrameTime());
+        Vector acceleration = accum_force_ * inv_mass_;
+        position_ += (velocity_ * last_frame + acceleration * last_frame * last_frame/2) *100; //Passage en cm
+        velocity_ += acceleration * last_frame;
+
+        clearAccums();
+    }
 
 void RigidBody::addForce(const Vector& force) {
         accum_force_ += force;
@@ -59,11 +66,16 @@ void RigidBody::set_velocity(const Vector& velocity) {
 void RigidBody::set_inv_mass(float inv_mass) {
     this->inv_mass_ = inv_mass;
 }
-void fill_object_collision(std::shared_ptr<IObject> other,
+void RigidBody::fill_object_collision(std::shared_ptr<IObject> other,
                                        std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
                                        CollisionType collision_type,
                                        float coeff) {}
-void fill_particle_collision(std::shared_ptr<Particle> particle,
+void RigidBody::fill_particle_collision(std::shared_ptr<Particle> particle,
                                          std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
                                          CollisionType collision_type,
                                          float coeff){}
+
+void RigidBody::clearAccums(){
+    accum_force_ = Vector(0,0,0);
+    accum_torque = Vector(0,0,0);
+}

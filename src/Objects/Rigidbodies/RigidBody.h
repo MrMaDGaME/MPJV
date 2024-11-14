@@ -31,6 +31,8 @@ public:
                                          CollisionType collision_type,
                                          float coeff) override;
 
+private :
+    void clearAccums();
 protected:
     Vector position_;
     Quaternion rotation_;
