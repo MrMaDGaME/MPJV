@@ -30,7 +30,7 @@ public:
                                          std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
                                          CollisionType collision_type,
                                          float coeff) override;
-
+    void setCenterOfMass(const Vector& newCenterOfMass);
 private :
     void clearAccums();
 protected:
@@ -43,5 +43,5 @@ protected:
     Matrix3x3 inv_inertia_;
     ofColor color_;
 
-
+    Vector centerOfMass_;  // Variable pour stocker le centre de masse
 };
