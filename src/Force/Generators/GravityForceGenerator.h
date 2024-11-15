@@ -10,6 +10,7 @@ public:
     GravityForceGenerator(float gravity);
     GravityForceGenerator();
     void UpdateForce(std::shared_ptr<IObject>& object) override;
+    void setGravity(float gravity);
 
 private:
     Vector _gravity;
