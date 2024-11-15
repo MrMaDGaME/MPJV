@@ -1,207 +1,100 @@
 #include "ofApp.h"
 
-std::vector<std::shared_ptr<IObject>> ofApp::objects_;
-
 //--------------------------------------------------------------
 void ofApp::setup() {
-    // Setup blob
-    blob = make_shared<Blob>(100.f, 700.f, 0.f, 10.f, 1.f, ofColor::orange, 5.f, 1.f, 100.f);
-    objects_.push_back(blob);
-    auto input_force = make_shared<InputForceGenerator>(moveInput, 100.f);
-    particleForceRegistry->add(blob, input_force);
-    auto friction = make_shared<FrictionForceGenerator>(10.f);
-    particleForceRegistry->add(blob, friction);
-    // Create Objects
-    auto obstacleA = make_shared<Particle>(600.f, 700.f, 0.f, 100.f, 10.f, ofColor::blue, 100.f);
-    auto obstacleB = make_shared<Particle>(100.f, 200.f, 0.f, 100.f, 10.f, ofColor::blue, 100.f);
-    objects_.push_back(obstacleA);
-    objects_.push_back(obstacleB);
-    obstacleB->set_velocity(Vector(1, 1, 0));
-    auto obstacleC = make_shared<Particle>(900.f, 700.f, 0.f, 50.f, true);
-    auto obstacleD = make_shared<Particle>(1100.f, 700.f, 0.f, 50.f, true);
-    objects_.push_back(obstacleC);
-    objects_.push_back(obstacleD);
-    auto obstacleE = make_shared<Particle>(900.f, 600.f, 0.f, 50.f, 10.f, ofColor::yellow, 100.f);
-    auto obstacleF = make_shared<Particle>(1100.f, 400.f, 0.f, 50.f, 10.f, ofColor::yellow, 100.f);
-    objects_.push_back(obstacleE);
-    objects_.push_back(obstacleF);
-    auto gravity = make_shared<GravityForceGenerator>();
-    particleForceRegistry->add(obstacleE, gravity);
-    particleForceRegistry->add(obstacleF, gravity);
-    // Initialize collisions
-    particleCollisionRegistry->AddCableCollision(obstacleA, obstacleB, 300);
-    for (auto object = objects_.begin(); object != objects_.end(); ++object) {
-        for (auto other = object; other != objects_.end(); ++other) {
-            if (object != other) {
-                object->get()->fill_object_collision(*other, particleCollisionRegistry, Inter, DEFAULT_BOUNCE);
-            }
-        }
-    }
+    gui.setup();
+    gui.add(launchAngleSlider.setup("Launch Angle (degrees)", 45.f, 0.f, 90.f));
+    gui.add(azimuthAngleSlider.setup("Azimuth Angle (degrees)", 0.f, -180.f, 180.f));
+    gui.add(initialSpeedSlider.setup("Initial Speed", 2.f, 0.f, 10.f));
+    gui.add(gravityScaleSlider.setup("Gravity Scale", 0.3f, 0.1f, 2.0f));
+    gui.add(appliedForceXSlider.setup("Applied Force X", 10.f, -50.f, 50.f));
+    gui.add(appliedForceYSlider.setup("Applied Force Y", 5.f, -50.f, 50.f));
+    gui.add(appliedForceZSlider.setup("Applied Force Z", 0.f, -50.f, 50.f));
+    gui.add(centerOfMassXSlider.setup("Center of Mass X", 0.f, -25.f, 25.f));
+    gui.add(centerOfMassYSlider.setup("Center of Mass Y", 0.f, -25.f, 25.f));
+    gui.add(centerOfMassZSlider.setup("Center of Mass Z", 0.f, -25.f, 25.f));
+
+    gravity = make_shared<GravityForceGenerator>(-9.81f * gravityScaleSlider);
+
+    createNewBox();
+    cam.setDistance(500); // Positionner la caméra pour voir la scène
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
-    // Delete objects that are out of bounds
-    auto del_it = std::remove_if(objects_.begin(),
-                                 objects_.end(),
-                                 [this](shared_ptr<IObject>& p) {
-                                     if (p->get_position().y > static_cast<float>(ofGetHeight()) || p->get_position().x > static_cast<float>(
-                                         ofGetWidth()) || p->get_position().z > 0 || p->get_position().x < 0 || p->get_position().y < 0) {
-                                         particleForceRegistry->remove(p);
-                                         return true;
-                                     }
-                                     return false;
-                                 });
-    objects_.erase(del_it, objects_.end());
-    // Update particles
-    particleForceRegistry->update_forces();
-    particleCollisionRegistry->CheckCollision(0.0f);
-    for (const auto& p : objects_) {
-        p->update();
+    gravity->setGravity(-9.81f * gravityScaleSlider);
+
+    for (auto& box : boxes) {
+        forceRegistry->update_forces();
+        box->update();
     }
-    particleCollisionRegistry->CheckCollision(0.0f);
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-    // Draw objects
-    for (const auto& p : objects_) {
-        p->draw();
+    ofEnableDepthTest(); // Activer le test de profondeur pour le rendu 3D
+    cam.begin();
+
+    for (const auto& box : boxes) {
+        ofSetColor(ofColor::blue);
+        box->draw();
+
+        // Dessiner le centre de masse comme une sphère rouge
+        ofSetColor(ofColor::red);
+        ofDrawSphere(box->get_position().x + centerOfMassXSlider,
+            box->get_position().y + centerOfMassYSlider,
+            box->get_position().z + centerOfMassZSlider, 5.f);
     }
-    // Display the frame rate
+
+    cam.end(); // Fin de la scène 3D
+    ofDisableDepthTest(); // Désactiver le test de profondeur pour la GUI
+    gui.draw();
+
+    // Instructions
     ofSetColor(ofColor::white);
-    ofDrawBitmapString("rafraîchissement : " + ofToString(ofGetFrameRate()) + " fps", 10, 10);
-    // Display the number of particles in the blob
-    ofSetColor(ofColor::orange);
-    ofDrawBitmapString("Compteur de particules : " + ofToString(int(blob->get_particle_count())), 10, 30);
+    ofDrawBitmapString("Frame Rate: " + ofToString(ofGetFrameRate()) + " fps", 10, 10);
+    ofDrawBitmapString("Press 'l' to launch the box, 'n' to spawn a new box", 10, 30);
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
-    switch (key) {
-    case OF_KEY_LEFT:
-        moveInput->x = -1;
-        break;
-    case OF_KEY_RIGHT:
-        moveInput->x = 1;
-        break;
-    case OF_KEY_UP:
-        moveInput->y = -1;
-        break;
-    case OF_KEY_DOWN:
-        moveInput->y = 1;
-        break;
-    case ' ':
-        blob->add_new_blob();
-        break;
-    case 's':
-        blob->divide();
-        break;
-    case 'm':
-        blob->merge_with_nearest_blob();
-    default:
-        break;
+    if (key == 'l') {
+        launchBox();
+    }
+    else if (key == 'n') {
+        createNewBox();
     }
 }
 
 //--------------------------------------------------------------
-void ofApp::keyReleased(int key) {
-    switch (key) {
-    case OF_KEY_LEFT:
-    case OF_KEY_RIGHT:
-        moveInput->x = 0;
-        break;
-    case OF_KEY_UP:
-    case OF_KEY_DOWN:
-        moveInput->y = 0;
-        break;
-    default:
-        break;
+void ofApp::launchBox() {
+    if (box) {
+        // Convertir l'angle de lancement et l'azimut en radians
+        float launchAngleRad = ofDegToRad(launchAngleSlider);
+        float azimuthAngleRad = ofDegToRad(azimuthAngleSlider);
+
+        // Calculer les composantes de la vélocité initiale avec l'azimut et l'angle de lancement
+        float vx = initialSpeedSlider * cos(launchAngleRad) * cos(azimuthAngleRad);
+        float vy = initialSpeedSlider * sin(launchAngleRad);
+        float vz = initialSpeedSlider * cos(launchAngleRad) * sin(azimuthAngleRad);
+
+        Vector initialVelocity(vx, vy, vz);
+        box->set_velocity(initialVelocity);
+
+        // Définir le centre de masse en utilisant les sliders
+        Vector newCenterOfMass(centerOfMassXSlider, centerOfMassYSlider, centerOfMassZSlider);
+        box->setCenterOfMass(newCenterOfMass);
+
+        // Appliquer la force directement au centre de masse
+        Vector appliedForce(appliedForceXSlider, appliedForceYSlider, appliedForceZSlider);
+        box->addForce(newCenterOfMass, appliedForce);  // La force est appliquée au centre de masse ajusté
     }
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y) {
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button) {
-}
-
-//--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button) {
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button) {
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y) {
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y) {
-}
-
-//--------------------------------------------------------------
-void ofApp::windowResized(int w, int h) {
-}
-
-//--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg) {
-}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo) {
-}
-
-void ofApp::onBulletButtonPressed() {
-    float angle = angleSlider;
-    float speed = speedSlider;
-    spawnBullet(angle, speed);
-}
-
-void ofApp::onLaserButtonPressed() {
-    float angle = angleSlider;
-    float speed = speedSlider;
-    spawnLaser(angle, speed);
-}
-
-void ofApp::onCanonBallButtonPressed() {
-    float angle = angleSlider;
-    float speed = speedSlider;
-    spawnCanonBall(angle, speed);
-}
-
-void ofApp::add_object(shared_ptr<IObject> object) {
-    objects_.push_back(object);
-}
-
-void ofApp::remove_object(shared_ptr<IObject> object) {
-    objects_.erase(std::remove(objects_.begin(), objects_.end(), object), objects_.end());
-}
-
-void ofApp::spawnBullet(float angle, float speed) {
-    const auto p = make_shared<Bullet>(100.f, 700.f, 0.f);
-    Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
-    p->set_velocity(initialVelocity);
-    objects_.push_back(p);
-    particleForceRegistry->add(p, gravity);
-}
-
-void ofApp::spawnLaser(float angle, float speed) {
-    const auto p = make_shared<Laser>(100.f, 700.f, 0.f);
-    Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
-    p->set_velocity(initialVelocity);
-    objects_.push_back(p);
-    particleForceRegistry->add(p, gravity);
-}
-
-void ofApp::spawnCanonBall(float angle, float speed) {
-    const auto p = make_shared<CanonBall>(100.f, 700.f, 0.f);
-    Vector initialVelocity(speed * cos(angle), speed * sin(angle), 0.f);
-    p->set_velocity(initialVelocity);
-    objects_.push_back(p);
-    particleForceRegistry->add(p, gravity);
+void ofApp::createNewBox() {
+    // Initialiser une nouvelle boîte au centre avec des dimensions et masse définies
+    box = make_shared<Box>(0.f, 0.f, 0.f, 50.f, 50.f, 50.f, 10.f, Matrix3x3::identity());
+    boxes.push_back(box);
+    forceRegistry->add(box, gravity);
 }
