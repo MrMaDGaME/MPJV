@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 class Matrix4x4;
+class Matrix3x3;
 
 class Quaternion {
 public:
@@ -26,7 +27,8 @@ public:
     [[nodiscard]] Quaternion conjugate() const;
     [[nodiscard]] Quaternion inverse() const;
     void normalize();
-    [[nodiscard]] Matrix4x4 ToMatrix() const;
+    [[nodiscard]] Matrix4x4 ToMatrix4() const;
+    [[nodiscard]] Matrix3x3 ToMatrix3() const;
 
     // Affichage
     void print() const;

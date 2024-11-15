@@ -1,6 +1,7 @@
 ﻿#include "Quaternion.h"
 
 #include "Matrix4x4.h"
+#include "Matrix3x3.h"
 
 // Constructeurs
 Quaternion::Quaternion() : w(1), x(0), y(0), z(0) {
@@ -74,8 +75,12 @@ void Quaternion::normalize() {
     z /= n;
 }
 
-Matrix4x4 Quaternion::ToMatrix() const {
+Matrix4x4 Quaternion::ToMatrix4() const {
     return Matrix4x4(*this);
+}
+
+Matrix3x3 Quaternion::ToMatrix3() const {
+    return Matrix3x3(*this);
 }
 
 // Affichage

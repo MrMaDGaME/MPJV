@@ -7,6 +7,7 @@ class Matrix3x3 {
 public:
     Matrix3x3();
     Matrix3x3(float mat[3][3]); // copies contents of mat into m
+    Matrix3x3(const Quaternion& q);
     float& operator()(int row, int col); // set
     const float& operator()(int row, int col) const; // get
     Matrix3x3 operator+(const Matrix3x3& other) const;
