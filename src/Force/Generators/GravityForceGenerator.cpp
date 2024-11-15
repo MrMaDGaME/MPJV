@@ -14,3 +14,7 @@ void GravityForceGenerator::UpdateForce(std::shared_ptr<IObject>& object) {
     }
     object->addForce(_gravity / object->get_inv_mass());
 }
+
+void GravityForceGenerator::setGravity(float gravity) {
+    _gravity = DEFAULT_GRAVITY_DIRECTION * gravity;
+}
