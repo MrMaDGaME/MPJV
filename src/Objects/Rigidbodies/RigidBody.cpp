@@ -79,3 +79,7 @@ void RigidBody::clearAccums(){
     accum_force_ = Vector(0,0,0);
     accum_torque = Vector(0,0,0);
 }
+
+void RigidBody::setCenterOfMass(const Vector& newCenterOfMass) {
+    centerOfMass_ = newCenterOfMass;
+}
