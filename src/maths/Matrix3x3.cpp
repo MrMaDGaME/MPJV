@@ -87,6 +87,14 @@ Matrix3x3 Matrix3x3::operator*(const Quaternion& q) const {
     return result;
 }
 
+Vector Matrix3x3::operator*(const Vector& other) const {
+    float values[3] = {0.f, 0.f, 0.f};
+    for(int i = 0; i< 3;i++){
+            values[i] = matrix_[i][0] * other.x + matrix_[i][1] * other.y +  matrix_[i][2] * other.z;
+    }
+    return Vector (values[0], values[1], values[2]);
+}
+
 Matrix3x3 Matrix3x3::operator/(float scalar) const {
     Matrix3x3 result;
     for (int i = 0; i < 3; ++i) {

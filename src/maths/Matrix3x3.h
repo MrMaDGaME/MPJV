@@ -2,6 +2,7 @@
 #include "ofMathConstants.h"
 #include <cmath>
 #include "Quaternion.h"
+#include "Vector.h"
 
 class Matrix3x3 {
 public:
@@ -15,6 +16,7 @@ public:
     Matrix3x3 operator*(const Matrix3x3& other) const;
     Matrix3x3 operator*(float scalar) const;
     Matrix3x3 operator*(const Quaternion& q) const;
+    Vector operator*(const Vector& other) const;
     Matrix3x3 operator/(float scalar) const;
     [[nodiscard]] float determinant() const;
     [[nodiscard]] Matrix3x3 transpose() const;
