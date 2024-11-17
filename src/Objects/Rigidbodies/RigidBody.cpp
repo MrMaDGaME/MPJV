@@ -28,6 +28,13 @@ void RigidBody::update(){
         position_ += (velocity_ * last_frame + acceleration * last_frame * last_frame/2) *100; //Passage en cm
         velocity_ += acceleration * last_frame;
 
+        Vector angular_acceleration = inv_inertia_ *accum_torque;
+        angular_velocity_ = inv_inertia_ * angular_acceleration;
+
+        rotation_ = rotation_ + (rotation_  * Quaternion(0, angular_acceleration.x, angular_velocity_.y, angular_velocity_.z)) * (0.5f  * last_frame);
+        rotation_.normalize();
+
+        inv_inertia_ = rotation_.ToMatrix3() * inv_inertia_ * rotation_.conjugate().ToMatrix3();
         clearAccums();
     }
 
@@ -40,8 +47,8 @@ void RigidBody::addForce(const Vector& applyPoint, const Vector& force){
         accum_torque +=  l^force;
     }
 
-void rotate(Quaternion rot_quat){
-    
+void RigidBody::rotate(Quaternion rot_quat){
+    rotation_ = rot_quat * rotation_ * rot_quat.conjugate();
 
 }
 

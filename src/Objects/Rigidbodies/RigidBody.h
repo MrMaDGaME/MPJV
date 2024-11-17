@@ -37,6 +37,7 @@ protected:
     Vector position_;
     Quaternion rotation_;
     Vector velocity_;
+    Vector angular_velocity_;
     Vector accum_force_;
     Vector accum_torque;
     float inv_mass_;
