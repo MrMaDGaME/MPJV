@@ -5,6 +5,8 @@
 #include "Objects/Rigidbodies/Box.h"
 #include "Force/ObjectForceRegistry.h"
 #include "Force/Generators/GravityForceGenerator.h"
+#include "Objects/Rigidbodies/RigidBody.h"
+#include "maths/Quaternion.h"
 
 class ofApp : public ofBaseApp {
 public:
@@ -14,10 +16,10 @@ public:
     void keyPressed(int key) override;
 
 private:
-    void launchBox();
-    void createNewBox();
+    void launchBox();      // Lancer une boîte avec une force initiale
+    void createNewBox();    // Créer une nouvelle boîte
 
-    ofEasyCam cam; // Caméra 3D
+    ofEasyCam cam;          // Caméra 3D
     shared_ptr<Box> box;
     vector<shared_ptr<Box>> boxes;
     shared_ptr<ObjectForceRegistry> forceRegistry = make_shared<ObjectForceRegistry>();
@@ -25,17 +27,16 @@ private:
 
     // Interface graphique
     ofxPanel gui;
-    ofxFloatSlider launchAngleSlider;
-    ofxFloatSlider azimuthAngleSlider;
-    ofxFloatSlider initialSpeedSlider;
-    ofxFloatSlider gravityScaleSlider;
-    ofxFloatSlider appliedForceXSlider;
-    ofxFloatSlider appliedForceYSlider;
-    ofxFloatSlider appliedForceZSlider;
-    ofxFloatSlider forceApplicationOffsetXSlider;
-    ofxFloatSlider forceApplicationOffsetYSlider;
-    ofxFloatSlider forceApplicationOffsetZSlider;
-    ofxFloatSlider centerOfMassXSlider;
-    ofxFloatSlider centerOfMassYSlider;
-    ofxFloatSlider centerOfMassZSlider;
+    ofxFloatSlider launchAngleSlider;           // Angle de lancement
+    ofxFloatSlider azimuthAngleSlider;          // Angle d'azimut
+    ofxFloatSlider initialSpeedSlider;          // Vitesse initiale
+    ofxFloatSlider gravityScaleSlider;          // Gravité
+    ofxFloatSlider appliedForceXSlider;         // Force appliquée en X
+    ofxFloatSlider appliedForceYSlider;         // Force appliquée en Y
+    ofxFloatSlider appliedForceZSlider;         // Force appliquée en Z
+    ofxFloatSlider centerOfMassXSlider;         // Centre de masse X
+    ofxFloatSlider centerOfMassYSlider;         // Centre de masse Y
+    ofxFloatSlider centerOfMassZSlider;         // Centre de masse Z
+    ofLight directionalLight;
 };
+
