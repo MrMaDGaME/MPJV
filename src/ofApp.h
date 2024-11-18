@@ -2,41 +2,57 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
-#include "Objects/Rigidbodies/Box.h"
-#include "Force/ObjectForceRegistry.h"
-#include "Force/Generators/GravityForceGenerator.h"
-#include "Objects/Rigidbodies/RigidBody.h"
+
+// Classes physiques et forces
+#include "InputForceGenerator.h"
+#include "ObjectForceRegistry.h"
+#include "GravityForceGenerator.h"
+
+// Mathématiques
+#include "maths/Matrix3x3.h"
 #include "maths/Quaternion.h"
+
+// Objets physiques
+#include "Objects/Rigidbodies/Box.h"
 
 class ofApp : public ofBaseApp {
 public:
-    void setup() override;
-    void update() override;
-    void draw() override;
-    void keyPressed(int key) override;
+    // Méthodes principales
+    void setup() override;  // Initialisation
+    void update() override; // Mise à jour
+    void draw() override;   // Dessin de la scène
+    void keyPressed(int key) override; // Gestion des entrées clavier
 
 private:
-    void launchBox();      // Lancer une boîte avec une force initiale
+    // Méthodes auxiliaires
+    void launchBox();       // Lancer une boîte avec une force initiale
     void createNewBox();    // Créer une nouvelle boîte
 
-    ofEasyCam cam;          // Caméra 3D
-    shared_ptr<Box> box;
-    vector<shared_ptr<Box>> boxes;
-    shared_ptr<ObjectForceRegistry> forceRegistry = make_shared<ObjectForceRegistry>();
-    shared_ptr<GravityForceGenerator> gravity;
+    // Caméra pour la visualisation 3D
+    ofEasyCam cam;
 
-    // Interface graphique
+    // Interface utilisateur (GUI)
     ofxPanel gui;
-    ofxFloatSlider launchAngleSlider;           // Angle de lancement
-    ofxFloatSlider azimuthAngleSlider;          // Angle d'azimut
-    ofxFloatSlider initialSpeedSlider;          // Vitesse initiale
-    ofxFloatSlider gravityScaleSlider;          // Gravité
-    ofxFloatSlider appliedForceXSlider;         // Force appliquée en X
-    ofxFloatSlider appliedForceYSlider;         // Force appliquée en Y
-    ofxFloatSlider appliedForceZSlider;         // Force appliquée en Z
-    ofxFloatSlider centerOfMassXSlider;         // Centre de masse X
-    ofxFloatSlider centerOfMassYSlider;         // Centre de masse Y
-    ofxFloatSlider centerOfMassZSlider;         // Centre de masse Z
-    ofLight directionalLight;
-};
+    ofxFloatSlider launchAngleSlider;   // Angle de lancement (degrés)
+    ofxFloatSlider azimuthAngleSlider;  // Angle d'azimut (degrés)
+    ofxFloatSlider initialSpeedSlider;  // Vitesse initiale
+    ofxFloatSlider gravityScaleSlider;  // Échelle de gravité
+    ofxFloatSlider appliedForceXSlider; // Force appliquée (X)
+    ofxFloatSlider appliedForceYSlider; // Force appliquée (Y)
+    ofxFloatSlider appliedForceZSlider; // Force appliquée (Z)
+    ofxFloatSlider centerOfMassXSlider; // Centre de masse (X)
+    ofxFloatSlider centerOfMassYSlider; // Centre de masse (Y)
+    ofxFloatSlider centerOfMassZSlider; // Centre de masse (Z)
 
+    // Gestion des objets physiques
+    std::shared_ptr<Box> box;                 // Boîte actuellement active
+    std::vector<std::shared_ptr<Box>> boxes;  // Liste de toutes les boîtes créées
+
+    // Générateurs de forces
+    std::shared_ptr<GravityForceGenerator> gravity;        // Générateur de gravité
+    std::shared_ptr<InputForceGenerator> inputForce;       // Générateur de force basé sur les sliders
+    std::shared_ptr<Vector> inputForceVector;              // Vecteur directionnel pour la force d'entrée
+
+    // Registre des forces
+    std::shared_ptr<ObjectForceRegistry> forceRegistry;    // Gestionnaire des forces appliquées aux objets
+};
