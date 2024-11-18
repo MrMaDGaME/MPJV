@@ -1,7 +1,11 @@
 #include "ofApp.h"
+#include "InputForceGenerator.h"
+#include "ObjectForceRegistry.h"
+#include "GravityForceGenerator.h"
 
 //--------------------------------------------------------------
 void ofApp::setup() {
+    // Initialisation de l'interface utilisateur
     gui.setup();
     gui.add(launchAngleSlider.setup("Launch Angle (degrees)", 45.f, 0.f, 90.f));
     gui.add(azimuthAngleSlider.setup("Azimuth Angle (degrees)", 0.f, -180.f, 180.f));
@@ -15,68 +19,75 @@ void ofApp::setup() {
     gui.add(centerOfMassZSlider.setup("Center of Mass Z", 0.f, -25.f, 25.f));
 
     // Initialisation de la gravité
-    gravity = make_shared<GravityForceGenerator>(-9.81f * gravityScaleSlider);
+    gravity = std::make_shared<GravityForceGenerator>(-9.81f * gravityScaleSlider);
 
+    // Initialisation de l'InputForceGenerator
+    inputForceVector = std::make_shared<Vector>(appliedForceXSlider, appliedForceYSlider, appliedForceZSlider);
+    inputForce = std::make_shared<InputForceGenerator>(inputForceVector, inputForceVector->magnitude());
+
+    // Initialisation du registre des forces
+    forceRegistry = std::make_shared<ObjectForceRegistry>();
+
+    // Création d'une première boîte
     createNewBox();
-    cam.setDistance(500);  // Positionner la caméra pour voir la scène
+
+    // Configuration de la caméra
+    cam.setDistance(500);  // Distance de vue initiale
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
-    // Mettre à jour l'intensité de la gravité en fonction du slider
+    // Mettre à jour la gravité en fonction des sliders
     gravity->setGravity(-9.81f * gravityScaleSlider);
 
-    // Déclare newCenterOfMass en dehors du bloc conditionnel
-    Vector newCenterOfMass(centerOfMassXSlider, centerOfMassYSlider, centerOfMassZSlider);
+    // Mettre à jour la direction de la force d'entrée
+    inputForceVector = std::make_shared<Vector>(appliedForceXSlider, appliedForceYSlider, appliedForceZSlider);
+    float newForceMagnitude = inputForceVector->magnitude();
+    inputForce = std::make_shared<InputForceGenerator>(inputForceVector, newForceMagnitude);
 
-    // Mettre à jour le centre de masse de la boîte active en fonction des sliders
+    // Mettre à jour le centre de masse de la boîte active
     if (box) {
-        box->setCenterOfMass(newCenterOfMass);  // Met à jour le centre de masse
+        Vector newCenterOfMass(centerOfMassXSlider, centerOfMassYSlider, centerOfMassZSlider);
+        box->setCenterOfMass(newCenterOfMass);
     }
 
-    // Applique la force des sliders et met à jour chaque boîte
-    Vector appliedForce(appliedForceXSlider, appliedForceYSlider, appliedForceZSlider);
+    // Appliquer les forces enregistrées
+    forceRegistry->update_forces();
 
+    // Mettre à jour chaque boîte
     for (auto& box : boxes) {
-        forceRegistry->update_forces();  // Applique les forces enregistrées, comme la gravité
-
-        // Appliquer la force au point d'application (centre de masse mis à jour)
-        box->addForce(appliedForce, newCenterOfMass);
-
-        box->update();  // Passe deltaTime pour une intégration correcte
+        box->update();
     }
 }
 
-
-
-
-
-//--------------------------------------------------------------
 //--------------------------------------------------------------
 void ofApp::draw() {
     ofEnableDepthTest();
     cam.begin();
 
-    // Dessiner chaque boîte
+    // Dessiner toutes les boîtes
     for (const auto& box : boxes) {
         ofSetColor(ofColor::blue);
         box->draw();
 
-        // Afficher le centre de masse sous forme de sphère rouge semi-transparente
+        // Dessiner le centre de masse en rouge
         Vector cmPosition = box->get_position() + Vector(centerOfMassXSlider, centerOfMassYSlider, centerOfMassZSlider);
-        ofSetColor(255, 0, 0, 128); // Couleur rouge avec transparence (128 sur 255)
-        ofDrawSphere(cmPosition.x, cmPosition.y, cmPosition.z, 5.f); // Rayon de 5 pour la visibilité
+        ofSetColor(ofColor::red);
+        ofDrawSphere(cmPosition.x, cmPosition.y, cmPosition.z, 5.f);
     }
 
     cam.end();
     ofDisableDepthTest();
+
+    // Dessiner l'interface utilisateur
     gui.draw();
 
+    // Afficher des informations de débogage
     ofSetColor(ofColor::white);
     ofDrawBitmapString("Frame Rate: " + ofToString(ofGetFrameRate()) + " fps", 10, 10);
-    ofDrawBitmapString("Press 'l' to launch the box, 'n' to spawn a new box", 10, 30);
+    ofDrawBitmapString("Number of Boxes: " + ofToString(boxes.size()), 10, 30);
+    ofDrawBitmapString("Press 'l' to launch the box, 'n' to spawn a new box", 10, 50);
 }
-
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
@@ -100,16 +111,18 @@ void ofApp::launchBox() {
         Vector initialVelocity(vx, vy, vz);
         box->set_velocity(initialVelocity);
 
-        // Appliquer une force initiale basée sur les sliders
+        // Appliquer une force initiale
         Vector appliedForce(appliedForceXSlider, appliedForceYSlider, appliedForceZSlider);
-        box->addForce(appliedForce);  // Appliquer la force au centre de masse
+        box->addForce(appliedForce);
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::createNewBox() {
-    // Initialiser une nouvelle boîte avec les valeurs par défaut
-    box = make_shared<Box>(0.f, 0.f, 0.f, 50.f, 50.f, 50.f, 10.f, Matrix3x3::identity());
+    // Initialiser une nouvelle boîte
+    box = std::make_shared<Box>(0.f, 0.f, 0.f, 50.f, 50.f, 50.f, 10.f, Matrix3x3::identity());
     boxes.push_back(box);
+
+    // Ajouter la boîte au registre des forces avec la gravité
     forceRegistry->add(box, gravity);
 }
