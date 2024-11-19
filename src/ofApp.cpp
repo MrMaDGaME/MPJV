@@ -1,7 +1,4 @@
 #include "ofApp.h"
-#include "InputForceGenerator.h"
-#include "ObjectForceRegistry.h"
-#include "GravityForceGenerator.h"
 
 //--------------------------------------------------------------
 void ofApp::setup() {

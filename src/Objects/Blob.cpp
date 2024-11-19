@@ -92,7 +92,7 @@ void Blob::fill_particle_collision(std::shared_ptr<Particle> particle,
 }
 
 void Blob::add_new_blob() {
-    const auto new_particle = make_shared<Particle>(particles[0]->get_position().x,
+    /*const auto new_particle = make_shared<Particle>(particles[0]->get_position().x,
                                                     particles[0]->get_position().y,
                                                     particles[0]->get_position().z,
                                                     particles[0]->get_radius(),
@@ -102,7 +102,7 @@ void Blob::add_new_blob() {
     for (shared_ptr<IObject> other : ofApp::objects_) {
         new_particle->fill_object_collision(other, collision_registry, Inter, DEFAULT_BOUNCE);
     }
-    merge(new_particle);
+    merge(new_particle);*/
 }
 
 void Blob::split(const shared_ptr<Particle>& other) {
@@ -116,18 +116,18 @@ void Blob::merge(const shared_ptr<Particle>& other) {
 }
 
 void Blob::merge(shared_ptr<Blob>& other) {
-    // Collect particles to be split
+    /*// Collect particles to be split
     std::vector<shared_ptr<Particle>> particles_to_split = other->particles;
     // Split all particles from the other blob and merge them with this blob
     for (const auto& particle : particles_to_split) {
         other->split(particle);
         merge(particle);
     }
-    ofApp::remove_object(other);
+    ofApp::remove_object(other);*/
 }
 
 void Blob::divide() {
-    // Can't divide if there is only one particle
+    /*// Can't divide if there is only one particle
     if (particles.size() <= 1) return;
     // Create a new blob with the second particle
     shared_ptr<Particle> newBlobParticle = particles[1];
@@ -141,11 +141,11 @@ void Blob::divide() {
         split(particle);
         new_blob->merge(particle);
     }
-    ofApp::objects_.push_back(new_blob);
+    ofApp::objects_.push_back(new_blob);*/
 }
 
 void Blob::add_link(shared_ptr<Particle> p1, shared_ptr<Particle> p2) {
-    // Create spring forces
+    /*// Create spring forces
     const auto spring_from_to = make_shared<SpringForceGenerator>(p1, spring_constant_, spring_rest_length_);
     const auto spring_to_from = make_shared<SpringForceGenerator>(p2, spring_constant_, spring_rest_length_);
     // Add the spring forces to the force registry
@@ -154,11 +154,11 @@ void Blob::add_link(shared_ptr<Particle> p1, shared_ptr<Particle> p2) {
     // Register the link
     const ParticleLink link = {p1, p2, spring_from_to, spring_to_from};
     particle_links.push_back(link);
-    collision_registry->AddCableCollision(p1, p2, spring_rest_length_);
+    collision_registry->AddCableCollision(p1, p2, spring_rest_length_);*/
 }
 
 void Blob::remove_all_links(shared_ptr<Particle> p) {
-    // Collect links to be removed
+    /*// Collect links to be removed
     std::vector<ParticleLink> links_to_remove;
     for (const auto& link : particle_links) {
         if (link.p1 == p || link.p2 == p) {
@@ -181,7 +181,7 @@ void Blob::remove_all_links(shared_ptr<Particle> p) {
                                         [&p](const ParticleLink& link) {
                                             return link.p1 == p || link.p2 == p;
                                         }),
-                         particle_links.end());
+                         particle_links.end());*/
 }
 
 void Blob::refresh_springs() {
@@ -203,7 +203,7 @@ void Blob::refresh_springs() {
 }
 
 shared_ptr<Blob> Blob::get_nearest_blob() const {
-    // Find the nearest blob
+    /*// Find the nearest blob
     shared_ptr<Blob> nearest_blob = nullptr;
     float min_distance = std::numeric_limits<float>::max();
     for (auto& object : ofApp::objects_) {
@@ -222,7 +222,8 @@ shared_ptr<Blob> Blob::get_nearest_blob() const {
             }
         }
     }
-    return nearest_blob;
+    return nearest_blob*/
+    return nullptr;
 }
 
 void Blob::merge_with_nearest_blob() {

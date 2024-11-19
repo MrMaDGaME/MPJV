@@ -4,9 +4,9 @@
 #include "ofxGui.h"
 
 // Classes physiques et forces
-#include "InputForceGenerator.h"
-#include "ObjectForceRegistry.h"
-#include "GravityForceGenerator.h"
+#include "Force/Generators/InputForceGenerator.h"
+#include "Force/ObjectForceRegistry.h"
+#include "Force/Generators/GravityForceGenerator.h"
 
 // Mathématiques
 #include "maths/Matrix3x3.h"
