@@ -11,16 +11,12 @@ void ofApp::setup() {
     gui.add(appliedForceXSlider.setup("Applied Force X", 10.f, -50.f, 50.f));
     gui.add(appliedForceYSlider.setup("Applied Force Y", 5.f, -50.f, 50.f));
     gui.add(appliedForceZSlider.setup("Applied Force Z", 0.f, -50.f, 50.f));
-    gui.add(centerOfMassXSlider.setup("Center of Mass X", 0.f, -25.f, 25.f));
-    gui.add(centerOfMassYSlider.setup("Center of Mass Y", 0.f, -25.f, 25.f));
-    gui.add(centerOfMassZSlider.setup("Center of Mass Z", 0.f, -25.f, 25.f));
+    gui.add(forcePositionXSlider.setup("Force position X", 0.f, -25.f, 25.f));
+    gui.add(forcePositionYSlider.setup("Force position Y", 0.f, -25.f, 25.f));
+    gui.add(forcePositionZSlider.setup("Force position Z", 0.f, -25.f, 25.f));
 
     // Initialisation de la gravité
     gravity = std::make_shared<GravityForceGenerator>(-9.81f * gravityScaleSlider);
-
-    // Initialisation de l'InputForceGenerator
-    inputForceVector = std::make_shared<Vector>(appliedForceXSlider, appliedForceYSlider, appliedForceZSlider);
-    inputForce = std::make_shared<InputForceGenerator>(inputForceVector, inputForceVector->magnitude());
 
     // Initialisation du registre des forces
     forceRegistry = std::make_shared<ObjectForceRegistry>();
@@ -39,14 +35,15 @@ void ofApp::update() {
 
     // Mettre à jour la direction de la force d'entrée
     inputForceVector = std::make_shared<Vector>(appliedForceXSlider, appliedForceYSlider, appliedForceZSlider);
-    float newForceMagnitude = inputForceVector->magnitude();
-    inputForce = std::make_shared<InputForceGenerator>(inputForceVector, newForceMagnitude);
+    impulseForce = std::make_shared<ImpulseForceGenerator>(*inputForceVector);
 
+    /*
     // Mettre à jour le centre de masse de la boîte active
     if (box) {
-        Vector newCenterOfMass(centerOfMassXSlider, centerOfMassYSlider, centerOfMassZSlider);
+        Vector newCenterOfMass(forcePositionXSlider, forcePositionYSlider, forcePositionZSlider);
         box->setCenterOfMass(newCenterOfMass);
     }
+    */
 
     // Appliquer les forces enregistrées
     forceRegistry->update_forces();
@@ -55,6 +52,8 @@ void ofApp::update() {
     for (auto& box : boxes) {
         box->update();
     }
+
+    forcePosition = Vector(forcePositionXSlider, forcePositionYSlider, forcePositionZSlider);
 }
 
 //--------------------------------------------------------------
@@ -68,13 +67,18 @@ void ofApp::draw() {
         box->draw();
 
         // Dessiner le centre de masse en rouge
-        Vector cmPosition = box->get_position() + Vector(centerOfMassXSlider, centerOfMassYSlider, centerOfMassZSlider);
+        Vector cmPosition = box->get_position() + Vector(forcePositionXSlider, forcePositionYSlider, forcePositionZSlider);
         ofSetColor(ofColor::red);
         ofDrawSphere(cmPosition.x, cmPosition.y, cmPosition.z, 5.f);
     }
 
     cam.end();
     ofDisableDepthTest();
+
+    // Dessiner un point a forcePosition
+    ofSetColor(ofColor::red);
+    ofDrawSphere(forcePosition.x, forcePosition.y, forcePosition.z, 5.f);
+    
 
     // Dessiner l'interface utilisateur
     gui.draw();
@@ -99,18 +103,7 @@ void ofApp::keyPressed(int key) {
 //--------------------------------------------------------------
 void ofApp::launchBox() {
     if (box) {
-        // Calcul de la vélocité initiale selon l'angle de lancement et l'azimut
-        float launchAngleRad = ofDegToRad(launchAngleSlider);
-        float azimuthAngleRad = ofDegToRad(azimuthAngleSlider);
-        float vx = initialSpeedSlider * cos(launchAngleRad) * cos(azimuthAngleRad);
-        float vy = initialSpeedSlider * sin(launchAngleRad);
-        float vz = initialSpeedSlider * cos(launchAngleRad) * sin(azimuthAngleRad);
-        Vector initialVelocity(vx, vy, vz);
-        box->set_velocity(initialVelocity);
-
-        // Appliquer une force initiale
-        Vector appliedForce(appliedForceXSlider, appliedForceYSlider, appliedForceZSlider);
-        box->addForce(appliedForce);
+        forceRegistry->add(box, impulseForce, forcePosition);
     }
 }
 
