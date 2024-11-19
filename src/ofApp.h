@@ -14,6 +14,8 @@
 
 // Objets physiques
 #include "Objects/Rigidbodies/Box.h"
+#include "Objects/Rigidbodies/BoxTypes/UniformBox.h"
+#include "Objects/Rigidbodies/BoxTypes/CoreBox.h"
 
 class ofApp : public ofBaseApp {
 public:
