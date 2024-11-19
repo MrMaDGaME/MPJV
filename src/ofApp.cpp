@@ -4,10 +4,7 @@
 void ofApp::setup() {
     // Initialisation de l'interface utilisateur
     gui.setup();
-    gui.add(launchAngleSlider.setup("Launch Angle (degrees)", 45.f, 0.f, 90.f));
-    gui.add(azimuthAngleSlider.setup("Azimuth Angle (degrees)", 0.f, -180.f, 180.f));
-    gui.add(initialSpeedSlider.setup("Initial Speed", 10.f, 0.f, 100.f));
-    gui.add(gravityScaleSlider.setup("Gravity Scale", 0.3f, 0.1f, 2.0f));
+    gui.add(gravityScaleSlider.setup("Gravity Scale", 0.f, 0.f, 2.0f));
     gui.add(appliedForceXSlider.setup("Applied Force X", 10.f, -50.f, 50.f));
     gui.add(appliedForceYSlider.setup("Applied Force Y", 5.f, -50.f, 50.f));
     gui.add(appliedForceZSlider.setup("Applied Force Z", 0.f, -50.f, 50.f));
@@ -31,7 +28,7 @@ void ofApp::setup() {
 //--------------------------------------------------------------
 void ofApp::update() {
     // Mettre à jour la gravité en fonction des sliders
-    gravity->setGravity(-9.81f * gravityScaleSlider * 0);
+    gravity->setGravity(-9.81f * gravityScaleSlider);
 
     // Mettre à jour la direction de la force d'entrée
     inputForceVector = std::make_shared<Vector>(appliedForceXSlider, appliedForceYSlider, appliedForceZSlider);

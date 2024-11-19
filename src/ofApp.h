@@ -35,9 +35,6 @@ private:
 
     // Interface utilisateur (GUI)
     ofxPanel gui;
-    ofxFloatSlider launchAngleSlider;   // Angle de lancement (degrés)
-    ofxFloatSlider azimuthAngleSlider;  // Angle d'azimut (degrés)
-    ofxFloatSlider initialSpeedSlider;  // Vitesse initiale
     ofxFloatSlider gravityScaleSlider;  // Échelle de gravité
     ofxFloatSlider appliedForceXSlider; // Force appliquée (X)
     ofxFloatSlider appliedForceYSlider; // Force appliquée (Y)
