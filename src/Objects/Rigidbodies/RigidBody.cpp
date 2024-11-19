@@ -50,7 +50,7 @@ void RigidBody::addForce(const Vector& applyPoint, const Vector& force) {
 }
 
 void RigidBody::rotate(Quaternion rot_quat) {
-    rotation_ = rot_quat * rotation_ * rot_quat.conjugate();
+    rotation_ = rot_quat * rotation_;
 }
 
 [[nodiscard]] Vector RigidBody::get_position() const {
