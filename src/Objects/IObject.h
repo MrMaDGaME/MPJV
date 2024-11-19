@@ -13,6 +13,7 @@ public:
     virtual void update() = 0;
     virtual void draw() = 0;
     virtual void addForce(const Vector& force) = 0;
+    virtual void addForce(const Vector& force, const Vector& apply_point) = 0;
 
     [[nodiscard]] virtual Vector get_position() const = 0;
     virtual void set_position(const Vector& position) = 0;

@@ -12,3 +12,10 @@ void ImpulseForceGenerator::UpdateForce(std::shared_ptr<IObject>& object) {
     }
     object->addForce(impulse_);
 }
+
+void ImpulseForceGenerator::UpdateForce(std::shared_ptr<IObject>& object, const Vector& apply_point) {
+    if (object == nullptr) {
+        return;
+    }
+    object->addForce(impulse_, apply_point);
+}

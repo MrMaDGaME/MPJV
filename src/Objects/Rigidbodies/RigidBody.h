@@ -12,7 +12,7 @@ protected:
 public:
     void update() override;
     void addForce(const Vector& force) override;
-    void addForce(const Vector& applyPoint, const Vector& force);
+    void addForce(const Vector& force, const Vector& apply_point) override;
 
     void rotate(Quaternion rot_quat);
 

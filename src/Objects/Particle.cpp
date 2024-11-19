@@ -65,6 +65,10 @@ void Particle::addForce(const Vector& force) {
     accum_force_ += force;
 }
 
+void Particle::addForce(const Vector& force, const Vector& apply_point) {
+    addForce(force);
+}
+
 void Particle::clearAccum() {
     accum_force_ = Vector(0, 0, 0);
 }

@@ -13,6 +13,7 @@ public:
     void update() override;
     void draw() override;
     void addForce(const Vector& force) override;
+    void addForce(const Vector& force, const Vector& apply_point) override;
     void clearAccum();
     [[nodiscard]] Vector get_position() const override;
     void set_position(const Vector& position) override;

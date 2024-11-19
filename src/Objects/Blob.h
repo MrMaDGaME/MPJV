@@ -27,6 +27,7 @@ public:
     void update() override;
     void draw() override;
     void addForce(const Vector& force) override;
+    void addForce(const Vector& force, const Vector& apply_point) override;
     [[nodiscard]] Vector get_position() const override;
     void set_position(const Vector& position) override;
     [[nodiscard]] Vector get_velocity() const override;

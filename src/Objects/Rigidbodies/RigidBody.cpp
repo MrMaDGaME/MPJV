@@ -43,9 +43,9 @@ void RigidBody::addForce(const Vector& force) {
     accum_force_ += force;
 }
 
-void RigidBody::addForce(const Vector& applyPoint, const Vector& force) {
+void RigidBody::addForce(const Vector& force, const Vector& apply_point) {
     accum_force_ += force;
-    Vector l = -position_ + applyPoint;
+    Vector l = -position_ + apply_point;
     accum_torque += l ^ force;
 }
 

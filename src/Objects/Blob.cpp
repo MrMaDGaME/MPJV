@@ -48,6 +48,10 @@ void Blob::addForce(const Vector& force) {
     }
 }
 
+void Blob::addForce(const Vector& force, const Vector& apply_point) {
+    addForce(force);
+}
+
 Vector Blob::get_position() const {
     return particles[0]->get_position();
 }
