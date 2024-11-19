@@ -5,8 +5,8 @@ void ofApp::setup() {
     // Initialisation de l'interface utilisateur
     gui.setup();
     gui.add(gravityScaleSlider.setup("Gravity Scale", 0.f, 0.f, 2.0f));
-    gui.add(appliedForceXSlider.setup("Applied Force X", 10.f, -50.f, 50.f));
-    gui.add(appliedForceYSlider.setup("Applied Force Y", 5.f, -50.f, 50.f));
+    gui.add(appliedForceXSlider.setup("Applied Force X", 50.f, -50.f, 50.f));
+    gui.add(appliedForceYSlider.setup("Applied Force Y", 0.f, -50.f, 50.f));
     gui.add(appliedForceZSlider.setup("Applied Force Z", 0.f, -50.f, 50.f));
     gui.add(forcePositionXSlider.setup("Force position X", 0.f, -25.f, 25.f));
     gui.add(forcePositionYSlider.setup("Force position Y", 0.f, -25.f, 25.f));
@@ -62,6 +62,7 @@ void ofApp::draw() {
         Vector cmPosition = box->get_position() + Vector(forcePositionXSlider, forcePositionYSlider, forcePositionZSlider);
         ofSetColor(ofColor::red);
         ofDrawSphere(cmPosition.x, cmPosition.y, cmPosition.z, 5.f);
+        ofSetColor(ofColor::yellow);
         ofDrawArrow(glm::vec3(cmPosition.x - appliedForceXSlider, cmPosition.y - appliedForceYSlider, cmPosition.z - appliedForceZSlider), glm::vec3(cmPosition.x,
         cmPosition.y,
         cmPosition.z), 5.f);
