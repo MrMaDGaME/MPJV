@@ -1,5 +1,7 @@
 #pragma once
 #include "RigidBody.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 class Box : public RigidBody {
 public:

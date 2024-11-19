@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+#include <iostream>
+#include <ostream>
+
 class Matrix4x4;
 class Matrix3x3;
 
@@ -22,17 +25,17 @@ public:
     Quaternion operator*(float scalar) const;
     Quaternion& operator=(const Quaternion& q);
 
+    friend std::ostream& operator<<(std::ostream& os, const Quaternion& obj) {
+        return os << "w: " << obj.w << " x: " << obj.x << " y: " << obj.y << " z: " << obj.z;
+    }
+
     // Méthodes supplémentaires
     [[nodiscard]] float norm() const;
     [[nodiscard]] Quaternion conjugate() const;
     [[nodiscard]] Quaternion inverse() const;
-    void normalize();
+    Quaternion& normalize();
     [[nodiscard]] Matrix4x4 ToMatrix4() const;
     [[nodiscard]] Matrix3x3 ToMatrix3() const;
 
-    // Affichage
-    void print() const;
-
-private:
     float w, x, y, z;
 };

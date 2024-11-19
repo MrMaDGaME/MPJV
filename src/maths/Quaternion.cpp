@@ -64,7 +64,7 @@ Quaternion Quaternion::inverse() const {
     return conjugate() * (1.f / normSq);
 }
 
-void Quaternion::normalize() {
+Quaternion& Quaternion::normalize() {
     float n = norm();
     if (n == 0) {
         throw std::runtime_error("Impossible de normaliser un quaternion de norme nulle.");
@@ -73,6 +73,7 @@ void Quaternion::normalize() {
     x /= n;
     y /= n;
     z /= n;
+    return *this;
 }
 
 Matrix4x4 Quaternion::ToMatrix4() const {
@@ -83,7 +84,3 @@ Matrix3x3 Quaternion::ToMatrix3() const {
     return Matrix3x3(*this);
 }
 
-// Affichage
-void Quaternion::print() const {
-    std::cout << "(" << w << ", " << x << ", " << y << ", " << z << ")" << std::endl;
-}

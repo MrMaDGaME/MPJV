@@ -35,7 +35,7 @@ void ofApp::setup() {
 //--------------------------------------------------------------
 void ofApp::update() {
     // Mettre à jour la gravité en fonction des sliders
-    gravity->setGravity(-9.81f * gravityScaleSlider);
+    gravity->setGravity(-9.81f * gravityScaleSlider * 0);
 
     // Mettre à jour la direction de la force d'entrée
     inputForceVector = std::make_shared<Vector>(appliedForceXSlider, appliedForceYSlider, appliedForceZSlider);
