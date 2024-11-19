@@ -67,6 +67,9 @@ void ofApp::draw() {
         Vector cmPosition = box->get_position() + Vector(forcePositionXSlider, forcePositionYSlider, forcePositionZSlider);
         ofSetColor(ofColor::red);
         ofDrawSphere(cmPosition.x, cmPosition.y, cmPosition.z, 5.f);
+        ofDrawArrow(glm::vec3(cmPosition.x - appliedForceXSlider, cmPosition.y - appliedForceYSlider, cmPosition.z - appliedForceZSlider), glm::vec3(cmPosition.x,
+        cmPosition.y,
+        cmPosition.z), 5.f);
     }
 
     cam.end();
