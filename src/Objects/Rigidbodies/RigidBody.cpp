@@ -30,9 +30,7 @@ void RigidBody::update() {
     velocity_ += acceleration * last_frame;
 
     Vector angular_acceleration = inv_inertia_ * accum_torque;
-    cout << "angular acc " << angular_acceleration.magnitude()<< "\n";
     angular_velocity_ += inv_inertia_ * angular_acceleration;
-    cout << "angular nelo " << angular_velocity_.magnitude()<< "\n";
     rotation_ = rotation_ + (rotation_ * Quaternion(0, angular_acceleration.x, angular_velocity_.y, angular_velocity_.z)) * (0.5f * last_frame);
     rotation_.normalize();
 

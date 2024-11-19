@@ -16,10 +16,9 @@
 * Lancer le fichier .exe (TPMathPhys_debug.exe)
 
 ## Controles
-* Flèches directionnelles : déplacement
-* * Espace : Ajout d'une particule au blob
-* S : Séparation du blob en deux
-* M : Fusion avec le blob le plus proche
+* N : Instancie une nouvelle boite verte (tourne plus facilement)
+* B : Instancie une nouvelle boite orange (demande plus de force pour tourner)
+* L : Lance la dernière boite instanciée (Force paramétrable dans le GUI)
 
 ## Auteurs
 
