@@ -93,7 +93,10 @@ void ofApp::keyPressed(int key) {
         launchBox();  // Lancer la boîte avec une force initiale
     }
     else if (key == 'n') {
-        createNewBox();  // Créer une nouvelle boîte
+        createNewCoreBox();  // Créer une nouvelle boîte
+    }
+    else if (key == 'b'){
+        createNewUniformBox();
     }
 }
 
@@ -108,6 +111,22 @@ void ofApp::launchBox() {
 void ofApp::createNewBox() {
     // Initialiser une nouvelle boîte
     box = std::make_shared<Box>(0.f, 0.f, 0.f, 50.f, 50.f, 50.f, 10.f, Matrix3x3::identity());
+    boxes.push_back(box);
+
+    // Ajouter la boîte au registre des forces avec la gravité
+    forceRegistry->add(box, gravity);
+}
+
+void ofApp::createNewCoreBox(){
+    box = std::make_shared<CoreBox>(0.f, 0.f, 0.f);
+    boxes.push_back(box);
+
+    // Ajouter la boîte au registre des forces avec la gravité
+    forceRegistry->add(box, gravity);
+}
+
+void ofApp::createNewUniformBox(){
+    box = std::make_shared<UniformBox>(0.f, 0.f, 0.f);
     boxes.push_back(box);
 
     // Ajouter la boîte au registre des forces avec la gravité

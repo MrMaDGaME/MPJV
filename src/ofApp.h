@@ -29,6 +29,8 @@ private:
     // Méthodes auxiliaires
     void launchBox();       // Lancer une boîte avec une force initiale
     void createNewBox();    // Créer une nouvelle boîte
+    void createNewCoreBox();
+    void createNewUniformBox();
 
     // Caméra pour la visualisation 3D
     ofEasyCam cam;
