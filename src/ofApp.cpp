@@ -18,9 +18,6 @@ void ofApp::setup() {
     // Initialisation du registre des forces
     forceRegistry = std::make_shared<ObjectForceRegistry>();
 
-    // Création d'une première boîte
-    createNewBox();
-
     // Configuration de la caméra
     cam.setDistance(500);  // Distance de vue initiale
 }
@@ -31,8 +28,8 @@ void ofApp::update() {
     gravity->setGravity(-9.81f * gravityScaleSlider);
 
     // Mettre à jour la direction de la force d'entrée
-    inputForceVector = std::make_shared<Vector>(appliedForceXSlider, appliedForceYSlider, appliedForceZSlider);
-    impulseForce = std::make_shared<ImpulseForceGenerator>(*inputForceVector);
+    impulseForceVector = std::make_shared<Vector>(appliedForceXSlider, appliedForceYSlider, appliedForceZSlider);
+    impulseForce = std::make_shared<ImpulseForceGenerator>(*impulseForceVector);
 
     /*
     // Mettre à jour le centre de masse de la boîte active
@@ -49,8 +46,6 @@ void ofApp::update() {
     for (auto& box : boxes) {
         box->update();
     }
-
-    forcePosition = Vector(forcePositionXSlider, forcePositionYSlider, forcePositionZSlider);
 }
 
 //--------------------------------------------------------------
@@ -74,10 +69,6 @@ void ofApp::draw() {
 
     cam.end();
     ofDisableDepthTest();
-
-    // Dessiner un point a forcePosition
-    ofSetColor(ofColor::red);
-    ofDrawSphere(forcePosition.x, forcePosition.y, forcePosition.z, 5.f);
     
 
     // Dessiner l'interface utilisateur
@@ -106,7 +97,7 @@ void ofApp::keyPressed(int key) {
 //--------------------------------------------------------------
 void ofApp::launchBox() {
     if (box) {
-        forceRegistry->add(box, impulseForce, forcePosition);
+        forceRegistry->add(box, impulseForce, Vector(forcePositionXSlider, forcePositionYSlider, forcePositionZSlider));
     }
 }
 
