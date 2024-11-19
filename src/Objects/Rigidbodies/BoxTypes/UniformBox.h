@@ -3,7 +3,7 @@
 #define UNIFORM_HEIGHT 75.f
 #define UNIFORM_WIDTH 20.f
 #define UNIFORM_DEPTH 50.f
-#define UNIFORM_MASS 10.f
+#define UNIFORM_MASS 1.f
 #define UNIFORM_CORERADIUS 10.f
 #define UNIFORM_COLOR ofColor::coral
 

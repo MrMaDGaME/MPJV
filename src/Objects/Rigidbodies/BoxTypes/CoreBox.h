@@ -3,7 +3,7 @@
 #define COREBOX_HEIGHT 70.f
 #define COREBOX_WIDTH 60.f
 #define COREBOX_DEPTH 40.f
-#define COREBOX_MASS 10.f
+#define COREBOX_MASS 1.f
 #define COREBOX_CORERADIUS 10.f
 #define COREBOX_COLOR ofColor::lime
 
