@@ -52,10 +52,8 @@ private:
     // Générateurs de forces
     std::shared_ptr<GravityForceGenerator> gravity;        // Générateur de gravité
     std::shared_ptr<ImpulseForceGenerator> impulseForce;       // Générateur de force basé sur les sliders
-    std::shared_ptr<Vector> inputForceVector;              // Vecteur directionnel pour la force d'entrée
+    std::shared_ptr<Vector> impulseForceVector;              // Vecteur directionnel pour la force d'entrée
 
     // Registre des forces
     std::shared_ptr<ObjectForceRegistry> forceRegistry;    // Gestionnaire des forces appliquées aux objets
-
-    Vector forcePosition;  // Position de la force appliquée
 };
