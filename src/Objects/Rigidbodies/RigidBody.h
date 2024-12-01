@@ -6,6 +6,7 @@
 #include "../../maths/Matrix3x3.h"
 #include "../../maths/Matrix4x4.h"
 #include "../../maths/Quaternion.h"
+#include "../../maths/geometry/Sphere.h"
 
 class RigidBody : public IObject, public std::enable_shared_from_this<RigidBody> {
 protected:
@@ -56,6 +57,6 @@ protected:
     float inv_mass_;
     Matrix3x3 inv_inertia_;
     ofColor color_;
-
     Vector centerOfMass_; // Variable pour stocker le centre de masse
+    Sphere boundingSphere_;
 };

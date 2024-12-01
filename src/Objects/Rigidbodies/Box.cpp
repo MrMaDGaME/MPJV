@@ -4,6 +4,7 @@ Box::Box(float x, float y, float z, float height, float width, float depth, floa
     height_(height),
     width_(width),
     depth_(depth) {
+    boundingSphere_ = Sphere(position_, std::sqrt(width * width + height * height + depth * depth) / 2);
 }
 
 Box::Box(float x, float y, float z, float height, float width, float depth, float mass, Matrix3x3 inertia, ofColor color) :
@@ -11,6 +12,7 @@ Box::Box(float x, float y, float z, float height, float width, float depth, floa
     height_(height),
     width_(width),
     depth_(depth) {
+    boundingSphere_ = Sphere(position_, std::sqrt(width * width + height * height + depth * depth) / 2);
 }
 
 void Box::draw() {

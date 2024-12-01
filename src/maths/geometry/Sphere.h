@@ -5,6 +5,7 @@
 
 class Sphere {
 public:
+    Sphere() = default;
     Sphere(Vector center, float radius);
 
     [[nodiscard]] const Vector& getCenter() const;
@@ -14,5 +15,5 @@ public:
 
 protected:
     Vector center_;
-    float radius_;
+    float radius_ = 1.f;
 };

@@ -5,6 +5,7 @@ Plane::Plane(const float x, const float y, const float z, const float width, con
     height_(height),
     normal_(normal) {
     rotation_ = normalToQuat(normal);
+    boundingSphere_ = Sphere(position_, std::sqrt(width * width + height * height) / 2);
 }
 
 Plane::Plane(const float x, const float y, const float z, const float width, const float height, const Vector& normal, const ofColor& color) :
@@ -13,6 +14,7 @@ Plane::Plane(const float x, const float y, const float z, const float width, con
     height_(height),
     normal_(normal) {
     rotation_ = normalToQuat(normal);
+    boundingSphere_ = Sphere(position_, std::sqrt(width * width + height * height) / 2);
 }
 
 Plane::Plane(const Vector& position, const float width, const float height, const Vector& normal) : RigidBody(position),
@@ -20,6 +22,7 @@ Plane::Plane(const Vector& position, const float width, const float height, cons
     height_(height),
     normal_(normal) {
     rotation_ = normalToQuat(normal);
+    boundingSphere_ = Sphere(position_, std::sqrt(width * width + height * height) / 2);
 }
 
 Plane::Plane(const Vector& position, const float width, const float height, const Vector& normal, const ofColor& color) : RigidBody(position, color),
@@ -27,6 +30,7 @@ Plane::Plane(const Vector& position, const float width, const float height, cons
     height_(height),
     normal_(normal) {
     rotation_ = normalToQuat(normal);
+    boundingSphere_ = Sphere(position_, std::sqrt(width * width + height * height) / 2);
 }
 
 void Plane::draw() {
