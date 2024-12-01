@@ -97,6 +97,14 @@ bool Vector::operator!() {
     return x == 0 && y == 0 && z == 0;
 }
 
+Vector Vector::cross(const Vector& v) const {
+    return {y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x};
+}
+
+float Vector::dot(const Vector& v) const {
+    return x * v.x + y * v.y + z * v.z;
+}
+
 float Vector::operator*(Vector v) {
     return x * v.x + y * v.y + z * v.z;
 }
@@ -105,7 +113,7 @@ Vector Vector::operator^(Vector v) {
     return Vector(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
 }
 
-float Vector::magnitude() {
+float Vector::magnitude() const {
     return sqrt(x * x + y * y + z * z);
 }
 

@@ -11,7 +11,7 @@ int main() {
     QuaternionTest::runAllTests();
     Matrix3x3Tests::runAllTests();
     Matrix4x4Tests::runAllTests();
-    
+
     //Use ofGLFWWindowSettings for more options like multi-monitor fullscreen
     ofGLWindowSettings settings;
     settings.setSize(1800, 1000);

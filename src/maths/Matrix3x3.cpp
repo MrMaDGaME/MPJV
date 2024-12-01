@@ -8,7 +8,7 @@ Matrix3x3::Matrix3x3(float mat[3][3]) {
     for (int i = 0; i < 3; ++i) for (int j = 0; j < 3; ++j) matrix_[i][j] = mat[i][j];
 }
 
-Matrix3x3::Matrix3x3(const Quaternion& q){
+Matrix3x3::Matrix3x3(const Quaternion& q) {
     float qw = q.getW();
     float qx = q.getX();
     float qy = q.getY();
@@ -89,10 +89,10 @@ Matrix3x3 Matrix3x3::operator*(const Quaternion& q) const {
 
 Vector Matrix3x3::operator*(const Vector& other) const {
     float values[3] = {0.f, 0.f, 0.f};
-    for(int i = 0; i< 3;i++){
-            values[i] = matrix_[i][0] * other.x + matrix_[i][1] * other.y +  matrix_[i][2] * other.z;
+    for (int i = 0; i < 3; i++) {
+        values[i] = matrix_[i][0] * other.x + matrix_[i][1] * other.y + matrix_[i][2] * other.z;
     }
-    return Vector (values[0], values[1], values[2]);
+    return Vector(values[0], values[1], values[2]);
 }
 
 Matrix3x3 Matrix3x3::operator/(float scalar) const {

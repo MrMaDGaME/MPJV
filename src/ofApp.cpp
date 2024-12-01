@@ -1,5 +1,7 @@
 #include "ofApp.h"
 
+#include "Objects/Rigidbodies/Plane.h"
+
 //--------------------------------------------------------------
 void ofApp::setup() {
     // Initialisation de l'interface utilisateur
@@ -19,7 +21,9 @@ void ofApp::setup() {
     forceRegistry = std::make_shared<ObjectForceRegistry>();
 
     // Configuration de la caméra
-    cam.setDistance(500);  // Distance de vue initiale
+    cam.setDistance(500); // Distance de vue initiale
+
+    rigidbodies.push_back(make_shared<Plane>(Vector(), 100.f, 100.f, Vector(1, 0, 0), ofColor::green));
 }
 
 //--------------------------------------------------------------
@@ -43,8 +47,8 @@ void ofApp::update() {
     forceRegistry->update_forces();
 
     // Mettre à jour chaque boîte
-    for (auto& box : boxes) {
-        box->update();
+    for (const auto& rigidbody : rigidbodies) {
+        rigidbody->update();
     }
 }
 
@@ -54,23 +58,24 @@ void ofApp::draw() {
     cam.begin();
 
     // Dessiner toutes les boîtes
-    for (const auto& box : boxes) {
+    for (const auto& rigidbody : rigidbodies) {
         ofSetColor(ofColor::blue);
-        box->draw();
+        rigidbody->draw();
 
         // Dessiner le centre de masse en rouge
-        Vector cmPosition = box->get_position() + Vector(forcePositionXSlider, forcePositionYSlider, forcePositionZSlider);
-        ofSetColor(ofColor::red);
-        ofDrawSphere(cmPosition.x, cmPosition.y, cmPosition.z, 5.f);
-        ofSetColor(ofColor::yellow);
-        ofDrawArrow(glm::vec3(cmPosition.x - appliedForceXSlider, cmPosition.y - appliedForceYSlider, cmPosition.z - appliedForceZSlider), glm::vec3(cmPosition.x,
-        cmPosition.y,
-        cmPosition.z), 5.f);
+        if (rigidbody->get_inv_mass() > 0) { // Ne pas dessiner le centre de masse pour les objets statiques
+            Vector cmPosition = rigidbody->get_position() + Vector(forcePositionXSlider, forcePositionYSlider, forcePositionZSlider);
+            ofSetColor(ofColor::red);
+            ofDrawSphere(cmPosition.x, cmPosition.y, cmPosition.z, 5.f);
+            ofSetColor(ofColor::yellow);
+            ofDrawArrow(glm::vec3(cmPosition.x - appliedForceXSlider, cmPosition.y - appliedForceYSlider, cmPosition.z - appliedForceZSlider),
+                        glm::vec3(cmPosition.x, cmPosition.y, cmPosition.z),
+                        5.f);
+        }
     }
 
     cam.end();
     ofDisableDepthTest();
-    
 
     // Dessiner l'interface utilisateur
     gui.draw();
@@ -78,52 +83,52 @@ void ofApp::draw() {
     // Afficher des informations de débogage
     ofSetColor(ofColor::white);
     ofDrawBitmapString("Frame Rate: " + ofToString(ofGetFrameRate()) + " fps", 10, 10);
-    ofDrawBitmapString("Number of Boxes: " + ofToString(boxes.size()), 10, 30);
+    ofDrawBitmapString("Number of Boxes: " + ofToString(rigidbodies.size()), 10, 30);
     ofDrawBitmapString("Press 'l' to launch the box, 'n' to spawn a new box", 10, 50);
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) {
     if (key == 'l') {
-        launchBox();  // Lancer la boîte avec une force initiale
+        launchBox(); // Lancer la boîte avec une force initiale
     }
     else if (key == 'n') {
-        createNewCoreBox();  // Créer une nouvelle boîte
+        createNewCoreBox(); // Créer une nouvelle boîte
     }
-    else if (key == 'b'){
+    else if (key == 'b') {
         createNewUniformBox();
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::launchBox() {
-    if (box) {
-        forceRegistry->add(box, impulseForce, Vector(forcePositionXSlider, forcePositionYSlider, forcePositionZSlider));
+    if (current_rig) {
+        forceRegistry->add(current_rig, impulseForce, Vector(forcePositionXSlider, forcePositionYSlider, forcePositionZSlider));
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::createNewBox() {
     // Initialiser une nouvelle boîte
-    box = std::make_shared<Box>(0.f, 0.f, 0.f, 50.f, 50.f, 50.f, 10.f, Matrix3x3::identity());
-    boxes.push_back(box);
+    current_rig = std::make_shared<Box>(0.f, 0.f, 0.f, 50.f, 50.f, 50.f, 10.f, Matrix3x3::identity());
+    rigidbodies.push_back(current_rig);
 
     // Ajouter la boîte au registre des forces avec la gravité
-    forceRegistry->add(box, gravity);
+    forceRegistry->add(current_rig, gravity);
 }
 
-void ofApp::createNewCoreBox(){
-    box = std::make_shared<CoreBox>(0.f, 0.f, 0.f);
-    boxes.push_back(box);
+void ofApp::createNewCoreBox() {
+    current_rig = std::make_shared<CoreBox>(0.f, 0.f, 0.f);
+    rigidbodies.push_back(current_rig);
 
     // Ajouter la boîte au registre des forces avec la gravité
-    forceRegistry->add(box, gravity);
+    forceRegistry->add(current_rig, gravity);
 }
 
-void ofApp::createNewUniformBox(){
-    box = std::make_shared<UniformBox>(0.f, 0.f, 0.f);
-    boxes.push_back(box);
+void ofApp::createNewUniformBox() {
+    current_rig = std::make_shared<UniformBox>(0.f, 0.f, 0.f);
+    rigidbodies.push_back(current_rig);
 
     // Ajouter la boîte au registre des forces avec la gravité
-    forceRegistry->add(box, gravity);
+    forceRegistry->add(current_rig, gravity);
 }

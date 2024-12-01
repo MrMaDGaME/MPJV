@@ -62,11 +62,7 @@ public:
         Matrix3x3 m1(mat1);
         Matrix3x3 m2(mat2);
         Matrix3x3 result = m1 * m2;
-        float expected[3][3] = {
-            {30.0f, 24.0f, 18.0f},
-            {84.0f, 69.0f, 54.0f},
-            {138.0f, 114.0f, 90.0f}
-        };
+        float expected[3][3] = {{30.0f, 24.0f, 18.0f}, {84.0f, 69.0f, 54.0f}, {138.0f, 114.0f, 90.0f}};
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 3; ++j) {
                 assertEqual(result(i, j), expected[i][j], "testMultiplication");
