@@ -4,8 +4,9 @@ void ObjectForceRegistry::add(const std::shared_ptr<IObject>& object, const std:
     registrations_.push_back({object, force_generator});
 }
 
-void ObjectForceRegistry::add(const std::shared_ptr<IObject>& object, const std::shared_ptr<IObjectForceGenerator>& force_generator, const
-Vector& apply_point) {
+void ObjectForceRegistry::add(const std::shared_ptr<IObject>& object,
+                              const std::shared_ptr<IObjectForceGenerator>& force_generator,
+                              const Vector& apply_point) {
     registrations_.push_back({object, force_generator, apply_point});
 }
 

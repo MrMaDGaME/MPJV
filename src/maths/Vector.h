@@ -18,7 +18,7 @@ public:
     Vector operator/=(float s);
     float operator*(Vector v);
     Vector operator^(Vector v);
-    float magnitude();
+    float magnitude() const;
     Vector normalize();
     Vector limit(float max);
     float distance(Vector v);
@@ -39,6 +39,8 @@ public:
     bool operator<=(Vector v);
     bool operator>=(Vector v);
     bool operator!();
+    Vector cross(const Vector& v) const;
+    float dot(const Vector& v) const;
 
     float x;
     float y;

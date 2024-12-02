@@ -113,8 +113,7 @@ Matrix4x4 Matrix4x4::operator*(const Quaternion& q) const {
     return result;
 }
 
-Matrix4x4 Matrix4x4::operator/(float scalar) const
-{
+Matrix4x4 Matrix4x4::operator/(float scalar) const {
     Matrix4x4 result;
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
@@ -263,8 +262,7 @@ Matrix4x4 Matrix4x4::identity() {
     return result;
 }
 
-glm::mat4 Matrix4x4::to_glm() const
-{
+glm::mat4 Matrix4x4::to_glm() const {
     glm::mat4 result;
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
@@ -274,8 +272,7 @@ glm::mat4 Matrix4x4::to_glm() const
     return result;
 }
 
-ofMatrix4x4 Matrix4x4::ToOfMatrix() const
-{
+ofMatrix4x4 Matrix4x4::ToOfMatrix() const {
     ofMatrix4x4 result;
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {

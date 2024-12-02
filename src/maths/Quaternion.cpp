@@ -83,4 +83,3 @@ Matrix4x4 Quaternion::ToMatrix4() const {
 Matrix3x3 Quaternion::ToMatrix3() const {
     return Matrix3x3(*this);
 }
-

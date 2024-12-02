@@ -20,15 +20,15 @@
 class ofApp : public ofBaseApp {
 public:
     // Méthodes principales
-    void setup() override;  // Initialisation
+    void setup() override; // Initialisation
     void update() override; // Mise à jour
-    void draw() override;   // Dessin de la scène
+    void draw() override; // Dessin de la scène
     void keyPressed(int key) override; // Gestion des entrées clavier
 
 private:
     // Méthodes auxiliaires
-    void launchBox();       // Lancer une boîte avec une force initiale
-    void createNewBox();    // Créer une nouvelle boîte
+    void launchBox(); // Lancer une boîte avec une force initiale
+    void createNewBox(); // Créer une nouvelle boîte
     void createNewCoreBox();
     void createNewUniformBox();
 
@@ -37,7 +37,7 @@ private:
 
     // Interface utilisateur (GUI)
     ofxPanel gui;
-    ofxFloatSlider gravityScaleSlider;  // Échelle de gravité
+    ofxFloatSlider gravityScaleSlider; // Échelle de gravité
     ofxFloatSlider appliedForceXSlider; // Force appliquée (X)
     ofxFloatSlider appliedForceYSlider; // Force appliquée (Y)
     ofxFloatSlider appliedForceZSlider; // Force appliquée (Z)
@@ -46,14 +46,14 @@ private:
     ofxFloatSlider forcePositionZSlider; // Centre de masse (Z)
 
     // Gestion des objets physiques
-    std::shared_ptr<Box> box;                 // Boîte actuellement active
-    std::vector<std::shared_ptr<Box>> boxes;  // Liste de toutes les boîtes créées
+    std::shared_ptr<RigidBody> current_rig; // Boîte actuellement active
+    std::vector<std::shared_ptr<RigidBody>> rigidbodies; // Liste de toutes les boîtes créées
 
     // Générateurs de forces
-    std::shared_ptr<GravityForceGenerator> gravity;        // Générateur de gravité
-    std::shared_ptr<ImpulseForceGenerator> impulseForce;       // Générateur de force basé sur les sliders
-    std::shared_ptr<Vector> impulseForceVector;              // Vecteur directionnel pour la force d'entrée
+    std::shared_ptr<GravityForceGenerator> gravity; // Générateur de gravité
+    std::shared_ptr<ImpulseForceGenerator> impulseForce; // Générateur de force basé sur les sliders
+    std::shared_ptr<Vector> impulseForceVector; // Vecteur directionnel pour la force d'entrée
 
     // Registre des forces
-    std::shared_ptr<ObjectForceRegistry> forceRegistry;    // Gestionnaire des forces appliquées aux objets
+    std::shared_ptr<ObjectForceRegistry> forceRegistry; // Gestionnaire des forces appliquées aux objets
 };

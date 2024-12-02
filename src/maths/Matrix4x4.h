@@ -30,8 +30,7 @@ public:
 
     [[nodiscard]] glm::mat4 to_glm() const;
     [[nodiscard]] ofMatrix4x4 ToOfMatrix() const;
-    
-    
+
 private:
     float matrix_[4][4];
 };

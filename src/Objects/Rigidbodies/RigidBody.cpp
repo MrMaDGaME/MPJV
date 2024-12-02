@@ -1,6 +1,6 @@
 #include "RigidBody.h"
 
-RigidBody::RigidBody(float x, float y, float z, float mass, Matrix3x3 inertia) {
+RigidBody::RigidBody(float x, float y, float z, float mass, Matrix3x3 inertia) : color_(ofColor::white) {
     if (mass <= 0.f) {
         throw std::invalid_argument("Mass must be positive");
     }
@@ -21,6 +21,60 @@ RigidBody::RigidBody(float x, float y, float z, float mass, Matrix3x3 inertia, o
     inv_mass_ = 1 / mass;
     inv_inertia_ = inertia.inverse();
     color_ = color;
+}
+
+RigidBody::RigidBody(const Vector& position, float mass, Matrix3x3 inertia) : position_(position),
+                                                                              inv_inertia_(inertia.inverse()),
+                                                                              rotation_(Quaternion()),
+                                                                              velocity_(Vector(0, 0, 0)),
+                                                                              color_(ofColor::white) {
+    if (mass <= 0.f) {
+        throw std::invalid_argument("Mass must be positive");
+    }
+    inv_mass_ = 1 / mass;
+}
+
+RigidBody::RigidBody(const Vector& position, float mass, Matrix3x3 inertia, ofColor color) : position_(position),
+                                                                                             inv_inertia_(inertia.inverse()),
+                                                                                             rotation_(Quaternion()),
+                                                                                             velocity_(Vector(0, 0, 0)),
+                                                                                             color_(color) {
+    if (mass <= 0.f) {
+        throw std::invalid_argument("Mass must be positive");
+    }
+    inv_mass_ = 1 / mass;
+}
+
+RigidBody::RigidBody(const float x, const float y, const float z) : position_(x, y, z),
+                                                                    rotation_(Quaternion()),
+                                                                    velocity_(0, 0, 0),
+                                                                    inv_mass_(0),
+                                                                    inv_inertia_(Matrix3x3::identity()),
+                                                                    color_(ofColor::white) {
+}
+
+RigidBody::RigidBody(const float x, const float y, const float z, const ofColor& color) : position_(x, y, z),
+                                                                                          rotation_(Quaternion()),
+                                                                                          velocity_(0, 0, 0),
+                                                                                          inv_mass_(0),
+                                                                                          inv_inertia_(Matrix3x3::identity()),
+                                                                                          color_(color) {
+}
+
+RigidBody::RigidBody(const Vector& position) : position_(position),
+                                               rotation_(Quaternion()),
+                                               velocity_(0, 0, 0),
+                                               inv_mass_(0),
+                                               inv_inertia_(Matrix3x3::identity()),
+                                               color_(ofColor::white) {
+}
+
+RigidBody::RigidBody(const Vector& position, const ofColor& color) : position_(position),
+                                                                     rotation_(Quaternion()),
+                                                                     velocity_(0, 0, 0),
+                                                                     inv_mass_(0),
+                                                                     inv_inertia_(Matrix3x3::identity()),
+                                                                     color_(color) {
 }
 
 void RigidBody::update() {
@@ -48,7 +102,7 @@ void RigidBody::addForce(const Vector& force, const Vector& apply_point) {
     accum_torque += l ^ force;
 }
 
-void RigidBody::rotate(Quaternion rot_quat) {
+void RigidBody::rotate(const Quaternion& rot_quat) {
     rotation_ = rot_quat * rotation_;
 }
 
@@ -95,4 +149,25 @@ void RigidBody::clearAccums() {
 
 void RigidBody::setCenterOfMass(const Vector& newCenterOfMass) {
     centerOfMass_ = newCenterOfMass;
+}
+
+std::tuple<float, float, float> RigidBody::quaternionToEuler(float w, float x, float y, float z) {
+    // Calcul du roll (rotation autour de X)
+    float roll = std::atan2(2.0f * (w * x + y * z), 1.0f - 2.0f * (x * x + y * y));
+
+    // Calcul du pitch (rotation autour de Y)
+    float sinPitch = 2.0f * (w * y - z * x);
+    float pitch;
+    if (std::abs(sinPitch) >= 1.0f) {
+        pitch = std::copysign(M_PI / 2.0f, sinPitch); // Limiter à ±90°
+    }
+    else {
+        pitch = std::asin(sinPitch);
+    }
+
+    // Calcul du yaw (rotation autour de Z)
+    float yaw = std::atan2(2.0f * (w * z + x * y), 1.0f - 2.0f * (y * y + z * z));
+
+    // Convertir en degrés
+    return std::make_tuple(ofRadToDeg(roll), ofRadToDeg(pitch), ofRadToDeg(yaw));
 }
