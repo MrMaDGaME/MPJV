@@ -29,7 +29,7 @@ Vector Vector::operator-(Vector v) {
     return Vector(x - v.x, y - v.y, z - v.z);
 }
 
-Vector Vector::operator*(float s) {
+Vector Vector::operator*(float s) const {
     return Vector(x * s, y * s, z * s);
 }
 

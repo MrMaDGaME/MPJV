@@ -2,7 +2,6 @@
 
 #include <vector>
 #include <memory>
-
 #include "Vector.h"
 #include "Objects/Rigidbodies/RigidBody.h"
 
@@ -11,7 +10,9 @@ public:
     ocTree(const Vector& center, const Vector& halfSize, int depth = 0, int maxDepth = 5, int maxBodies = 8);
     void insert(std::shared_ptr<RigidBody> body);
     void clear();
-    std::vector<std::shared_ptr<RigidBody>> query(const Vector& regionCenter, const Vector& regionHalfSize) const;
+    [[nodiscard]] std::vector<std::shared_ptr<RigidBody>> query(const Vector& regionCenter, const Vector& regionHalfSize) const;
+    [[nodiscard]] std::set<std::pair<std::shared_ptr<RigidBody>, std::shared_ptr<RigidBody>>> getAllPairs() const;
+    
 private:
     Vector center_;
     Vector halfSize_;
@@ -23,5 +24,8 @@ private:
 
     bool isLeaf() const;
     void subdivide();
-    int getOctant(const Vector& point) const;
+    std::vector<int> getOctants(const Vector& point, float radius) const;
+    bool overlaps(const Vector& regionCenter, const Vector& regionHalfSize, const Vector& point, float radius) const;
+    void getAllPairsHelper(std::set<std::pair<std::shared_ptr<RigidBody>, std::shared_ptr<RigidBody>>>& pairs) const;
+
 };
