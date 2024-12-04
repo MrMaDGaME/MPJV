@@ -12,14 +12,7 @@ class Blob : public IObject {
     };
 
 public:
-    Blob(float x,
-         float y,
-         float z,
-         float radius,
-         float mass,
-         const ofColor& color,
-         float terminal_velocity,
-         float spring_constant,
+    Blob(float x, float y, float z, float radius, float mass, const ofColor& color, float terminal_velocity, float spring_constant,
          float spring_rest_length);
 
     Blob(shared_ptr<Particle> particle, const ofColor& color, float terminal_velocity, float spring_constant, float spring_rest_length);
@@ -34,14 +27,11 @@ public:
     void set_velocity(const Vector& velocity) override;
     [[nodiscard]] float get_inv_mass() const override;
     void set_inv_mass(float inv_mass) override;
-    void fill_object_collision(std::shared_ptr<IObject> other,
-                               std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+    void fill_object_collision(std::shared_ptr<IObject> other, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
                                CollisionType collision_type,
                                float coeff) override; // Initiates the collisions with other objects for all the particles in the blob
-    void fill_particle_collision(std::shared_ptr<Particle> particle,
-                                 std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
-                                 CollisionType collision_type,
-                                 float coeff) override;
+    void fill_particle_collision(std::shared_ptr<Particle> particle, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+                                 CollisionType collision_type, float coeff) override;
 
     void add_new_blob(); // Spawns a particle and merges it with the blob
     void split(const shared_ptr<Particle>& other); // Removes the particle from the blob

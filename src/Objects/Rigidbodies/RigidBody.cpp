@@ -23,10 +23,8 @@ RigidBody::RigidBody(float x, float y, float z, float mass, Matrix3x3 inertia, o
     color_ = color;
 }
 
-RigidBody::RigidBody(const Vector& position, float mass, Matrix3x3 inertia) : position_(position),
-                                                                              inv_inertia_(inertia.inverse()),
-                                                                              rotation_(Quaternion()),
-                                                                              velocity_(Vector(0, 0, 0)),
+RigidBody::RigidBody(const Vector& position, float mass, Matrix3x3 inertia) : position_(position), inv_inertia_(inertia.inverse()),
+                                                                              rotation_(Quaternion()), velocity_(Vector(0, 0, 0)),
                                                                               color_(ofColor::white) {
     if (mass <= 0.f) {
         throw std::invalid_argument("Mass must be positive");
@@ -34,10 +32,8 @@ RigidBody::RigidBody(const Vector& position, float mass, Matrix3x3 inertia) : po
     inv_mass_ = 1 / mass;
 }
 
-RigidBody::RigidBody(const Vector& position, float mass, Matrix3x3 inertia, ofColor color) : position_(position),
-                                                                                             inv_inertia_(inertia.inverse()),
-                                                                                             rotation_(Quaternion()),
-                                                                                             velocity_(Vector(0, 0, 0)),
+RigidBody::RigidBody(const Vector& position, float mass, Matrix3x3 inertia, ofColor color) : position_(position), inv_inertia_(inertia.inverse()),
+                                                                                             rotation_(Quaternion()), velocity_(Vector(0, 0, 0)),
                                                                                              color_(color) {
     if (mass <= 0.f) {
         throw std::invalid_argument("Mass must be positive");
@@ -45,36 +41,21 @@ RigidBody::RigidBody(const Vector& position, float mass, Matrix3x3 inertia, ofCo
     inv_mass_ = 1 / mass;
 }
 
-RigidBody::RigidBody(const float x, const float y, const float z) : position_(x, y, z),
-                                                                    rotation_(Quaternion()),
-                                                                    velocity_(0, 0, 0),
-                                                                    inv_mass_(0),
-                                                                    inv_inertia_(Matrix3x3::identity()),
-                                                                    color_(ofColor::white) {
+RigidBody::RigidBody(const float x, const float y, const float z) : position_(x, y, z), rotation_(Quaternion()), velocity_(0, 0, 0), inv_mass_(0),
+                                                                    inv_inertia_(Matrix3x3::identity()), color_(ofColor::white) {
 }
 
-RigidBody::RigidBody(const float x, const float y, const float z, const ofColor& color) : position_(x, y, z),
-                                                                                          rotation_(Quaternion()),
-                                                                                          velocity_(0, 0, 0),
-                                                                                          inv_mass_(0),
-                                                                                          inv_inertia_(Matrix3x3::identity()),
-                                                                                          color_(color) {
+RigidBody::RigidBody(const float x, const float y, const float z, const ofColor& color) : position_(x, y, z), rotation_(Quaternion()),
+                                                                                          velocity_(0, 0, 0), inv_mass_(0),
+                                                                                          inv_inertia_(Matrix3x3::identity()), color_(color) {
 }
 
-RigidBody::RigidBody(const Vector& position) : position_(position),
-                                               rotation_(Quaternion()),
-                                               velocity_(0, 0, 0),
-                                               inv_mass_(0),
-                                               inv_inertia_(Matrix3x3::identity()),
-                                               color_(ofColor::white) {
+RigidBody::RigidBody(const Vector& position) : position_(position), rotation_(Quaternion()), velocity_(0, 0, 0), inv_mass_(0),
+                                               inv_inertia_(Matrix3x3::identity()), color_(ofColor::white) {
 }
 
-RigidBody::RigidBody(const Vector& position, const ofColor& color) : position_(position),
-                                                                     rotation_(Quaternion()),
-                                                                     velocity_(0, 0, 0),
-                                                                     inv_mass_(0),
-                                                                     inv_inertia_(Matrix3x3::identity()),
-                                                                     color_(color) {
+RigidBody::RigidBody(const Vector& position, const ofColor& color) : position_(position), rotation_(Quaternion()), velocity_(0, 0, 0), inv_mass_(0),
+                                                                     inv_inertia_(Matrix3x3::identity()), color_(color) {
 }
 
 void RigidBody::update() {
@@ -130,16 +111,12 @@ void RigidBody::set_inv_mass(float inv_mass) {
     this->inv_mass_ = inv_mass;
 }
 
-void RigidBody::fill_object_collision(std::shared_ptr<IObject> other,
-                                      std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
-                                      CollisionType collision_type,
-                                      float coeff) {
+void RigidBody::fill_object_collision(std::shared_ptr<IObject> other, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+                                      CollisionType collision_type, float coeff) {
 }
 
-void RigidBody::fill_particle_collision(std::shared_ptr<Particle> particle,
-                                        std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
-                                        CollisionType collision_type,
-                                        float coeff) {
+void RigidBody::fill_particle_collision(std::shared_ptr<Particle> particle, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+                                        CollisionType collision_type, float coeff) {
 }
 
 void RigidBody::clearAccums() {
