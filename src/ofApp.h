@@ -37,7 +37,7 @@ private:
     ofEasyCam cam;
 
     // Interface utilisateur (GUI)
-    ofxPanel gui;
+    ofxPanel parametersGui;
     ofxFloatSlider gravityScaleSlider; // Échelle de gravité
     ofxFloatSlider appliedForceXSlider; // Force appliquée (X)
     ofxFloatSlider appliedForceYSlider; // Force appliquée (Y)
@@ -45,6 +45,12 @@ private:
     ofxFloatSlider forcePositionXSlider; // Centre de masse (X)
     ofxFloatSlider forcePositionYSlider; // Centre de masse (Y)
     ofxFloatSlider forcePositionZSlider; // Centre de masse (Z)
+
+    ofxPanel drawGui;
+    ofxToggle drawForceToggle; // Toggle to draw force applied
+    ofxToggle drawOctreeToggle; // Toggle to draw octree
+    ofxToggle drawBoundingSpheresToggle; // Toggle to draw bounding spheres
+
 
     // Gestion des objets physiques
     std::shared_ptr<RigidBody> current_rig; // Boîte actuellement active
