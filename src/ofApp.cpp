@@ -24,10 +24,16 @@ void ofApp::setup() {
     cam.setDistance(500); // Distance de vue initiale
 
     rigidbodies.push_back(make_shared<Plane>(Vector(), 100.f, 100.f, Vector(1, 0, 0), ofColor::green));
+    tree = std::make_shared<ocTree>(Vector(), 10000.f);
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
+    tree->clear();
+    for (const auto& rigidbody : rigidbodies) {
+        tree->insert(rigidbody);
+    }
+    
     // Mettre à jour la gravité en fonction des sliders
     gravity->setGravity(-9.81f * gravityScaleSlider);
 
@@ -73,6 +79,8 @@ void ofApp::draw() {
                         5.f);
         }
     }
+
+    tree->draw();
 
     cam.end();
     ofDisableDepthTest();

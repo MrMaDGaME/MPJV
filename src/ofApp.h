@@ -13,6 +13,7 @@
 #include "maths/Quaternion.h"
 
 // Objets physiques
+#include "maths/ocTree.h"
 #include "Objects/Rigidbodies/Box.h"
 #include "Objects/Rigidbodies/BoxTypes/UniformBox.h"
 #include "Objects/Rigidbodies/BoxTypes/CoreBox.h"
@@ -56,4 +57,6 @@ private:
 
     // Registre des forces
     std::shared_ptr<ObjectForceRegistry> forceRegistry; // Gestionnaire des forces appliquées aux objets
+
+    std::shared_ptr<ocTree> tree;
 };
