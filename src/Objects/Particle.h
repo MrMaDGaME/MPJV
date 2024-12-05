@@ -24,14 +24,10 @@ public:
     [[nodiscard]] float get_terminal_velocity() const;
     void set_terminal_velocity(float terminal_velocity);
     [[nodiscard]] float get_radius() const;
-    void fill_object_collision(std::shared_ptr<IObject> other,
-                               std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
-                               CollisionType collision_type,
-                               float coeff) override; //see IObject.h
-    void fill_particle_collision(std::shared_ptr<Particle> particle,
-                                 std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
-                                 CollisionType collision_type,
-                                 float coeff) override; //see IObject.h
+    void fill_object_collision(std::shared_ptr<IObject> other, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+                               CollisionType collision_type, float coeff) override; //see IObject.h
+    void fill_particle_collision(std::shared_ptr<Particle> particle, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+                                 CollisionType collision_type, float coeff) override; //see IObject.h
 
 protected:
     ofColor color_;

@@ -23,8 +23,7 @@ public :
 private :
     static Matrix3x3 computeInertia(float height, float width, float depth, float mass) {
         float mat[3][3] = {
-            {1.f / 12 * mass * (height * height + depth * depth), 0, 0},
-            {0, 1.f / 12 * mass * (width * width + height * height), 0},
+            {1.f / 12 * mass * (height * height + depth * depth), 0, 0}, {0, 1.f / 12 * mass * (width * width + height * height), 0},
             {0, 0, 1.f / 12 * mass * (width * width + depth * depth)}
         };
         return Matrix3x3(mat);

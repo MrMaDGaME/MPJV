@@ -2,14 +2,7 @@
 #include "../ofApp.h"
 #include "../Force/Generators/SpringForceGenerator.h"
 
-Blob::Blob(float x,
-           float y,
-           float z,
-           float radius,
-           float mass,
-           const ofColor& color,
-           float terminal_velocity,
-           float spring_constant,
+Blob::Blob(float x, float y, float z, float radius, float mass, const ofColor& color, float terminal_velocity, float spring_constant,
            float spring_rest_length) : color_(color), spring_constant_(spring_constant), spring_rest_length_(spring_rest_length) {
     if (terminal_velocity < 0) {
         throw std::invalid_argument("Terminal velocity must be greater than or equal to 0");
@@ -19,9 +12,7 @@ Blob::Blob(float x,
 }
 
 Blob::Blob(shared_ptr<Particle> particle, const ofColor& color, float terminal_velocity, float spring_constant, float spring_rest_length) :
-    color_(color),
-    spring_constant_(spring_constant),
-    spring_rest_length_(spring_rest_length) {
+    color_(color), spring_constant_(spring_constant), spring_rest_length_(spring_rest_length) {
     if (terminal_velocity < 0) {
         throw std::invalid_argument("Terminal velocity must be greater than or equal to 0");
     }
@@ -76,20 +67,16 @@ void Blob::set_inv_mass(const float inv_mass) {
     particles[0]->set_inv_mass(inv_mass);
 }
 
-void Blob::fill_object_collision(std::shared_ptr<IObject> other,
-                                 std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
-                                 const CollisionType collision_type,
-                                 const float coeff) {
+void Blob::fill_object_collision(std::shared_ptr<IObject> other, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+                                 const CollisionType collision_type, const float coeff) {
     this->collision_registry = collision_registry;
     for (const auto& p : particles) {
         p->fill_object_collision(other, collision_registry, collision_type, coeff);
     }
 }
 
-void Blob::fill_particle_collision(std::shared_ptr<Particle> particle,
-                                   std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
-                                   const CollisionType collision_type,
-                                   const float coeff) {
+void Blob::fill_particle_collision(std::shared_ptr<Particle> particle, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+                                   const CollisionType collision_type, const float coeff) {
     for (const auto& p : particles) {
         p->fill_particle_collision(particle, collision_registry, collision_type, coeff);
     }

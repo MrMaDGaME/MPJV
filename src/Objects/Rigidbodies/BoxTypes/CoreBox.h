@@ -23,8 +23,7 @@ public :
 private :
     static Matrix3x3 computeInertia(float mass, float coreradius) {
         float mat[3][3] = {
-            {2.f / 5 * mass * coreradius * coreradius, 0, 0},
-            {0, 2.f / 5 * mass * coreradius * coreradius, 0},
+            {2.f / 5 * mass * coreradius * coreradius, 0, 0}, {0, 2.f / 5 * mass * coreradius * coreradius, 0},
             {0, 0, 2.f / 5 * mass * coreradius * coreradius}
         };
         return Matrix3x3(mat);

@@ -5,7 +5,7 @@
 #include "../Objects/Particle.h"
 
 class ParticleCollisionRegistry {
-    struct ParticleCollisionEntry { //Struct used to store a interpenetration collision Checked in CheckCollision
+    struct ParticleCollisionEntry { //Struct used to store an interpenetration collision Checked in CheckCollision
         std::shared_ptr<Particle> particleA;
         std::shared_ptr<Particle> particleB;
         float restCoeff; //coefficient of restitution give the elasticity of collision : 0 perfectly inelastic, 1 perfectly elastic
@@ -46,5 +46,5 @@ private :
     void HandleCableCollision(ParticleCollisionLinkEntry& collision);
     void HandleInterCollision(ParticleCollisionEntry& collision);
 
-    shared_ptr<ObjectForceRegistry> force_registry;
+    std::shared_ptr<ObjectForceRegistry> force_registry;
 };

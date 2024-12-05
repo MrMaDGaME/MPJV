@@ -1,17 +1,12 @@
 #include "Box.h"
 
 Box::Box(float x, float y, float z, float height, float width, float depth, float mass, Matrix3x3 inertia) : RigidBody(x, y, z, mass, inertia),
-    height_(height),
-    width_(width),
-    depth_(depth) {
+    height_(height), width_(width), depth_(depth) {
     boundingSphere_ = Sphere(position_, std::sqrt(width * width + height * height + depth * depth) / 2);
 }
 
 Box::Box(float x, float y, float z, float height, float width, float depth, float mass, Matrix3x3 inertia, ofColor color) :
-    RigidBody(x, y, z, mass, inertia, color),
-    height_(height),
-    width_(width),
-    depth_(depth) {
+    RigidBody(x, y, z, mass, inertia, color), height_(height), width_(width), depth_(depth) {
     boundingSphere_ = Sphere(position_, std::sqrt(width * width + height * height + depth * depth) / 2);
 }
 
