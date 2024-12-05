@@ -148,3 +148,8 @@ std::tuple<float, float, float> RigidBody::quaternionToEuler(float w, float x, f
     // Convertir en degrés
     return std::make_tuple(ofRadToDeg(roll), ofRadToDeg(pitch), ofRadToDeg(yaw));
 }
+
+Sphere RigidBody::getBoundingSphere() const
+{
+    return boundingSphere_;
+}

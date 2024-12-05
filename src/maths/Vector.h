@@ -10,7 +10,7 @@ public:
 
     Vector operator+(Vector v);
     Vector operator-(Vector v);
-    Vector operator*(float s);
+    Vector operator*(float s) const;
     Vector operator/(float s);
     Vector operator+=(Vector v);
     Vector operator-=(Vector v);
