@@ -4,6 +4,7 @@
 #include "ofxGui.h"
 
 // Objets physiques
+#include "maths/ocTree.h"
 #include "Objects/Rigidbodies/Box.h"
 #include "Objects/Rigidbodies/BoxTypes/UniformBox.h"
 #include "Objects/Rigidbodies/BoxTypes/CoreBox.h"
@@ -38,7 +39,7 @@ private:
     ofEasyCam cam;
 
     // Interface utilisateur (GUI)
-    ofxPanel gui;
+    ofxPanel parametersGui;
     ofxFloatSlider gravityScaleSlider; // Échelle de gravité
     ofxFloatSlider appliedForceXSlider; // Force appliquée (X)
     ofxFloatSlider appliedForceYSlider; // Force appliquée (Y)
@@ -46,6 +47,12 @@ private:
     ofxFloatSlider forcePositionXSlider; // Centre de masse (X)
     ofxFloatSlider forcePositionYSlider; // Centre de masse (Y)
     ofxFloatSlider forcePositionZSlider; // Centre de masse (Z)
+
+    ofxPanel drawGui;
+    ofxToggle drawForceToggle; // Toggle to draw force applied
+    ofxToggle drawOctreeToggle; // Toggle to draw octree
+    ofxToggle drawBoundingSpheresToggle; // Toggle to draw bounding spheres
+
 
     // Gestion des objets physiques
     std::shared_ptr<RigidBody> current_rig; // Boîte actuellement active
@@ -58,4 +65,6 @@ private:
 
     // Registre des forces
     std::shared_ptr<ObjectForceRegistry> forceRegistry; // Gestionnaire des forces appliquées aux objets
+
+    std::shared_ptr<ocTree> tree;
 };

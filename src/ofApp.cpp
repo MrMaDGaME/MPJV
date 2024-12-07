@@ -3,17 +3,22 @@
 //--------------------------------------------------------------
 void ofApp::setup() {
     // Initialisation de l'interface utilisateur
-    gui.setup();
-    gui.add(gravityScaleSlider.setup("Gravity Scale", 0.f, 0.f, 2.0f));
-    gui.add(appliedForceXSlider.setup("Applied Force X", 50.f, -50.f, 50.f));
-    gui.add(appliedForceYSlider.setup("Applied Force Y", 0.f, -50.f, 50.f));
-    gui.add(appliedForceZSlider.setup("Applied Force Z", 0.f, -50.f, 50.f));
-    gui.add(forcePositionXSlider.setup("Force position X", 0.f, -25.f, 25.f));
-    gui.add(forcePositionYSlider.setup("Force position Y", 0.f, -25.f, 25.f));
-    gui.add(forcePositionZSlider.setup("Force position Z", 0.f, -25.f, 25.f));
+    parametersGui.setup("Parameters", "forceSettings.xml", 10, 75);
+    parametersGui.add(gravityScaleSlider.setup("Gravity Scale", 0.f, 0.f, 2.0f));
+    parametersGui.add(appliedForceXSlider.setup("Applied Force X", 50.f, -50.f, 50.f));
+    parametersGui.add(appliedForceYSlider.setup("Applied Force Y", 0.f, -50.f, 50.f));
+    parametersGui.add(appliedForceZSlider.setup("Applied Force Z", 0.f, -50.f, 50.f));
+    parametersGui.add(forcePositionXSlider.setup("Force position X", 0.f, -25.f, 25.f));
+    parametersGui.add(forcePositionYSlider.setup("Force position Y", 0.f, -25.f, 25.f));
+    parametersGui.add(forcePositionZSlider.setup("Force position Z", 0.f, -25.f, 25.f));
+
+    drawGui.setup("Draw Settings", "drawSettings.xml", 10, 250);
+    drawGui.add(drawForceToggle.setup("Draw Force Applied", true));
+    drawGui.add(drawOctreeToggle.setup("Draw Octree", true));
+    drawGui.add(drawBoundingSpheresToggle.setup("Draw Bounding Spheres", false));
 
     // Initialisation de la gravité
-    gravity = std::make_shared<GravityForceGenerator>(-9.81f * gravityScaleSlider);
+    gravity = std::make_shared<GravityForceGenerator>(gravityScaleSlider * -9.81f);
 
     // Initialisation du registre des forces
     forceRegistry = std::make_shared<ObjectForceRegistry>();
@@ -21,11 +26,17 @@ void ofApp::setup() {
     // Configuration de la caméra
     cam.setDistance(500); // Distance de vue initiale
 
-    auto plane = std::make_shared<Plane>(Vector(), 100.f, 100.f, Vector(0, 1, 0), ofColor::green);
+    rigidbodies.push_back(make_shared<Plane>(Vector(), 100.f, 100.f, Vector(1, 0, 0), ofColor::green));
+    tree = std::make_shared<ocTree>(Vector(), 10000.f);
 }
 
 //--------------------------------------------------------------
 void ofApp::update() {
+    tree->clear();
+    for (const auto& rigidbody : rigidbodies) {
+        tree->insert(rigidbody);
+    }
+
     // Mettre à jour la gravité en fonction des sliders
     gravity->setGravity(-9.81f * gravityScaleSlider);
 
@@ -60,23 +71,32 @@ void ofApp::draw() {
         ofSetColor(ofColor::blue);
         rigidbody->draw();
 
-        // Dessiner le centre de masse en rouge
-        if (rigidbody->get_inv_mass() > 0) { // Ne pas dessiner le centre de masse pour les objets statiques
-            Vector cmPosition = rigidbody->get_position() + Vector(forcePositionXSlider, forcePositionYSlider, forcePositionZSlider);
-            ofSetColor(ofColor::red);
-            ofDrawSphere(cmPosition.x, cmPosition.y, cmPosition.z, 5.f);
-            ofSetColor(ofColor::yellow);
-            ofDrawArrow(glm::vec3(cmPosition.x - appliedForceXSlider, cmPosition.y - appliedForceYSlider, cmPosition.z - appliedForceZSlider),
-                        glm::vec3(cmPosition.x, cmPosition.y, cmPosition.z),
-                        5.f);
+        if (drawBoundingSpheresToggle) {
+            ofSetColor(ofColor::coral);
+            ofDrawSphere(rigidbody->get_position().x, rigidbody->get_position().y, rigidbody->get_position().z, rigidbody->getBoundingSphere().getRadius());
         }
+    }
+
+    if (drawForceToggle && current_rig) {
+        Vector forcePosition = current_rig->get_position() + Vector(forcePositionXSlider, forcePositionYSlider, forcePositionZSlider);
+        ofSetColor(ofColor::red);
+        ofDrawSphere(forcePosition.x, forcePosition.y, forcePosition.z, 5.f);
+        ofSetColor(ofColor::yellow);
+        ofDrawArrow(glm::vec3(forcePosition.x - appliedForceXSlider, forcePosition.y - appliedForceYSlider, forcePosition.z - appliedForceZSlider),
+                    glm::vec3(forcePosition.x, forcePosition.y, forcePosition.z),
+                    5.f);
+    }
+
+    if (drawOctreeToggle) {
+        tree->draw();
     }
 
     cam.end();
     ofDisableDepthTest();
 
     // Dessiner l'interface utilisateur
-    gui.draw();
+    parametersGui.draw();
+    drawGui.draw();
 
     // Afficher des informations de débogage
     ofSetColor(ofColor::white);

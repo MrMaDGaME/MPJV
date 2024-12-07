@@ -45,6 +45,8 @@ public:
 
     static std::tuple<float, float, float> quaternionToEuler(float w, float x, float y, float z);
 
+    Sphere getBoundingSphere() const;
+
 private :
     void clearAccums();
 
