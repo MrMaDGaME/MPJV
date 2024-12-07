@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 #include "Vector.h"
-#include "Objects/Rigidbodies/RigidBody.h"
+#include "../Objects/Rigidbodies/RigidBody.h"
 
 class ocTree {
 public:
