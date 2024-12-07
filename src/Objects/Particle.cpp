@@ -1,5 +1,4 @@
 #include "Particle.h"
-#include "../Collision/ParticleCollisionRegistry.h"
 
 Particle::Particle() {
     position_ = Vector(0, 0, 0);

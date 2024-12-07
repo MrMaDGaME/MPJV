@@ -3,6 +3,7 @@
 
 #include "../maths/Vector.h"
 #include "../Collision/CollisionType.h"
+#include <ofMain.h>
 
 class ParticleCollisionRegistry;
 class Particle;

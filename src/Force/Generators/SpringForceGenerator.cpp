@@ -8,7 +8,7 @@ void SpringForceGenerator::UpdateForce(std::shared_ptr<IObject>& object) {
     Vector force = object->get_position() - other->get_position();
     float distance = force.magnitude();
     float magnitude = -springConstant * (distance - restLength);
-    force = force.normalize();
+    force.normalize();
     object->addForce(Vector(force.x * magnitude, force.y * magnitude, force.z * magnitude));
 }
 
@@ -16,6 +16,6 @@ void SpringForceGenerator::UpdateForce(std::shared_ptr<IObject>& object, const V
     Vector force = object->get_position() - other->get_position();
     float distance = force.magnitude();
     float magnitude = -springConstant * (distance - restLength);
-    force = force.normalize();
+    force.normalize();
     object->addForce(Vector(force.x * magnitude, force.y * magnitude, force.z * magnitude), apply_point);
 }

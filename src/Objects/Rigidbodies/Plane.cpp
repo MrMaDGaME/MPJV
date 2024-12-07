@@ -1,34 +1,25 @@
 ﻿#include "Plane.h"
 
 Plane::Plane(const float x, const float y, const float z, const float width, const float height, const Vector& normal) : RigidBody(x, y, z),
-    width_(width),
-    height_(height),
-    normal_(normal) {
+    width_(width), height_(height), normal_(normal) {
     rotation_ = normalToQuat(normal);
     boundingSphere_ = Sphere(position_, std::sqrt(width * width + height * height) / 2);
 }
 
 Plane::Plane(const float x, const float y, const float z, const float width, const float height, const Vector& normal, const ofColor& color) :
-    RigidBody(x, y, z, color),
-    width_(width),
-    height_(height),
-    normal_(normal) {
+    RigidBody(x, y, z, color), width_(width), height_(height), normal_(normal) {
     rotation_ = normalToQuat(normal);
     boundingSphere_ = Sphere(position_, std::sqrt(width * width + height * height) / 2);
 }
 
-Plane::Plane(const Vector& position, const float width, const float height, const Vector& normal) : RigidBody(position),
-    width_(width),
-    height_(height),
-    normal_(normal) {
+Plane::Plane(const Vector& position, const float width, const float height, const Vector& normal) : RigidBody(position), width_(width),
+    height_(height), normal_(normal) {
     rotation_ = normalToQuat(normal);
     boundingSphere_ = Sphere(position_, std::sqrt(width * width + height * height) / 2);
 }
 
 Plane::Plane(const Vector& position, const float width, const float height, const Vector& normal, const ofColor& color) : RigidBody(position, color),
-    width_(width),
-    height_(height),
-    normal_(normal) {
+    width_(width), height_(height), normal_(normal) {
     rotation_ = normalToQuat(normal);
     boundingSphere_ = Sphere(position_, std::sqrt(width * width + height * height) / 2);
 }
@@ -62,6 +53,18 @@ void Plane::rotate(const Quaternion& rot_quat) {
     normal_ = quatToNormal(rotation_);
 }
 
+float Plane::get_width() const {
+    return width_;
+}
+
+float Plane::get_height() const {
+    return height_;
+}
+
+const Vector& Plane::get_normal() const {
+    return normal_;
+}
+
 Quaternion Plane::normalToQuat(const Vector& normal) {
     Vector identity = {0.0f, 0.0f, 1.0f}; // Normale identitaire
 
@@ -86,4 +89,16 @@ Vector Plane::quatToNormal(const Quaternion& quat) {
 
     // Extraire le vecteur résultant
     return {rotated.x, rotated.y, rotated.z};
+}
+
+float Plane::checkCollisionWithRigidbody(const std::shared_ptr<const RigidBody>& other) const {
+    return other->checkCollisionWithPlane(shared_from_this());
+}
+
+float Plane::checkCollisionWithPlane(const std::shared_ptr<const Plane>& plane) const {
+    return RigidbodyCollisionRegistry::checkInterCollision(shared_from_this(), plane);
+}
+
+float Plane::checkCollisionWithBox(const std::shared_ptr<const Box>& box) const {
+    return RigidbodyCollisionRegistry::checkInterCollision(shared_from_this(), box);
 }

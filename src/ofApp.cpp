@@ -1,7 +1,5 @@
 #include "ofApp.h"
 
-#include "Objects/Rigidbodies/Plane.h"
-
 //--------------------------------------------------------------
 void ofApp::setup() {
     // Initialisation de l'interface utilisateur
@@ -23,7 +21,7 @@ void ofApp::setup() {
     // Configuration de la caméra
     cam.setDistance(500); // Distance de vue initiale
 
-    rigidbodies.push_back(make_shared<Plane>(Vector(), 100.f, 100.f, Vector(1, 0, 0), ofColor::green));
+    auto plane = std::make_shared<Plane>(Vector(), 100.f, 100.f, Vector(0, 1, 0), ofColor::green);
 }
 
 //--------------------------------------------------------------

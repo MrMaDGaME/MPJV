@@ -1,6 +1,6 @@
 #pragma once
 #include "IObject.h"
-#include "ofMain.h"
+#include "../Collision/ParticleCollisionRegistry.h"
 
 class Particle : public IObject, public std::enable_shared_from_this<Particle> {
 public:

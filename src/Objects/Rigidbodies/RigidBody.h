@@ -2,13 +2,15 @@
 
 #define _USE_MATH_DEFINES
 #include "../IObject.h"
-#include "ofMain.h"
 #include "../../maths/Matrix3x3.h"
-#include "../../maths/Matrix4x4.h"
 #include "../../maths/Quaternion.h"
 #include "../../maths/geometry/Sphere.h"
+#include "../../Collision/RigidbodyCollisionRegistry.h"
 
-class RigidBody : public IObject, public std::enable_shared_from_this<RigidBody> {
+class Plane;
+class Box;
+
+class RigidBody : public IObject {
 protected:
     RigidBody(float x, float y, float z, float mass, Matrix3x3 inertia);
     RigidBody(float x, float y, float z, float mass, Matrix3x3 inertia, ofColor color);
@@ -32,15 +34,14 @@ public:
     void set_velocity(const Vector& velocity) override;
     [[nodiscard]] float get_inv_mass() const override;
     void set_inv_mass(float inv_mass) override;
-    virtual void fill_object_collision(std::shared_ptr<IObject> other,
-                                       std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
-                                       CollisionType collision_type,
-                                       float coeff) override;
-    void fill_particle_collision(std::shared_ptr<Particle> particle,
-                                 std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
-                                 CollisionType collision_type,
-                                 float coeff) override;
+    void fill_object_collision(std::shared_ptr<IObject> other, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+                               CollisionType collision_type, float coeff) override;
+    void fill_particle_collision(std::shared_ptr<Particle> particle, std::shared_ptr<ParticleCollisionRegistry>& collision_registry,
+                                 CollisionType collision_type, float coeff) override;
     void setCenterOfMass(const Vector& newCenterOfMass);
+    virtual float checkCollisionWithRigidbody(const std::shared_ptr<const RigidBody>& other) const = 0;
+    virtual float checkCollisionWithPlane(const std::shared_ptr<const Plane>& plane) const = 0;
+    virtual float checkCollisionWithBox(const std::shared_ptr<const Box>& box) const = 0;
 
     static std::tuple<float, float, float> quaternionToEuler(float w, float x, float y, float z);
 

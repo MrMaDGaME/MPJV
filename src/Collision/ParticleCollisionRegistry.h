@@ -1,8 +1,9 @@
 #pragma once
 
 #include "../Force/ObjectForceRegistry.h"
-#include "../Force/Generators/GravityForceGenerator.h"
 #include "../Objects/Particle.h"
+#include "../Force/Generators/ImpulseForceGenerator.h"
+#include "../Force/Generators/GravityForceGenerator.h"
 
 class ParticleCollisionRegistry {
     struct ParticleCollisionEntry { //Struct used to store an interpenetration collision Checked in CheckCollision

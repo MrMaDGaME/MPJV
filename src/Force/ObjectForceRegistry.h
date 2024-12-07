@@ -1,7 +1,6 @@
 #pragma once
-#include "../Objects/Particle.h"
 #include "IObjectForceGenerator.h"
-#include "../Objects/Rigidbodies/RigidBody.h"
+#include "../Objects/IObject.h"
 #include "Generators/ImpulseForceGenerator.h"
 
 class ObjectForceRegistry {

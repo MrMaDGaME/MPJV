@@ -3,6 +3,12 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 
+// Objets physiques
+#include "Objects/Rigidbodies/Box.h"
+#include "Objects/Rigidbodies/BoxTypes/UniformBox.h"
+#include "Objects/Rigidbodies/BoxTypes/CoreBox.h"
+#include "Objects/Rigidbodies/Plane.h"
+
 // Classes physiques et forces
 #include "Force/Generators/InputForceGenerator.h"
 #include "Force/ObjectForceRegistry.h"
@@ -12,10 +18,6 @@
 #include "maths/Matrix3x3.h"
 #include "maths/Quaternion.h"
 
-// Objets physiques
-#include "Objects/Rigidbodies/Box.h"
-#include "Objects/Rigidbodies/BoxTypes/UniformBox.h"
-#include "Objects/Rigidbodies/BoxTypes/CoreBox.h"
 
 class ofApp : public ofBaseApp {
 public:

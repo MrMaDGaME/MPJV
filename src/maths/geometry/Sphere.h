@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdio.h>
 #include "../Vector.h"
 
 class Sphere {

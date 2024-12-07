@@ -28,7 +28,7 @@ void ParticleCollisionRegistry::RemoveCableCollision(std::shared_ptr<Particle> p
             iterator = CableRegistry.erase(iterator); //erase return next element of iterator allowing to delete while iterating
         }
         else {
-            iterator++;
+            ++iterator;
         }
     }
 }

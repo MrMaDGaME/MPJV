@@ -23,8 +23,8 @@ RigidBody::RigidBody(float x, float y, float z, float mass, Matrix3x3 inertia, o
     color_ = color;
 }
 
-RigidBody::RigidBody(const Vector& position, float mass, Matrix3x3 inertia) : position_(position), inv_inertia_(inertia.inverse()),
-                                                                              rotation_(Quaternion()), velocity_(Vector(0, 0, 0)),
+RigidBody::RigidBody(const Vector& position, float mass, Matrix3x3 inertia) : position_(position), rotation_(Quaternion()),
+                                                                              velocity_(Vector(0, 0, 0)), inv_inertia_(inertia.inverse()),
                                                                               color_(ofColor::white) {
     if (mass <= 0.f) {
         throw std::invalid_argument("Mass must be positive");
@@ -32,9 +32,9 @@ RigidBody::RigidBody(const Vector& position, float mass, Matrix3x3 inertia) : po
     inv_mass_ = 1 / mass;
 }
 
-RigidBody::RigidBody(const Vector& position, float mass, Matrix3x3 inertia, ofColor color) : position_(position), inv_inertia_(inertia.inverse()),
-                                                                                             rotation_(Quaternion()), velocity_(Vector(0, 0, 0)),
-                                                                                             color_(color) {
+RigidBody::RigidBody(const Vector& position, float mass, Matrix3x3 inertia, ofColor color) : position_(position), rotation_(Quaternion()),
+                                                                                             velocity_(Vector(0, 0, 0)),
+                                                                                             inv_inertia_(inertia.inverse()), color_(color) {
     if (mass <= 0.f) {
         throw std::invalid_argument("Mass must be positive");
     }

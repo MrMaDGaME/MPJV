@@ -1,6 +1,5 @@
 #pragma once
 #include "../Objects/IObject.h"
-#include "../Objects/Rigidbodies/RigidBody.h"
 
 class IObjectForceGenerator {
 public:

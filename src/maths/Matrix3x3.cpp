@@ -72,7 +72,7 @@ Matrix3x3 Matrix3x3::operator*(const Quaternion& q) const {
     Matrix3x3 result;
 
     // Convert quaternion to 3x3 rotation matrix
-    Matrix3x3 rotation = Matrix3x3(q);
+    auto rotation = Matrix3x3(q);
 
     // Multiply the current matrix with the rotation matrix
     for (int i = 0; i < 3; ++i) {
