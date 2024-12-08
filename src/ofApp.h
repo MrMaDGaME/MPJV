@@ -64,5 +64,8 @@ private:
     // Registre des forces
     std::shared_ptr<ObjectForceRegistry> forceRegistry; // Gestionnaire des forces appliquées aux objets
 
+    // Registre des collisions
+    std::shared_ptr<RigidbodyCollisionRegistry> collisionRegistry; // Gestionnaire des collisions entre objets
+
     std::shared_ptr<ocTree> tree;
 };

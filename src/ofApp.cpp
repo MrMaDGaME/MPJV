@@ -22,8 +22,9 @@ void ofApp::setup() {
 
     // Initialisation du registre des forces
     forceRegistry = std::make_shared<ObjectForceRegistry>();
+    collisionRegistry = std::make_shared<RigidbodyCollisionRegistry>(forceRegistry);
 
-    rigidbodies.push_back(std::make_shared<Plane>(Vector(), 100, 50, ofColor::blue));
+    // rigidbodies.push_back(std::make_shared<Plane>(Vector(0, 0, 100), 1000, 1000, ofColor::blue));
 
     // Configuration de la caméra
     cam.setDistance(500); // Distance de vue initiale
@@ -37,6 +38,8 @@ void ofApp::update() {
     for (const auto& rigidbody : rigidbodies) {
         tree->insert(rigidbody);
     }
+
+    collisionRegistry->computeInterCollisions();
 
     // Mettre à jour la gravité en fonction des sliders
     gravity->setGravity(-9.81f * gravityScaleSlider);
@@ -59,7 +62,6 @@ void ofApp::update() {
     // Mettre à jour chaque boîte
     for (const auto& rigidbody : rigidbodies) {
         rigidbody->update();
-        rigidbody->set_position({});
     }
 }
 
@@ -141,6 +143,9 @@ void ofApp::createNewBox() {
 
 void ofApp::createNewCoreBox() {
     current_rig = std::make_shared<CoreBox>(0.f, 0.f, 0.f);
+    for (const auto& rigidbody : rigidbodies) {
+        collisionRegistry->AddInterCollision(current_rig, rigidbody, 0.5f);
+    }
     rigidbodies.push_back(current_rig);
 
     // Ajouter la boîte au registre des forces avec la gravité
@@ -149,6 +154,9 @@ void ofApp::createNewCoreBox() {
 
 void ofApp::createNewUniformBox() {
     current_rig = std::make_shared<UniformBox>(0.f, 0.f, 0.f);
+    for (const auto& rigidbody : rigidbodies) {
+        collisionRegistry->AddInterCollision(current_rig, rigidbody, 0.5f);
+    }
     rigidbodies.push_back(current_rig);
 
     // Ajouter la boîte au registre des forces avec la gravité

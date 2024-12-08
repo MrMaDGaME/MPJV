@@ -24,7 +24,7 @@ public:
     //Add a collision listener between particleA and B of type interpenetrationCollision
 
     //Call adapted Handler in case of collision
-    void computeInterCollisions();
+    void computeInterCollisions() const;
     static float checkInterCollision(const std::shared_ptr<const Box>& box1, const std::shared_ptr<const Box>& box2);
     static float checkInterCollision(const std::shared_ptr<const Box>& box, const std::shared_ptr<const Plane>& plane);
     static float checkInterCollision(const std::shared_ptr<const Plane>& plane, const std::shared_ptr<const Box>& box);
