@@ -1,56 +1,81 @@
 ﻿#include "Plane.h"
 
-Plane::Plane(const float x, const float y, const float z, const float width, const float height, const Vector& normal) : RigidBody(x, y, z),
-    width_(width), height_(height), normal_(normal) {
-    rotation_ = normalToQuat(normal);
-    boundingSphere_ = Sphere(position_, std::sqrt(width * width + height * height) / 2);
+Plane::Plane(const float x, const float y, const float z, const float width, const float height) : RigidBody(x, y, z), width_(width), height_(height),
+                                                                                                   bounding_sphere_(
+                                                                                                       position_,
+                                                                                                       std::sqrt(
+                                                                                                           (width * width + height * height) / 2)) {
 }
 
-Plane::Plane(const float x, const float y, const float z, const float width, const float height, const Vector& normal, const ofColor& color) :
-    RigidBody(x, y, z, color), width_(width), height_(height), normal_(normal) {
-    rotation_ = normalToQuat(normal);
-    boundingSphere_ = Sphere(position_, std::sqrt(width * width + height * height) / 2);
+Plane::Plane(const float x, const float y, const float z, const float width, const float height, const ofColor& color) : RigidBody(x, y, z, color),
+    width_(width), height_(height), bounding_sphere_(position_, std::sqrt((width * width + height * height) / 2)) {
 }
 
-Plane::Plane(const Vector& position, const float width, const float height, const Vector& normal) : RigidBody(position), width_(width),
-    height_(height), normal_(normal) {
-    rotation_ = normalToQuat(normal);
-    boundingSphere_ = Sphere(position_, std::sqrt(width * width + height * height) / 2);
+Plane::Plane(const Vector& position, const float width, const float height) : RigidBody(position), width_(width), height_(height),
+                                                                              bounding_sphere_(
+                                                                                  position_,
+                                                                                  std::sqrt((width * width + height * height) / 2)) {
 }
 
-Plane::Plane(const Vector& position, const float width, const float height, const Vector& normal, const ofColor& color) : RigidBody(position, color),
-    width_(width), height_(height), normal_(normal) {
-    rotation_ = normalToQuat(normal);
-    boundingSphere_ = Sphere(position_, std::sqrt(width * width + height * height) / 2);
+Plane::Plane(const Vector& position, const float width, const float height, const ofColor& color) : RigidBody(position, color), width_(width),
+    height_(height), bounding_sphere_(position_, std::sqrt((width * width + height * height) / 2)) {
+}
+
+Plane::Plane(const Vector& position, float width, float height, const Quaternion& rotation, const ofColor& color) : Plane(
+    position,
+    width,
+    height,
+    color) {
+    rotation_ = rotation;
+}
+
+Plane::Plane(const std::vector<glm::vec3>& corners) : RigidBody(corners[0] + (corners[2] - corners[0]) / 2), bounding_sphere_({}, 0) {
+    corners_ = corners;
+    set_normal();
+    width_ = glm::distance(corners_[0], corners_[1]);
+    height_ = glm::distance(corners_[0], corners_[3]);
 }
 
 void Plane::draw() {
     ofSetColor(color_);
-
-    auto [roll, pitch, yaw] = quaternionToEuler(rotation_.w, rotation_.x, rotation_.y, rotation_.z);
-
-    // Appliquer les rotations et dessiner la boîte
     ofPushMatrix();
-    ofTranslate(glm::vec3(position_.x, position_.y, position_.z)); // Position globale
-    ofRotateXDeg(roll); // Rotation autour de X (Roll)
-    ofRotateYDeg(pitch); // Rotation autour de Y (Pitch)
-    ofRotateZDeg(yaw); // Rotation autour de Z (Yaw)
-    ofDrawPlane(position_.x, position_.y, position_.z, width_, height_);
+    for (size_t i = 0; i < 4; ++i) {
+        ofDrawLine(corners_[i], corners_[(i + 1) % 4]);
+    }
     ofPopMatrix();
-    ofSetColor(ofColor::red);
-    // ofDrawArrow(glm::vec3(position_.x, position_.y, position_.z),
-    //             glm::vec3(position_.x, position_.y, position_.z) + glm::vec3(normal_.x, normal_.y, normal_.z) * 50.f,
-    //             5.f);
 }
 
 void Plane::update() {
     RigidBody::update();
-    normal_ = quatToNormal(rotation_);
+    set_normal();
+    set_corners();
 }
 
 void Plane::rotate(const Quaternion& rot_quat) {
     RigidBody::rotate(rot_quat);
-    normal_ = quatToNormal(rotation_);
+    set_normal();
+    set_corners();
+}
+
+void Plane::set_corners() {
+    int p = 0;
+    for (float i = -0.5; i <= 0.5; i += 1) {
+        for (float j = -0.5; j <= 0.5; j += 1) {
+            const auto corner = Vector(i * width_, j * height_, 0);
+            const auto rotated = rotation_ * Quaternion(0, corner.x, corner.y, corner.z) * rotation_.conjugate();
+            corners_[p] = glm::vec3(rotated.x + position_.x, rotated.y + position_.y, rotated.z + position_.z);
+            p++;
+        }
+    }
+    // swap corners 2 and 3 to match the correct order
+    const auto tmp = corners_[2];
+    corners_[2] = corners_[3];
+    corners_[3] = tmp;
+}
+
+void Plane::set_normal() {
+    const auto normal = cross(corners_[1] - corners_[0], corners_[2] - corners_[0]);
+    normal_ = Vector(normal.x, normal.y, normal.z).normalize();
 }
 
 float Plane::get_width() const {
@@ -65,30 +90,8 @@ const Vector& Plane::get_normal() const {
     return normal_;
 }
 
-Quaternion Plane::normalToQuat(const Vector& normal) {
-    Vector identity = {0.0f, 0.0f, 1.0f}; // Normale identitaire
-
-    Vector axis = identity.cross(normal); // Axe de rotation
-
-    axis = axis.normalize();
-    float angle = std::acos(identity.dot(normal) / (identity.magnitude() * normal.magnitude()));
-
-    float halfAngle = angle / 2.0f;
-    float sinHalfAngle = std::sin(halfAngle);
-
-    return {std::cos(halfAngle), axis.x * sinHalfAngle, axis.y * sinHalfAngle, axis.z * sinHalfAngle};
-}
-
-Vector Plane::quatToNormal(const Quaternion& quat) {
-    // Quaternion représentant le vecteur identitaire (0, 0, 1)
-    Quaternion v = {0.0f, 0.0f, 0.0f, 1.0f};
-
-    // Appliquer la rotation : quat * v * quat^-1
-    Quaternion qConjugate = quat.conjugate();
-    Quaternion rotated = quat * v * qConjugate;
-
-    // Extraire le vecteur résultant
-    return {rotated.x, rotated.y, rotated.z};
+const std::vector<glm::vec3>& Plane::get_corners() const {
+    return corners_;
 }
 
 float Plane::checkCollisionWithRigidbody(const std::shared_ptr<const RigidBody>& other) const {
@@ -101,4 +104,8 @@ float Plane::checkCollisionWithPlane(const std::shared_ptr<const Plane>& plane) 
 
 float Plane::checkCollisionWithBox(const std::shared_ptr<const Box>& box) const {
     return RigidbodyCollisionRegistry::checkInterCollision(shared_from_this(), box);
+}
+
+const Sphere& Plane::get_bounding_sphere() const {
+    return bounding_sphere_;
 }

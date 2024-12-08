@@ -128,28 +128,6 @@ void RigidBody::setCenterOfMass(const Vector& newCenterOfMass) {
     centerOfMass_ = newCenterOfMass;
 }
 
-std::tuple<float, float, float> RigidBody::quaternionToEuler(float w, float x, float y, float z) {
-    // Calcul du roll (rotation autour de X)
-    float roll = std::atan2(2.0f * (w * x + y * z), 1.0f - 2.0f * (x * x + y * y));
-
-    // Calcul du pitch (rotation autour de Y)
-    float sinPitch = 2.0f * (w * y - z * x);
-    float pitch;
-    if (std::abs(sinPitch) >= 1.0f) {
-        pitch = std::copysign(M_PI / 2.0f, sinPitch); // Limiter à ±90°
-    }
-    else {
-        pitch = std::asin(sinPitch);
-    }
-
-    // Calcul du yaw (rotation autour de Z)
-    float yaw = std::atan2(2.0f * (w * z + x * y), 1.0f - 2.0f * (y * y + z * z));
-
-    // Convertir en degrés
-    return std::make_tuple(ofRadToDeg(roll), ofRadToDeg(pitch), ofRadToDeg(yaw));
-}
-
-Sphere RigidBody::getBoundingSphere() const
-{
-    return boundingSphere_;
+const Quaternion& RigidBody::get_rotation() const {
+    return rotation_;
 }

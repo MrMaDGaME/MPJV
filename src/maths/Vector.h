@@ -1,11 +1,13 @@
 #pragma once
 #include <math.h>
+#include <glm/vec3.hpp>
 
 class Vector {
 public:
     Vector();
     Vector(float x, float y);
     Vector(float x, float y, float z);
+    Vector(const glm::vec3& v);
 
     Vector operator+(const Vector& v) const;
     Vector operator-(const Vector& v) const;

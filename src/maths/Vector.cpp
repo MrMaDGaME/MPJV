@@ -18,6 +18,9 @@ Vector::Vector(const float x, const float y, const float z) {
     this->z = z;
 }
 
+Vector::Vector(const glm::vec3& v) : x(v.x), y(v.y), z(v.z) {
+}
+
 Vector Vector::operator+(const Vector& v) const {
     return Vector(x + v.x, y + v.y, z + v.z);
 }

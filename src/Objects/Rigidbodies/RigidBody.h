@@ -43,11 +43,11 @@ public:
     virtual float checkCollisionWithPlane(const std::shared_ptr<const Plane>& plane) const = 0;
     virtual float checkCollisionWithBox(const std::shared_ptr<const Box>& box) const = 0;
 
-    static std::tuple<float, float, float> quaternionToEuler(float w, float x, float y, float z);
+    [[nodiscard]] virtual const Sphere& get_bounding_sphere() const = 0;
 
-    Sphere getBoundingSphere() const;
+    [[nodiscard]] const Quaternion& get_rotation() const;
 
-private :
+private:
     void clearAccums();
 
 protected:
@@ -61,5 +61,4 @@ protected:
     Matrix3x3 inv_inertia_;
     ofColor color_;
     Vector centerOfMass_; // Variable pour stocker le centre de masse
-    Sphere boundingSphere_;
 };

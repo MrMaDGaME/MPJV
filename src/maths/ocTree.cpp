@@ -1,14 +1,16 @@
 #include "ocTree.h"
 
 ocTree::ocTree(const Vector& center, const Vector& halfSize, int depth, int maxDepth, int maxBodies)
-    : center_(center), halfSize_(halfSize), depth_(depth), maxDepth_(maxDepth), maxBodies_(maxBodies) {}
+    : center_(center), halfSize_(halfSize), depth_(depth), maxDepth_(maxDepth), maxBodies_(maxBodies) {
+}
 
-ocTree::ocTree(const Vector& center, const float halfSize, int depth, int maxDepth, int maxBodies) 
-    : center_(center), halfSize_(Vector(halfSize, halfSize, halfSize)), depth_(depth), maxDepth_(maxDepth), maxBodies_(maxBodies) {}
+ocTree::ocTree(const Vector& center, const float halfSize, int depth, int maxDepth, int maxBodies)
+    : center_(center), halfSize_(Vector(halfSize, halfSize, halfSize)), depth_(depth), maxDepth_(maxDepth), maxBodies_(maxBodies) {
+}
 
 void ocTree::insert(std::shared_ptr<RigidBody> body) {
     if (!isLeaf()) {
-        auto octants = getOctants(body->get_position(), body->getBoundingSphere().getRadius());
+        auto octants = getOctants(body->get_position(), body->get_bounding_sphere().getRadius());
         for (int octant : octants) {
             if (!children_[octant]) {
                 Vector newCenter = center_;
@@ -19,7 +21,8 @@ void ocTree::insert(std::shared_ptr<RigidBody> body) {
             }
             children_[octant]->insert(body);
         }
-    } else {
+    }
+    else {
         bodies_.push_back(body);
         if (bodies_.size() > maxBodies_ && depth_ < maxDepth_) {
             subdivide();
@@ -41,10 +44,11 @@ std::vector<std::shared_ptr<RigidBody>> ocTree::query(const Vector& regionCenter
                 result.insert(result.end(), childResult.begin(), childResult.end());
             }
         }
-    } else {
+    }
+    else {
         for (const auto& body : bodies_) {
             const Vector& pos = body->get_position();
-            float radius = body->getBoundingSphere().getRadius();
+            float radius = body->get_bounding_sphere().getRadius();
             if (overlaps(regionCenter, regionHalfSize, pos, radius)) {
                 result.push_back(body);
             }
@@ -78,7 +82,8 @@ void ocTree::getAllPairsHelper(std::set<std::pair<std::shared_ptr<RigidBody>, st
                 child->getAllPairsHelper(pairs);
             }
         }
-    } else {
+    }
+    else {
         for (size_t currentBodyIndex = 0; currentBodyIndex < bodies_.size(); ++currentBodyIndex) {
             for (size_t otherBodyIndex = 0; otherBodyIndex < bodies_.size(); ++otherBodyIndex) {
                 if (currentBodyIndex != otherBodyIndex) {
@@ -93,8 +98,7 @@ void ocTree::getAllPairsHelper(std::set<std::pair<std::shared_ptr<RigidBody>, st
     }
 }
 
-void ocTree::drawBox(const Vector& center, const Vector& halfSize) const
-{
+void ocTree::drawBox(const Vector& center, const Vector& halfSize) const {
     // Calculate the 8 corners of the box
     Vector corners[8];
     for (int i = 0; i < 8; ++i) {
@@ -128,7 +132,7 @@ bool ocTree::isLeaf() const {
 void ocTree::subdivide() {
     children_.resize(8);
     for (const auto& body : bodies_) {
-        auto octants = getOctants(body->get_position(), body->getBoundingSphere().getRadius());
+        auto octants = getOctants(body->get_position(), body->get_bounding_sphere().getRadius());
         for (int octant : octants) {
             if (!children_[octant]) {
                 Vector newCenter = center_;
@@ -158,7 +162,7 @@ std::vector<int> ocTree::getOctants(const Vector& point, const float radius) con
 }
 
 bool ocTree::overlaps(const Vector& regionCenter, const Vector& regionHalfSize, const Vector& point, float radius) const {
-    return (point.x + radius >= regionCenter.x - regionHalfSize.x && point.x - radius <= regionCenter.x + regionHalfSize.x &&
-            point.y + radius >= regionCenter.y - regionHalfSize.y && point.y - radius <= regionCenter.y + regionHalfSize.y &&
-            point.z + radius >= regionCenter.z - regionHalfSize.z && point.z - radius <= regionCenter.z + regionHalfSize.z);
+    return (point.x + radius >= regionCenter.x - regionHalfSize.x && point.x - radius <= regionCenter.x + regionHalfSize.x && point.y + radius >=
+        regionCenter.y - regionHalfSize.y && point.y - radius <= regionCenter.y + regionHalfSize.y && point.z + radius >= regionCenter.z -
+        regionHalfSize.z && point.z - radius <= regionCenter.z + regionHalfSize.z);
 }

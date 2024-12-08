@@ -23,10 +23,11 @@ void ofApp::setup() {
     // Initialisation du registre des forces
     forceRegistry = std::make_shared<ObjectForceRegistry>();
 
+    rigidbodies.push_back(std::make_shared<Plane>(Vector(), 100, 50, ofColor::blue));
+
     // Configuration de la caméra
     cam.setDistance(500); // Distance de vue initiale
 
-    rigidbodies.push_back(make_shared<Plane>(Vector(), 100.f, 100.f, Vector(1, 0, 0), ofColor::green));
     tree = std::make_shared<ocTree>(Vector(), 10000.f);
 }
 
@@ -58,6 +59,7 @@ void ofApp::update() {
     // Mettre à jour chaque boîte
     for (const auto& rigidbody : rigidbodies) {
         rigidbody->update();
+        rigidbody->set_position({});
     }
 }
 
@@ -68,12 +70,14 @@ void ofApp::draw() {
 
     // Dessiner toutes les boîtes
     for (const auto& rigidbody : rigidbodies) {
-        ofSetColor(ofColor::blue);
         rigidbody->draw();
-
         if (drawBoundingSpheresToggle) {
-            ofSetColor(ofColor::coral);
-            ofDrawSphere(rigidbody->get_position().x, rigidbody->get_position().y, rigidbody->get_position().z, rigidbody->getBoundingSphere().getRadius());
+            ofEnableAlphaBlending();
+            ofSetColor(200, 100, 0, 127);
+            auto boundingSphere = rigidbody->get_bounding_sphere();
+            auto boundingSpherePosition = boundingSphere.getCenter();
+            ofDrawSphere(boundingSpherePosition.x, boundingSpherePosition.y, boundingSpherePosition.z, boundingSphere.getRadius());
+            ofDisableAlphaBlending();
         }
     }
 

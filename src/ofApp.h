@@ -19,7 +19,6 @@
 #include "maths/Matrix3x3.h"
 #include "maths/Quaternion.h"
 
-
 class ofApp : public ofBaseApp {
 public:
     // Méthodes principales
@@ -52,7 +51,6 @@ private:
     ofxToggle drawForceToggle; // Toggle to draw force applied
     ofxToggle drawOctreeToggle; // Toggle to draw octree
     ofxToggle drawBoundingSpheresToggle; // Toggle to draw bounding spheres
-
 
     // Gestion des objets physiques
     std::shared_ptr<RigidBody> current_rig; // Boîte actuellement active

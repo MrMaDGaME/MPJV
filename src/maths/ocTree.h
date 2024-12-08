@@ -11,10 +11,12 @@ public:
     ocTree(const Vector& center, float halfSize, int depth = 0, int maxDepth = 5, int maxBodies = 3);
     void insert(std::shared_ptr<RigidBody> body);
     void clear();
-    [[nodiscard]] std::vector<std::shared_ptr<RigidBody>> query(const Vector& regionCenter, const Vector& regionHalfSize) const; // returns all bodies in the region, the region's shape is a box
-    [[nodiscard]] std::set<std::pair<std::shared_ptr<RigidBody>, std::shared_ptr<RigidBody>>> getAllPairs() const; // returns all pairs of bodies that are in the same region
+    [[nodiscard]] std::vector<std::shared_ptr<RigidBody>> query(const Vector& regionCenter, const Vector& regionHalfSize) const;
+    // returns all bodies in the region, the region's shape is a box
+    [[nodiscard]] std::set<std::pair<std::shared_ptr<RigidBody>, std::shared_ptr<RigidBody>>> getAllPairs() const;
+    // returns all pairs of bodies that are in the same region
     void draw() const;
-    
+
 private:
     Vector center_;
     Vector halfSize_;

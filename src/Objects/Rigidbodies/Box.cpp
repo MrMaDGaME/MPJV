@@ -1,28 +1,56 @@
 #include "Box.h"
 
 Box::Box(float x, float y, float z, float height, float width, float depth, float mass, Matrix3x3 inertia) : RigidBody(x, y, z, mass, inertia),
-    width_(width), height_(height), depth_(depth) {
-    boundingSphere_ = Sphere(position_, std::sqrt(width * width + height * height + depth * depth) / 2);
+    width_(width), height_(height), depth_(depth), bounding_sphere_(position_, std::sqrt((width * width + height * height + depth * depth) / 2)) {
 }
 
 Box::Box(float x, float y, float z, float height, float width, float depth, float mass, Matrix3x3 inertia, ofColor color) :
-    RigidBody(x, y, z, mass, inertia, color), width_(width), height_(height), depth_(depth) {
-    boundingSphere_ = Sphere(position_, std::sqrt(width * width + height * height + depth * depth) / 2);
+    RigidBody(x, y, z, mass, inertia, color), width_(width), height_(height), depth_(depth),
+    bounding_sphere_(position_, std::sqrt((width * width + height * height + depth * depth) / 2)) {
 }
 
 void Box::draw() {
     ofSetColor(color_);
-
-    auto [roll, pitch, yaw] = quaternionToEuler(rotation_.w, rotation_.x, rotation_.y, rotation_.z);
-
-    // Appliquer les rotations et dessiner la boîte
     ofPushMatrix();
-    ofTranslate(glm::vec3(position_.x, position_.y, position_.z)); // Position globale
-    ofRotateXDeg(roll); // Rotation autour de X (Roll)
-    ofRotateYDeg(pitch); // Rotation autour de Y (Pitch)
-    ofRotateZDeg(yaw); // Rotation autour de Z (Yaw)
-    ofDrawBox(0, 0, 0, width_, height_, depth_); // Dessine une boîte centrée à l'origine avec la taille donnée
+    for (size_t i = 0; i < 4; ++i) {
+        // Relier les coins avant/arrière
+        ofDrawLine(corners_[i], corners_[(i + 1) % 4]); // Face avant
+        ofDrawLine(corners_[i + 4], corners_[(i + 1) % 4 + 4]); // Face arrière
+        ofDrawLine(corners_[i], corners_[i + 4]); // Relier avant-arrière
+    }
     ofPopMatrix();
+}
+
+void Box::update() {
+    RigidBody::update();
+    set_corners();
+}
+
+void Box::rotate(const Quaternion& rot_quat) {
+    RigidBody::rotate(rot_quat);
+    set_corners();
+}
+
+void Box::set_corners() {
+    int p = 0;
+    for (float i = -0.5; i <= 0.5; i += 1) {
+        for (float j = -0.5; j <= 0.5; j += 1) {
+            for (float k = -0.5; k <= 0.5; k += 1) {
+                // TODO : compute corner location with quaternion
+                const auto corner = Vector(i * width_, j * height_, k * depth_);
+                const auto rotated = rotation_ * Quaternion(0, corner.x, corner.y, corner.z) * rotation_.conjugate();
+                corners_[p] = glm::vec3(rotated.x + position_.x, rotated.y + position_.y, rotated.z + position_.z);
+                p++;
+            }
+        }
+    }
+    // swap the corners to match the correct order
+    auto tmp = corners_[2];
+    corners_[2] = corners_[3];
+    corners_[3] = tmp;
+    tmp = corners_[6];
+    corners_[6] = corners_[7];
+    corners_[7] = tmp;
 }
 
 float Box::get_width() const {
@@ -37,6 +65,10 @@ float Box::get_depth() const {
     return depth_;
 }
 
+const std::vector<glm::vec3>& Box::get_corners() const {
+    return corners_;
+}
+
 float Box::checkCollisionWithRigidbody(const std::shared_ptr<const RigidBody>& other) const {
     return other->checkCollisionWithBox(shared_from_this());
 }
@@ -47,4 +79,8 @@ float Box::checkCollisionWithPlane(const std::shared_ptr<const Plane>& plane) co
 
 float Box::checkCollisionWithBox(const std::shared_ptr<const Box>& box) const {
     return RigidbodyCollisionRegistry::checkInterCollision(shared_from_this(), box);
+}
+
+const Sphere& Box::get_bounding_sphere() const {
+    return bounding_sphere_;
 }
