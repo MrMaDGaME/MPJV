@@ -4,6 +4,8 @@
 
 std::vector<Vector> RigidbodyCollisionRegistry::apply_points_;
 
+Vector RigidbodyCollisionRegistry::collision_normal_;
+
 RigidbodyCollisionRegistry::RigidbodyCollisionRegistry(const std::shared_ptr<ObjectForceRegistry>& force_registry) : force_registry_(force_registry) {
 }
 
@@ -16,6 +18,7 @@ void RigidbodyCollisionRegistry::computeInterCollisions() const {
         std::shared_ptr<RigidBody> objectA = couple.ObjectA;
         std::shared_ptr<RigidBody> objectB = couple.ObjectB;
         apply_points_.clear();
+        collision_normal_ = {0, 0, 0};
         auto interPDist = objectA->checkCollisionWithRigidbody(objectB);
         if (!apply_points_.empty()) {
             std::cout << "Collision detected" << std::endl;
@@ -66,6 +69,7 @@ float RigidbodyCollisionRegistry::checkInterCollision(const std::shared_ptr<cons
             if (proj1 >= 0 && proj1 <= a.magnitude() && proj2 >= 0 && proj2 <= b.magnitude()) {
                 interPDist_max = std::max(interPDist_max, std::abs(corner_signed_distance));
                 apply_points_.push_back(projection);
+                collision_normal_ = plane->get_normal();
             }
         }
     }

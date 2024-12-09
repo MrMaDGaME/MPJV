@@ -34,5 +34,6 @@ public:
 
 private:
     static std::vector<Vector> apply_points_;
+    static Vector collision_normal_;
     std::shared_ptr<ObjectForceRegistry> force_registry_;
 };
