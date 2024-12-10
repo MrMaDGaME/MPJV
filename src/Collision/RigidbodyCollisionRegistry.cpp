@@ -6,7 +6,11 @@ std::vector<Vector> RigidbodyCollisionRegistry::apply_points_;
 
 Vector RigidbodyCollisionRegistry::collision_normal_;
 
-RigidbodyCollisionRegistry::RigidbodyCollisionRegistry(const std::shared_ptr<ObjectForceRegistry>& force_registry) : force_registry_(force_registry) {
+std::shared_ptr<ObjectForceRegistry> RigidbodyCollisionRegistry::force_registry_;
+
+
+RigidbodyCollisionRegistry::RigidbodyCollisionRegistry(const std::shared_ptr<ObjectForceRegistry>& force_registry) {
+    force_registry_ = force_registry;
 }
 
 void RigidbodyCollisionRegistry::AddInterCollision(std::shared_ptr<RigidBody> ObjectA, std::shared_ptr<RigidBody> ObjectB, float restCoeff) {
@@ -84,5 +88,44 @@ float RigidbodyCollisionRegistry::checkInterCollision(const std::shared_ptr<cons
     return 0;
 }
 
-void RigidbodyCollisionRegistry::HandleInterCollision(const RigidBodyCollisionEntry& collision, float interPDist) {
+
+// apply point en coordonnée absolu point auquel appliqué la force.
+//positions non modifiées
+//se vident tout seul
+void RigidbodyCollisionRegistry::HandleInterCollision(const RigidBodyCollisionEntry& collision, float interpDist) {
+    std::shared_ptr<RigidBody> rigidBodyA = collision.ObjectA;
+    std::shared_ptr<RigidBody> rigidBodyB = collision.ObjectB;
+    
+    Vector relativeSpeed = rigidBodyA->get_velocity() - rigidBodyB->get_velocity();
+    float last_frame = static_cast<float>(ofGetLastFrameTime());
+    float particuleAMass = rigidBodyA->get_inv_mass() != 0.f ? 1 / rigidBodyA->get_inv_mass() : 0;
+    float particuleBMass = rigidBodyB->get_inv_mass() != 0.f ? 1 / rigidBodyB->get_inv_mass() : 0;
+    float deplA = interpDist * (particuleAMass) / (particuleAMass + particuleBMass);
+    rigidBodyA->set_position(rigidBodyA->get_position() + collision_normal_ * deplA);
+    float deplB = interpDist * (particuleBMass) / (particuleAMass + particuleBMass);
+    rigidBodyB->set_position(rigidBodyB->get_position() - collision_normal_ * deplB);
+    //Check if the object is at rest on another object and if so avoid moving it.
+    // if (rigidBodyA->get_velocity().magnitude() == 0.f) {
+    //     if (rigidBodyB->get_velocity() * DEFAULT_GRAVITY_DIRECTION == DEFAULT_GRAVITY * last_frame) {
+    //         Vector newVelocity = rigidBodyB->get_velocity() - DEFAULT_GRAVITY_DIRECTION * (rigidBodyB->get_velocity() * DEFAULT_GRAVITY_DIRECTION);
+    //         //Vector newVelocity = Vector(0,0,0);
+    //         rigidBodyB->set_velocity(newVelocity);
+    //         return;
+    //     }
+    // }
+    // else if (rigidBodyB->get_velocity().magnitude() == 0.f) {
+    //     if (particleA->get_velocity() * DEFAULT_GRAVITY_DIRECTION == DEFAULT_GRAVITY * last_frame) {
+    //         Vector newVelocity = particleA->get_velocity() - DEFAULT_GRAVITY_DIRECTION * (particleA->get_velocity() * DEFAULT_GRAVITY_DIRECTION);
+    //         //Vector newVelocity = Vector(0,0,0);
+    //         particleA->set_velocity(newVelocity);
+    //         return;
+    //     }
+    // }
+    float impluseValue = (collision.restCoeff + 1) * (relativeSpeed * collision_normal_) / ((rigidBodyA->get_inv_mass() + rigidBodyB->get_inv_mass()) *
+        last_frame * apply_points_.size());
+    for(Vector point: apply_points_){
+
+        force_registry_->add(rigidBodyA, make_shared<ImpulseForceGenerator>(collision_normal_ * -impluseValue), point);
+        force_registry_->add(rigidBodyB, make_shared<ImpulseForceGenerator>(collision_normal_ * impluseValue), point);
+    }
 }
