@@ -28,6 +28,7 @@ public:
     static Matrix3x3 rotateZ(float angle);
     static Matrix3x3 scale(float sx, float sy);
     static Matrix3x3 identity();
+    static Matrix3x3 null();
 
 private:
     float matrix_[3][3];

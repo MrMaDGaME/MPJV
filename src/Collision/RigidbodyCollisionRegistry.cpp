@@ -103,8 +103,8 @@ void RigidbodyCollisionRegistry::HandleInterCollision(const RigidBodyCollisionEn
     
     Vector relativeSpeed = rigidBodyA->get_velocity() - rigidBodyB->get_velocity();
     float last_frame = static_cast<float>(ofGetLastFrameTime());
-    float particuleAMass = rigidBodyA->get_inv_mass() != 0.f ? 1 / rigidBodyA->get_inv_mass() : 0;
-    float particuleBMass = rigidBodyB->get_inv_mass() != 0.f ? 1 / rigidBodyB->get_inv_mass() : 0;
+    float particuleAMass = rigidBodyA->get_inv_mass() > 0.f ? 1 / rigidBodyA->get_inv_mass() : 0;
+    float particuleBMass = rigidBodyB->get_inv_mass() > 0.f ? 1 / rigidBodyB->get_inv_mass() : 0;
     float deplA = interpDist * (particuleAMass) / (particuleAMass + particuleBMass);
     rigidBodyA->set_position(rigidBodyA->get_position() + collision_normal_ * deplA);
     float deplB = interpDist * (particuleBMass) / (particuleAMass + particuleBMass);

@@ -9,6 +9,13 @@ Box::Box(float x, float y, float z, float height, float width, float depth, floa
     bounding_sphere_(position_, std::sqrt((width * width + height * height + depth * depth) / 4)) {
 }
 
+Box::Box(const Vector& position, const float height, const float width, const float depth, ofColor color) : RigidBody(position, color), width_
+(width),
+height_
+(height),
+    depth_(depth), bounding_sphere_(position, std::sqrt((width * width + height * height + depth * depth) / 4)) {
+}
+
 void Box::draw() {
     ofSetColor(color_);
     ofPushMatrix();

@@ -1,5 +1,7 @@
 #include "ofApp.h"
 
+#include <corecrt_math_defines.h>
+
 //--------------------------------------------------------------
 void ofApp::setup() {
     // Initialisation de l'interface utilisateur
@@ -24,7 +26,13 @@ void ofApp::setup() {
     forceRegistry = std::make_shared<ObjectForceRegistry>();
     collisionRegistry = std::make_shared<RigidbodyCollisionRegistry>(forceRegistry);
 
-    // rigidbodies.push_back(std::make_shared<Plane>(Vector(0, 0, 100), 1000, 1000, ofColor::blue));
+    rigidbodies.push_back(std::make_shared<Plane>(Vector(0, 0, 150), 300, 300, ofColor::blue));
+    rigidbodies.push_back(std::make_shared<Plane>(Vector(0, 0, -150), 300, 300, ofColor::blue));
+    rigidbodies.push_back(std::make_shared<Plane>(Vector(150, 0, 0), 300, 300, Quaternion(cos(M_PI / 4), 0, sin(M_PI / 4), 0), ofColor::blue));
+    rigidbodies.push_back(std::make_shared<Plane>(Vector(-150, 0, 0), 300, 300, Quaternion(cos(M_PI / 4), 0, sin(M_PI / 4), 0), ofColor::blue));
+    rigidbodies.push_back(std::make_shared<Plane>(Vector(0, 150, 0), 300, 300, Quaternion(cos(M_PI / 4), sin(M_PI / 4), 0, 0), ofColor::blue));
+    rigidbodies.push_back(std::make_shared<Plane>(Vector(0, -150, 0), 300, 300, Quaternion(cos(M_PI / 4), sin(M_PI / 4), 0, 0), ofColor::blue));
+    // rigidbodies.push_back(std::make_shared<Box>(Vector(), 300, 300, 300, ofColor::red));
 
     // Configuration de la caméra
     cam.setDistance(500); // Distance de vue initiale
@@ -36,7 +44,7 @@ void ofApp::setup() {
 void ofApp::update() {
     tree->clear();
     collisionRegistry->clear();
-    
+
     for (const auto& rigidbody : rigidbodies) {
         tree->insert(rigidbody);
     }

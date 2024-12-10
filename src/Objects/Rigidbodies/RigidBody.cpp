@@ -42,20 +42,20 @@ RigidBody::RigidBody(const Vector& position, float mass, Matrix3x3 inertia, ofCo
 }
 
 RigidBody::RigidBody(const float x, const float y, const float z) : position_(x, y, z), rotation_(Quaternion()), velocity_(0, 0, 0), inv_mass_(0),
-                                                                    inv_inertia_(Matrix3x3::identity()), color_(ofColor::white) {
+                                                                    inv_inertia_(Matrix3x3::null()), color_(ofColor::white) {
 }
 
 RigidBody::RigidBody(const float x, const float y, const float z, const ofColor& color) : position_(x, y, z), rotation_(Quaternion()),
                                                                                           velocity_(0, 0, 0), inv_mass_(0),
-                                                                                          inv_inertia_(Matrix3x3::identity()), color_(color) {
+                                                                                          inv_inertia_(Matrix3x3::null()), color_(color) {
 }
 
 RigidBody::RigidBody(const Vector& position) : position_(position), rotation_(Quaternion()), velocity_(0, 0, 0), inv_mass_(0),
-                                               inv_inertia_(Matrix3x3::identity()), color_(ofColor::white) {
+                                               inv_inertia_(Matrix3x3::null()), color_(ofColor::white) {
 }
 
 RigidBody::RigidBody(const Vector& position, const ofColor& color) : position_(position), rotation_(Quaternion()), velocity_(0, 0, 0), inv_mass_(0),
-                                                                     inv_inertia_(Matrix3x3::identity()), color_(color) {
+                                                                     inv_inertia_(Matrix3x3::null()), color_(color) {
 }
 
 void RigidBody::update() {

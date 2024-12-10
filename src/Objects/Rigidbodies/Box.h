@@ -5,6 +5,7 @@ class Box : public RigidBody, public std::enable_shared_from_this<Box> {
 public:
     Box(float x, float y, float z, float height, float width, float depth, float mass, Matrix3x3 inertia);
     Box(float x, float y, float z, float height, float width, float depth, float mass, Matrix3x3 inertia, ofColor color);
+    Box(const Vector& position, float height, float width, float depth, ofColor color);
 
     void draw() override;
     void set_bounding_sphere_position() override;

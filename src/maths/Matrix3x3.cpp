@@ -202,3 +202,13 @@ Matrix3x3 Matrix3x3::identity() {
     }
     return result;
 }
+
+Matrix3x3 Matrix3x3::null() {
+    Matrix3x3 result;
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            result(i, j) = 0.0f;
+        }
+    }
+    return result;
+}
