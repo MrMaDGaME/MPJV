@@ -43,7 +43,11 @@ public:
     virtual float checkCollisionWithPlane(const std::shared_ptr<const Plane>& plane) const = 0;
     virtual float checkCollisionWithBox(const std::shared_ptr<const Box>& box) const = 0;
 
+    virtual void set_corners() = 0;
+
     [[nodiscard]] virtual const Sphere& get_bounding_sphere() const = 0;
+
+    virtual void set_bounding_sphere_position() = 0;
 
     [[nodiscard]] const Quaternion& get_rotation() const;
 

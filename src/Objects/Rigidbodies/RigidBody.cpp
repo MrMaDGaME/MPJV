@@ -71,6 +71,8 @@ void RigidBody::update() {
 
     inv_inertia_ = rotation_.ToMatrix3() * inv_inertia_ * rotation_.conjugate().ToMatrix3();
     clearAccums();
+    set_corners();
+    set_bounding_sphere_position();
 }
 
 void RigidBody::addForce(const Vector& force) {
@@ -85,6 +87,7 @@ void RigidBody::addForce(const Vector& force, const Vector& apply_point) {
 
 void RigidBody::rotate(const Quaternion& rot_quat) {
     rotation_ = rot_quat * rotation_;
+    set_corners();
 }
 
 [[nodiscard]] Vector RigidBody::get_position() const {

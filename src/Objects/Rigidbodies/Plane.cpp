@@ -4,21 +4,21 @@ Plane::Plane(const float x, const float y, const float z, const float width, con
                                                                                                    bounding_sphere_(
                                                                                                        position_,
                                                                                                        std::sqrt(
-                                                                                                           (width * width + height * height) / 2)) {
+                                                                                                           (width * width + height * height) / 4)) {
 }
 
 Plane::Plane(const float x, const float y, const float z, const float width, const float height, const ofColor& color) : RigidBody(x, y, z, color),
-    width_(width), height_(height), bounding_sphere_(position_, std::sqrt((width * width + height * height) / 2)) {
+    width_(width), height_(height), bounding_sphere_(position_, std::sqrt((width * width + height * height) / 4)) {
 }
 
 Plane::Plane(const Vector& position, const float width, const float height) : RigidBody(position), width_(width), height_(height),
                                                                               bounding_sphere_(
                                                                                   position_,
-                                                                                  std::sqrt((width * width + height * height) / 2)) {
+                                                                                  std::sqrt((width * width + height * height) / 4)) {
 }
 
 Plane::Plane(const Vector& position, const float width, const float height, const ofColor& color) : RigidBody(position, color), width_(width),
-    height_(height), bounding_sphere_(position_, std::sqrt((width * width + height * height) / 2)) {
+    height_(height), bounding_sphere_(position_, std::sqrt((width * width + height * height) / 4)) {
 }
 
 Plane::Plane(const Vector& position, float width, float height, const Quaternion& rotation, const ofColor& color) : Plane(
@@ -48,13 +48,11 @@ void Plane::draw() {
 void Plane::update() {
     RigidBody::update();
     set_normal();
-    set_corners();
 }
 
 void Plane::rotate(const Quaternion& rot_quat) {
     RigidBody::rotate(rot_quat);
     set_normal();
-    set_corners();
 }
 
 void Plane::set_corners() {
@@ -71,6 +69,10 @@ void Plane::set_corners() {
     const auto tmp = corners_[2];
     corners_[2] = corners_[3];
     corners_[3] = tmp;
+}
+
+void Plane::set_bounding_sphere_position() {
+    bounding_sphere_.set_center(position_);
 }
 
 void Plane::set_normal() {

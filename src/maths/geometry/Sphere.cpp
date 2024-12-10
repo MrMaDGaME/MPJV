@@ -11,6 +11,10 @@ float Sphere::getRadius() const {
     return radius_;
 }
 
+void Sphere::set_center(const Vector& center) {
+    center_ = center;
+}
+
 bool Sphere::IsOverlaping(Sphere& other) {
     return (center_ - other.getCenter()).magnitude() <= radius_ + other.getRadius();
 }

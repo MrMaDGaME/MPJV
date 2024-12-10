@@ -13,7 +13,8 @@ public:
     void draw() override;
     void update() override;
     void rotate(const Quaternion& rot_quat) override;
-    void set_corners();
+    void set_corners() override;
+    void set_bounding_sphere_position() override;
     void set_normal();
     [[nodiscard]] float get_width() const;
     [[nodiscard]] float get_height() const;

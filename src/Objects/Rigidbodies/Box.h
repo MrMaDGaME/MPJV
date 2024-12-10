@@ -7,9 +7,8 @@ public:
     Box(float x, float y, float z, float height, float width, float depth, float mass, Matrix3x3 inertia, ofColor color);
 
     void draw() override;
-    void update() override;
-    void rotate(const Quaternion& rot_quat) override;
-    void set_corners();
+    void set_bounding_sphere_position() override;
+    void set_corners() override;
     [[nodiscard]] float get_width() const;
     [[nodiscard]] float get_height() const;
     [[nodiscard]] float get_depth() const;

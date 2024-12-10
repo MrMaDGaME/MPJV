@@ -1,12 +1,12 @@
 #include "Box.h"
 
 Box::Box(float x, float y, float z, float height, float width, float depth, float mass, Matrix3x3 inertia) : RigidBody(x, y, z, mass, inertia),
-    width_(width), height_(height), depth_(depth), bounding_sphere_(position_, std::sqrt((width * width + height * height + depth * depth) / 2)) {
+    width_(width), height_(height), depth_(depth), bounding_sphere_(position_, std::sqrt((width * width + height * height + depth * depth) / 4)) {
 }
 
 Box::Box(float x, float y, float z, float height, float width, float depth, float mass, Matrix3x3 inertia, ofColor color) :
     RigidBody(x, y, z, mass, inertia, color), width_(width), height_(height), depth_(depth),
-    bounding_sphere_(position_, std::sqrt((width * width + height * height + depth * depth) / 2)) {
+    bounding_sphere_(position_, std::sqrt((width * width + height * height + depth * depth) / 4)) {
 }
 
 void Box::draw() {
@@ -21,14 +21,8 @@ void Box::draw() {
     ofPopMatrix();
 }
 
-void Box::update() {
-    RigidBody::update();
-    set_corners();
-}
-
-void Box::rotate(const Quaternion& rot_quat) {
-    RigidBody::rotate(rot_quat);
-    set_corners();
+void Box::set_bounding_sphere_position() {
+    bounding_sphere_.set_center(position_);
 }
 
 void Box::set_corners() {

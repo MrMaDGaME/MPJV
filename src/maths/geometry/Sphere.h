@@ -8,6 +8,7 @@ public:
 
     [[nodiscard]] const Vector& getCenter() const;
     [[nodiscard]] float getRadius() const;
+    void set_center(const Vector& center);
 
     bool IsOverlaping(Sphere& other);
 
