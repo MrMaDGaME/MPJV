@@ -21,12 +21,17 @@ void RigidbodyCollisionRegistry::computeInterCollisions() const {
     for (const auto& couple : InterRegistry) {
         std::shared_ptr<RigidBody> objectA = couple.ObjectA;
         std::shared_ptr<RigidBody> objectB = couple.ObjectB;
-        apply_points_.clear();
+        const auto sphereA = objectA->get_bounding_sphere();
+        const auto sphereB = objectB->get_bounding_sphere();
+        if ((sphereA.getCenter() - sphereB.getCenter()).magnitude() > sphereA.getRadius() + sphereB.getRadius()) {
+            continue;
+        }
         collision_normal_ = {0, 0, 0};
         auto interPDist = objectA->checkCollisionWithRigidbody(objectB);
         if (!apply_points_.empty()) {
             HandleInterCollision(couple, interPDist);
         }
+        apply_points_.clear();
     }
 }
 
