@@ -1,6 +1,6 @@
 #include "ofApp.h"
 
-#include <corecrt_math_defines.h>
+#define _USE_MATH_DEFINES
 
 //--------------------------------------------------------------
 void ofApp::setup() {
@@ -28,10 +28,10 @@ void ofApp::setup() {
 
     rigidbodies.push_back(std::make_shared<Plane>(Vector(0, 0, 150), 300, 300, ofColor::blue));
     rigidbodies.push_back(std::make_shared<Plane>(Vector(0, 0, -150), 300, 300, ofColor::blue));
-    rigidbodies.push_back(std::make_shared<Plane>(Vector(150, 0, 0), 300, 300, Quaternion(cos(M_PI / 4), 0, sin(M_PI / 4), 0), ofColor::blue));
-    rigidbodies.push_back(std::make_shared<Plane>(Vector(-150, 0, 0), 300, 300, Quaternion(cos(M_PI / 4), 0, sin(M_PI / 4), 0), ofColor::blue));
-    rigidbodies.push_back(std::make_shared<Plane>(Vector(0, 150, 0), 300, 300, Quaternion(cos(M_PI / 4), sin(M_PI / 4), 0, 0), ofColor::blue));
-    rigidbodies.push_back(std::make_shared<Plane>(Vector(0, -150, 0), 300, 300, Quaternion(cos(M_PI / 4), sin(M_PI / 4), 0, 0), ofColor::blue));
+    rigidbodies.push_back(std::make_shared<Plane>(Vector(150, 0, 0), 300, 300, Quaternion(cos(PI / 4), 0, sin(PI / 4), 0), ofColor::blue));
+    rigidbodies.push_back(std::make_shared<Plane>(Vector(-150, 0, 0), 300, 300, Quaternion(cos(PI / 4), 0, sin(PI / 4), 0), ofColor::blue));
+    rigidbodies.push_back(std::make_shared<Plane>(Vector(0, 150, 0), 300, 300, Quaternion(cos(PI / 4), sin(PI / 4), 0, 0), ofColor::blue));
+    rigidbodies.push_back(std::make_shared<Plane>(Vector(0, -150, 0), 300, 300, Quaternion(cos(PI / 4), sin(PI / 4), 0, 0), ofColor::blue));
     // rigidbodies.push_back(std::make_shared<Box>(Vector(), 300, 300, 300, ofColor::red));
 
     // Configuration de la caméra
