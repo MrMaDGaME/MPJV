@@ -35,8 +35,13 @@ void ofApp::setup() {
 //--------------------------------------------------------------
 void ofApp::update() {
     tree->clear();
+    collisionRegistry->clear();
+    
     for (const auto& rigidbody : rigidbodies) {
         tree->insert(rigidbody);
+    }
+    for (const auto& pair : tree->getAllPairs()) {
+        collisionRegistry->AddInterCollision(pair.first, pair.second, 0.5f);
     }
 
     collisionRegistry->computeInterCollisions();
@@ -143,9 +148,6 @@ void ofApp::createNewBox() {
 
 void ofApp::createNewCoreBox() {
     current_rig = std::make_shared<CoreBox>(0.f, 0.f, 0.f);
-    for (const auto& rigidbody : rigidbodies) {
-        collisionRegistry->AddInterCollision(current_rig, rigidbody, 0.5f);
-    }
     rigidbodies.push_back(current_rig);
 
     // Ajouter la boîte au registre des forces avec la gravité
@@ -154,9 +156,6 @@ void ofApp::createNewCoreBox() {
 
 void ofApp::createNewUniformBox() {
     current_rig = std::make_shared<UniformBox>(0.f, 0.f, 0.f);
-    for (const auto& rigidbody : rigidbodies) {
-        collisionRegistry->AddInterCollision(current_rig, rigidbody, 0.5f);
-    }
     rigidbodies.push_back(current_rig);
 
     // Ajouter la boîte au registre des forces avec la gravité

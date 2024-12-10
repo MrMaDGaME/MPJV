@@ -129,3 +129,8 @@ void RigidbodyCollisionRegistry::HandleInterCollision(const RigidBodyCollisionEn
         force_registry_->add(rigidBodyB, make_shared<ImpulseForceGenerator>(collision_normal_ * impluseValue), point);
     }
 }
+
+void RigidbodyCollisionRegistry::clear()
+{
+    InterRegistry.clear();
+}

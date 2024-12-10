@@ -32,6 +32,8 @@ public:
 
     static void HandleInterCollision(const RigidBodyCollisionEntry& collision, float interPDist);
 
+    void clear();
+
 private:
     static std::vector<Vector> apply_points_;
     static Vector collision_normal_;
