@@ -72,7 +72,11 @@ float Box::checkCollisionWithPlane(const std::shared_ptr<const Plane>& plane) co
 }
 
 float Box::checkCollisionWithBox(const std::shared_ptr<const Box>& box) const {
-    return RigidbodyCollisionRegistry::checkInterCollision(shared_from_this(), box);
+    const auto result = RigidbodyCollisionRegistry::checkInterCollision(shared_from_this(), box);
+    if (!RigidbodyCollisionRegistry::get_apply_points().empty()) {
+        return result;
+    }
+    return RigidbodyCollisionRegistry::checkInterCollision(box, shared_from_this());
 }
 
 const Sphere& Box::get_bounding_sphere() const {

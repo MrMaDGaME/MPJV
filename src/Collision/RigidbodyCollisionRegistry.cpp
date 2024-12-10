@@ -135,6 +135,10 @@ void RigidbodyCollisionRegistry::HandleInterCollision(const RigidBodyCollisionEn
     }
 }
 
+const std::vector<Vector>& RigidbodyCollisionRegistry::get_apply_points() {
+    return apply_points_;
+}
+
 void RigidbodyCollisionRegistry::clear()
 {
     InterRegistry.clear();
